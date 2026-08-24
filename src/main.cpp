@@ -24,11 +24,20 @@ int main()
         // Swap to another scene
         if (next_scene)
         {
-            switch (*next_scene)
+            // Clear previous scene before creating a new one.
+            if (scene)
             {
-                case scene_type::TEST:
-                    scene = bn::make_unique<test_scene>();
-                    break;
+                scene.reset();
+            }
+            else
+            {
+                // Only create a new scene one frame after previous scene clearing.
+                switch (*next_scene)
+                {
+                    case scene_type::TEST:
+                        scene = bn::make_unique<test_scene>();
+                        break;
+                }
             }
         }
 
