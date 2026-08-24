@@ -1,0 +1,7 @@
+/[Bb]uild
+/[Tt]emp
+
+*.gba
+*.elf
+*.sav
+*.pyc
