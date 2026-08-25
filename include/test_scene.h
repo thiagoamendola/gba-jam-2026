@@ -5,6 +5,7 @@
 
 #include "base_scene.h"
 #include "scenario.h"
+#include "controller.h"
 
 class test_scene : public base_scene
 {
@@ -16,6 +17,7 @@ public:
 
 private:
     scenario _scenario;
+    controller _controller;
 };
 
 #endif // TEST_SCENE_H
