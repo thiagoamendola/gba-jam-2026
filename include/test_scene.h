@@ -6,6 +6,7 @@
 #include "base_scene.h"
 #include "scenario.h"
 #include "controller.h"
+#include "player.h"
 
 class test_scene : public base_scene
 {
@@ -16,8 +17,9 @@ public:
     bn::optional<scene_type> update() override;
 
 private:
-    scenario _scenario;
     controller _controller;
+    scenario _scenario;
+    player _player;
 };
 
 #endif // TEST_SCENE_H

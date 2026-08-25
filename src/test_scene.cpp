@@ -8,7 +8,7 @@
 #include "controller.h"
 
 test_scene::test_scene()
-    : _scenario(), _controller()
+    : _scenario(), _controller(), _player()
 {
     BN_LOG("HELLOOO");
 }
@@ -21,6 +21,7 @@ bn::optional<scene_type> test_scene::update()
 {
     bn::fixed_point movement = _controller.get_smooth_directional() * 3.0f; // <-- MAGIC NUMBER
 
+    _player.update(movement);
     _scenario.update(movement);
 
     return bn::nullopt;
