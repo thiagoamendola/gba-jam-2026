@@ -3,6 +3,8 @@
 #include "bn_log.h"
 #include "bn_optional.h"
 #include "bn_fixed_point.h"
+#include "bn_backdrop.h"
+#include "bn_color.h"
 
 #include "scene_type.h"
 #include "controller.h"
@@ -10,7 +12,8 @@
 test_scene::test_scene()
     : _scenario(), _controller(), _player()
 {
-    BN_LOG("HELLOOO");
+    bn::backdrop::set_color(bn::color(16, 0, 0));
+
 }
 
 test_scene::~test_scene()
