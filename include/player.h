@@ -15,6 +15,7 @@ public:
 
 private:
     bn::sprite_ptr _sprite;
+    bn::fixed_point _rotation_center_position;
 };
 
 
