@@ -9,10 +9,15 @@ class player;
 class dog_enemy
 {
 public:
+    static constexpr bn::fixed COLLIDER_RADIUS = 3;
+
     dog_enemy(const player* player, const bn::fixed_point& position);
     ~dog_enemy();
 
     void update(bn::fixed_point movement);
+    void destroy();
+
+    [[nodiscard]] const bn::fixed_point& position() const;
 
 private:
     static constexpr bn::fixed DOG_SPEED = 1;
@@ -20,6 +25,7 @@ private:
     const player* _player;
     bn::fixed_point _position;
     bn::sprite_ptr _sprite;
+    bool _is_destroyed;
 };
 
 #endif
