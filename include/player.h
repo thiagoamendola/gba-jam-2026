@@ -13,6 +13,8 @@ public:
 
     void update(bn::fixed_point movement);
 
+    [[nodiscard]] const bn::fixed_point& position() const;
+
 private:
     enum class hold_state
     {

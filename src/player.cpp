@@ -1,10 +1,11 @@
 #include "player.h"
 
 #include "bn_math.h"
-#include "bn_sprite_items_player.h"
 #include "bn_log.h"
 #include "bn_fixed_point.h"
 #include "bn_keypad.h"
+
+#include "bn_sprite_items_player.h"
 
 player::player()
     : _hold_state(hold_state::MELEE),
@@ -19,6 +20,11 @@ player::player()
 
 player::~player()
 {
+}
+
+const bn::fixed_point& player::position() const
+{
+    return _rotation_center_position;
 }
 
 void player::update(bn::fixed_point movement)

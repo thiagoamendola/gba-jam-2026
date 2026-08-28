@@ -7,6 +7,7 @@
 #include "scenario.h"
 #include "controller.h"
 #include "player.h"
+#include "dog_enemy.h"
 
 class test_scene : public base_scene
 {
@@ -20,6 +21,7 @@ private:
     controller _controller;
     scenario _scenario;
     player _player;
+    dog_enemy _dog;
 };
 
 #endif // TEST_SCENE_H
