@@ -1,5 +1,7 @@
 #include "player.h"
 
+#include "constants.h"
+
 #include "bn_math.h"
 #include "bn_log.h"
 #include "bn_fixed_point.h"
@@ -74,10 +76,11 @@ void player::update(bn::fixed_point movement)
         _attack_anim_index = 0;
         _attack_anim_frame_end = 0;
         _sprite.set_tiles(bn::sprite_items::player.tiles_item(), MELEE_ANIM_FRAMES[_attack_anim_index].sprite_index); // <-- IF MELEE ONLY
-#if SHOW_HITBOX_ATTACK
+    if constexpr(SHOW_HITBOX_ATTACK)
+    {
         _attack_hitbox_sprite.emplace(bn::sprite_items::hitbox.create_sprite(_attack_hitbox_position()));
         _attack_hitbox_sprite->set_scale(ATTACK_COLLIDER_RADIUS / HITBOX_SPRITE_RADIUS);
-#endif
+    }
     }
 
     if (_is_attacking)
