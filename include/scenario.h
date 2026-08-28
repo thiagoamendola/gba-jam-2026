@@ -16,6 +16,8 @@ private:
     bn::regular_bg_ptr _bg;
 
     bn::fixed_point _current_position;
+
+    void _update_bg_window();
 };
 
 #endif // SCENARIO_H
