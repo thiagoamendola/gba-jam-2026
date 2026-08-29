@@ -10,7 +10,9 @@
 #include "controller.h"
 
 test_scene::test_scene()
-    : _controller(), _scenario(), _player(), _dog(&_player, bn::fixed_point(400, 400))
+    : _controller(), _scenario(), _player(), 
+      _dog(&_player, bn::fixed_point(400, 400)),
+      _walls(bn::fixed_point(150, -150))
 {
     bn::backdrop::set_color(bn::color(16, 0, 0));
 
@@ -27,6 +29,7 @@ bn::optional<scene_type> test_scene::update()
     _player.update(movement);
     _scenario.update(movement);
     _dog.update(movement);
+    _walls.update(movement);
 
     return bn::nullopt;
 }
