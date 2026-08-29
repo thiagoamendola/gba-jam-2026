@@ -12,9 +12,17 @@
 test_scene::test_scene()
     : _controller(), _scenario(), _player(), 
       _dog(&_player, bn::fixed_point(400, 400)),
-      _walls(bn::fixed_point(150, -150))
+      _walls()
 {
     bn::backdrop::set_color(bn::color(16, 0, 0));
+
+    _walls.create_horizontal_wall(bn::fixed_point(150, -150), 222);
+    _walls.create_horizontal_wall(bn::fixed_point(150, -86), 222);
+    _walls.create_vertical_wall(bn::fixed_point(150, -150), -86);
+    _walls.create_vertical_wall(bn::fixed_point(222, -150), -86);
+
+    _walls.create_vertical_wall(bn::fixed_point(222, -50), 86);
+    _walls.create_horizontal_wall(bn::fixed_point(170, 0), 270);
 
 }
 

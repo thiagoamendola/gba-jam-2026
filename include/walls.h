@@ -8,25 +8,34 @@
 class walls
 {
 public:
-    walls(const bn::fixed_point& top_left_position);
+    walls() = default;
+
+    void create_horizontal_wall(const bn::fixed_point& start_position, bn::fixed end_x);
+    void create_vertical_wall(const bn::fixed_point& start_position, bn::fixed end_y);
 
     void update(const bn::fixed_point& player_movement);
 
 private:
-    static constexpr int WALL_CELL_SIZE = 8; // <-- WHAT'S THE DIFFERENCE HERE?
-    static constexpr int WALL_SPRITE_SIZE = 8; // <-- WHAT'S THE DIFFERENCE HERE?
-    static constexpr int WALL_SPRITES_COUNT = 34; // <-- WHAT IS THIS?
+    struct wall_cell
+    {
+        bn::fixed_point position;
+        bn::sprite_ptr sprite;
+    };
 
-    static constexpr int HORIZONTAL_WALL_INDEX = 0;
-    static constexpr int VERTICAL_WALL_INDEX = 1;
-    static constexpr int CONNECTION_WALL_INDEX = 2;
-    static constexpr int WALL_COLUMNS = 10; // <-- REMOVE SOON
-    static constexpr int WALL_ROWS = 9; // <-- REMOVE SOON
+    enum wall_graphics_index
+    {
+        HORIZONTAL_WALL_INDEX,
+        VERTICAL_WALL_INDEX,
+        CONNECTION_WALL_INDEX,
+    };
 
-    bn::fixed_point _top_left_position;
-    bn::vector<bn::sprite_ptr, WALL_SPRITES_COUNT> _sprites;
+    static constexpr int WALL_CELL_SIZE = 8;
+    static constexpr int WALL_SPRITE_HALF_SIZE = 4;
+    static constexpr int MAX_WALL_CELLS = 128;
 
-    void _add_wall(int column, int row, int graphics_index);
+    bn::vector<wall_cell, MAX_WALL_CELLS> _cells;
+
+    void _add_or_upgrade_wall(const bn::fixed_point& position, int graphics_index);
 };
 
 #endif
