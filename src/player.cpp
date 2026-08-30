@@ -6,6 +6,7 @@
 #include "bn_log.h"
 #include "bn_fixed_point.h"
 #include "bn_keypad.h"
+#include "bn_sprite_ptr.h"
 
 #include "dog_enemy.h"
 #include "walls.h"
@@ -92,7 +93,7 @@ bn::fixed_point player::update(bn::fixed_point movement, const walls& walls)
         if (_attack_anim_frame_end >= MELEE_ANIM_FRAMES[_attack_anim_index].duration)
         {
             _attack_anim_frame_end = 0;
-            ++_attack_anim_index;
+            _attack_anim_index++;
 
             if (_attack_anim_index >= MELEE_ANIM_COUNT)
             {

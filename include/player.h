@@ -20,15 +20,23 @@ public:
     [[nodiscard]] bool check_attack_collision(const dog_enemy& dog) const;
 
 private:
-    enum class hold_state
+    enum hold_state
     {
         BAREHANDS,
         MELEE,
     };
 
+    enum player_frame_index
+    {
+        IDLE = 0,
+        MELEE_1 = 1,
+        MELEE_2 = 2,
+        MELEE_3 = 3,
+    };
+
     struct animation_frame
     {
-        int sprite_index;
+        player_frame_index sprite_index;
         int duration;
     };
 
@@ -37,7 +45,11 @@ private:
     static constexpr bn::fixed_point ATTACK_COLLIDER_OFFSET = bn::fixed_point(5, -1);
     static constexpr bn::fixed ATTACK_COLLIDER_RADIUS = 13;
     static constexpr bn::fixed HITBOX_SPRITE_RADIUS = 5;
-    static constexpr animation_frame MELEE_ANIM_FRAMES[] = { { 1, 3 }, { 2, 4 }, { 3, 5 } };
+    static constexpr animation_frame MELEE_ANIM_FRAMES[] = {
+        { player_frame_index::MELEE_1, 3 },
+        { player_frame_index::MELEE_2, 4 },
+        { player_frame_index::MELEE_3, 5 }
+    };
     static constexpr int MELEE_ANIM_COUNT = sizeof(MELEE_ANIM_FRAMES) / sizeof(MELEE_ANIM_FRAMES[0]);
 
     hold_state _hold_state;

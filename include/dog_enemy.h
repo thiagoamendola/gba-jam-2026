@@ -20,12 +20,37 @@ public:
     [[nodiscard]] const bn::fixed_point& position() const;
 
 private:
+    enum dog_frame_index
+    {
+        IDLE = 0,
+        WALK_1 = 1,
+        WALK_2 = 2,
+        DEAD = 3,
+    };
+
+    // <-- HOW CAN I GENERALIZE THIS?
+    struct animation_frame
+    {
+        dog_frame_index sprite_index;
+        int duration;
+    };
+
     static constexpr bn::fixed DOG_SPEED = 1;
+    static constexpr animation_frame WALK_ANIM_FRAMES[] = {
+        { dog_frame_index::IDLE, 10 },
+        { dog_frame_index::WALK_1, 12 },
+        { dog_frame_index::IDLE, 10 },
+        { dog_frame_index::WALK_2, 12 },
+    };
+    static constexpr int WALK_ANIM_COUNT = sizeof(WALK_ANIM_FRAMES) / sizeof(WALK_ANIM_FRAMES[0]);
 
     const player* _player;
     bn::fixed_point _position;
     bn::sprite_ptr _sprite;
     bool _is_destroyed;
+
+    int _walk_anim_index;
+    int _walk_anim_frame_end;
 };
 
 #endif

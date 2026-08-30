@@ -1,6 +1,7 @@
 #include "dog_enemy.h"
 
 #include "bn_math.h"
+#include "bn_sprite_ptr.h"
 
 #include "player.h"
 
@@ -50,6 +51,7 @@ void dog_enemy::update(bn::fixed_point player_movement)
 
     _position += movement;
 
+    // Check for collision with player's attack hitbox.
     if (_player->check_attack_collision(*this)) // <-- MAKE HITBOX USAGE MORE ROBUST
     {
         destroy();
@@ -63,4 +65,14 @@ void dog_enemy::update(bn::fixed_point player_movement)
     }
 
     _sprite.set_position(_position);
+
+    // Update sprite animation.
+    ++_walk_anim_frame_end;
+
+    if (_walk_anim_frame_end >= WALK_ANIM_FRAMES[_walk_anim_index].duration)
+    {
+        _walk_anim_frame_end = 0;
+        _walk_anim_index = (_walk_anim_index + 1) % WALK_ANIM_COUNT;
+        _sprite.set_tiles(bn::sprite_items::dog.tiles_item(), WALK_ANIM_FRAMES[_walk_anim_index].sprite_index);
+    }
 }
