@@ -20,6 +20,13 @@ public:
     [[nodiscard]] const bn::fixed_point& position() const;
 
 private:
+    enum class enemy_state
+    {
+        IDLE,
+        PURSUE,
+        DEAD,
+    };
+
     enum dog_frame_index
     {
         IDLE = 0,
@@ -47,7 +54,7 @@ private:
     const player* _player;
     bn::fixed_point _position;
     bn::sprite_ptr _sprite;
-    bool _is_destroyed;
+    enemy_state _state;
 
     int _walk_anim_index;
     int _walk_anim_frame_end;
