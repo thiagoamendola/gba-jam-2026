@@ -6,6 +6,7 @@
 #include "bn_sprite_ptr.h"
 
 class dog_enemy; // <-- REMOVE AND REPLACE FOR MORE GENERALIZED COLLIDER
+class walls;
 
 class player
 {
@@ -13,7 +14,7 @@ public:
     player();
     ~player();
 
-    void update(bn::fixed_point movement);
+    [[nodiscard]] bn::fixed_point update(bn::fixed_point movement, const walls& walls);
 
     [[nodiscard]] const bn::fixed_point& position() const;
     [[nodiscard]] bool check_attack_collision(const dog_enemy& dog) const;
@@ -32,6 +33,7 @@ private:
     };
 
     static constexpr bn::fixed_point PLAYER_SPRITE_OFFSET = bn::fixed_point(-8, 0);
+    static constexpr bn::fixed PLAYER_COLLIDER_RADIUS = 8;
     static constexpr bn::fixed_point ATTACK_COLLIDER_OFFSET = bn::fixed_point(5, -1);
     static constexpr bn::fixed ATTACK_COLLIDER_RADIUS = 13;
     static constexpr bn::fixed HITBOX_SPRITE_RADIUS = 5;
@@ -42,6 +44,7 @@ private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_ptr> _attack_hitbox_sprite;
     bn::fixed_point _rotation_center_position;
+    bn::fixed_point _world_position;
     bool _is_attacking;
     int _attack_anim_index;
     int _attack_anim_frame_end;

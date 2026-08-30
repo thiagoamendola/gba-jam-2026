@@ -1,6 +1,7 @@
 #ifndef WALLS_H
 #define WALLS_H
 
+#include "bn_fixed.h"
 #include "bn_fixed_point.h"
 #include "bn_sprite_ptr.h"
 #include "bn_vector.h"
@@ -12,6 +13,10 @@ public:
 
     void create_horizontal_wall(const bn::fixed_point& start_position, bn::fixed end_x);
     void create_vertical_wall(const bn::fixed_point& start_position, bn::fixed end_y);
+
+    [[nodiscard]] bn::fixed_point resolve_movement(
+            const bn::fixed_point& collider_position, bn::fixed collider_radius,
+            const bn::fixed_point& movement) const;
 
     void update(const bn::fixed_point& player_movement);
 
@@ -34,6 +39,12 @@ private:
     static constexpr int MAX_WALL_CELLS = 128;
 
     bn::vector<wall_cell, MAX_WALL_CELLS> _cells;
+
+    [[nodiscard]] bn::fixed _resolve_horizontal_movement(
+            const bn::fixed_point& collider_position, bn::fixed collider_radius, bn::fixed movement_x) const;
+
+    [[nodiscard]] bn::fixed _resolve_vertical_movement(
+            const bn::fixed_point& collider_position, bn::fixed collider_radius, bn::fixed movement_y) const;
 
     void _add_or_upgrade_wall(const bn::fixed_point& position, int graphics_index);
 };

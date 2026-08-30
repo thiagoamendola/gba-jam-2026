@@ -34,7 +34,7 @@ bn::optional<scene_type> test_scene::update()
 {
     bn::fixed_point movement = _controller.get_smooth_directional() * 3.0f; // <-- MAGIC NUMBER
 
-    _player.update(movement);
+    movement = _player.update(movement, _walls);
     _scenario.update(movement);
     _dog.update(movement);
     _walls.update(movement);

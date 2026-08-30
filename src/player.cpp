@@ -8,6 +8,7 @@
 #include "bn_keypad.h"
 
 #include "dog_enemy.h"
+#include "walls.h"
 
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_player.h"
@@ -17,9 +18,10 @@ player::player()
     : _hold_state(hold_state::MELEE),
             _sprite(bn::sprite_items::player.create_sprite(0, 0, MELEE_ANIM_FRAMES[0].sprite_index)),
       _rotation_center_position(0, 0),
+      _world_position(0, 0),
       _is_attacking(false),
-            _attack_anim_index(0),
-            _attack_anim_frame_end(0)
+      _attack_anim_index(0),
+      _attack_anim_frame_end(0)
 {
 
 }
@@ -64,11 +66,10 @@ bool player::check_attack_collision(const dog_enemy& dog) const
     return false;
 }
 
-void player::update(bn::fixed_point movement)
+bn::fixed_point player::update(bn::fixed_point movement, const walls& walls)
 {
     // <-- TODO: Slightly pan camera towards the looking direction?
-    
-    
+
     // Check if attack input pressed.
     if (bn::keypad::a_pressed() && !_is_attacking)
     {
@@ -108,10 +109,16 @@ void player::update(bn::fixed_point movement)
         }
     }
 
+    // Update player position with collision resolution.
+    const bn::fixed_point requested_movement = movement;
+    movement = walls.resolve_movement(_world_position, PLAYER_COLLIDER_RADIUS, requested_movement);
+    _world_position += movement;
+
     // Rotate sprite based on movement direction.
-    if (movement.x() != 0 || movement.y() != 0)
+    if (requested_movement.x() != 0 || requested_movement.y() != 0)
     {
-        _sprite.set_rotation_angle_safe(bn::degrees_atan2(-movement.y().data(), movement.x().data()));
+        _sprite.set_rotation_angle_safe(
+                bn::degrees_atan2(-requested_movement.y().data(), requested_movement.x().data()));
     }
 
     // Reposition sprite so rotation anchors into the sprite offset.
@@ -126,5 +133,7 @@ void player::update(bn::fixed_point movement)
     {
         _attack_hitbox_sprite->set_position(_attack_hitbox_position());
     }
+
+    return movement;
 }
 

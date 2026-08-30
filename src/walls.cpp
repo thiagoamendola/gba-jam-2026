@@ -1,5 +1,8 @@
 #include "walls.h"
 
+#include "utils.h"
+
+#include "bn_math.h"
 #include "bn_sprite_items_walls.h"
 
 void walls::create_horizontal_wall(const bn::fixed_point& start_position, bn::fixed end_x)
@@ -59,6 +62,156 @@ void walls::update(const bn::fixed_point& player_movement)
     {
         cell.sprite.set_position(cell.sprite.position() - player_movement);
     }
+}
+
+bn::fixed_point walls::resolve_movement(
+    const bn::fixed_point& collider_position, bn::fixed collider_radius,
+    const bn::fixed_point& movement) const
+{
+    const bn::fixed movement_x = _resolve_horizontal_movement(
+            collider_position, collider_radius, movement.x());
+    const bn::fixed_point position_after_x(collider_position.x() + movement_x, collider_position.y());
+    const bn::fixed movement_y = _resolve_vertical_movement(
+            position_after_x, collider_radius, movement.y());
+    return bn::fixed_point(movement_x, movement_y);
+}
+
+bn::fixed walls::_resolve_horizontal_movement(
+    const bn::fixed_point& collider_position, bn::fixed collider_radius, bn::fixed movement_x) const
+{
+    // Ignore the rest if no horizontal movement.
+    if (movement_x == 0)
+    {
+        return 0;
+    }
+
+    const bn::fixed destination_x = collider_position.x() + movement_x;
+    const bn::fixed radius_squared = collider_radius * collider_radius;
+    bn::fixed resolved_movement_x = movement_x;
+
+    // <-- OPTIMIZE THIS CHECKS???
+    // Iterate through all wall cells to check for collisions.
+    for(const wall_cell& cell : _cells)
+    {
+        const bn::fixed wall_left = cell.position.x();
+        const bn::fixed wall_top = cell.position.y();
+        const bn::fixed wall_right = wall_left + WALL_CELL_SIZE;
+        const bn::fixed wall_bottom = wall_top + WALL_CELL_SIZE;
+
+        // Skip this wall if y_distance is greater than collider radius.
+        const bn::fixed closest_y = utils::clamp(collider_position.y(), wall_top, wall_bottom);
+        const bn::fixed y_distance = collider_position.y() - closest_y;
+        const bn::fixed y_distance_squared = y_distance * y_distance;
+        if(y_distance_squared >= radius_squared)
+        {
+            continue;
+        }
+
+        // Considering a right triangle with the collider radius as the hypotenuse and vertical distance to wall as one leg,
+        // the other leg is the horizontal distance between the collider center and the wall. The vertical leg is zero if the collider 
+        // is in "the same line" as the wall, making the horizontal limit equal to the radius. Otherwise, the horizontal limit is reduced
+        // according to the vertical distance.
+        const bn::fixed horizontal_limit = bn::sqrt(radius_squared - y_distance_squared);
+
+        // Handle either positive or negative horizontal movement.
+        if(movement_x > 0)
+        {
+            // This is the limit position where collider center would contact the wall.
+            const bn::fixed center_contact_x = wall_left - horizontal_limit;
+
+            // If we're not touching the wall but will cross the contact point after this movement, we need to avoid that.
+            if(collider_position.x() <= center_contact_x && destination_x > center_contact_x)
+            {
+                // If so, we'll limit the movement to the contact point. We use this min() so two adjacent walls, considering one has
+                // |y_distance| > 0, doesn't cause us to move further when another wall with y_distance == 0 is encountered.
+                resolved_movement_x = bn::min(resolved_movement_x, center_contact_x - collider_position.x());
+            }
+        }
+        else
+        {
+            // This is the limit position where collider center would contact the wall.
+            const bn::fixed center_contact_x = wall_right + horizontal_limit;
+
+            // If we're not touching the wall but will cross the contact point after this movement, we need to avoid that.
+            if(collider_position.x() >= center_contact_x && destination_x < center_contact_x)
+            {
+                // If so, we'll limit the movement to the contact point. We use this max() so two adjacent walls, considering one has
+                // |y_distance| > 0, doesn't cause us to move further when another wall with y_distance == 0 is encountered.
+                resolved_movement_x = bn::max(resolved_movement_x, center_contact_x - collider_position.x());
+            }
+        }
+    }
+
+    return resolved_movement_x;
+}
+
+bn::fixed walls::_resolve_vertical_movement(
+        const bn::fixed_point& collider_position, bn::fixed collider_radius, bn::fixed movement_y) const
+{
+    // Ignore the rest if no vertical movement.
+    if(movement_y == 0)
+    {
+        return 0;
+    }
+
+    const bn::fixed destination_y = collider_position.y() + movement_y;
+    const bn::fixed radius_squared = collider_radius * collider_radius;
+    bn::fixed resolved_movement_y = movement_y;
+
+    // <-- OPTIMIZE THIS CHECKS???
+    // Iterate through all wall cells to check for collisions.
+    for(const wall_cell& cell : _cells)
+    {
+        const bn::fixed wall_left = cell.position.x();
+        const bn::fixed wall_top = cell.position.y();
+        const bn::fixed wall_right = wall_left + WALL_CELL_SIZE;
+        const bn::fixed wall_bottom = wall_top + WALL_CELL_SIZE;
+
+        // Skip this wall if x_distance is greater than collider radius.
+        const bn::fixed closest_x = utils::clamp(collider_position.x(), wall_left, wall_right);
+        const bn::fixed x_distance = collider_position.x() - closest_x;
+        const bn::fixed x_distance_squared = x_distance * x_distance;
+        if(x_distance_squared >= radius_squared)
+        {
+            continue;
+        }
+
+        // Considering a right triangle with the collider radius as the hypotenuse and horizontal distance to wall as one leg,
+        // the other leg is the vertical distance between the collider center and the wall. The horizontal leg is zero if the collider 
+        // is in "the same line" as the wall, making the vertical limit equal to the radius. Otherwise, the vertical limit is reduced
+        // according to the horizontal distance.
+        const bn::fixed vertical_limit = bn::sqrt(radius_squared - x_distance_squared);
+
+        // Handle either positive or negative vertical movement.
+        if(movement_y > 0)
+        {
+            // This is the limit position where collider center would contact the wall.
+            const bn::fixed center_contact_y = wall_top - vertical_limit;
+
+            // If we're not touching the wall but will cross the contact point after this movement, we need to avoid that.
+            if(collider_position.y() <= center_contact_y && destination_y > center_contact_y)
+            {
+                // If so, we'll limit the movement to the contact point. We use this min() so two adjacent walls, considering one has
+                // |x_distance| > 0, doesn't cause us to move further when another wall with x_distance == 0 is encountered.
+                resolved_movement_y = bn::min(resolved_movement_y, center_contact_y - collider_position.y());
+            }
+        }
+        else
+        {
+            // This is the limit position where collider center would contact the wall.
+            const bn::fixed center_contact_y = wall_bottom + vertical_limit;
+
+            // If we're not touching the wall but will cross the contact point after this movement, we need to avoid that.
+            if(collider_position.y() >= center_contact_y && destination_y < center_contact_y)
+            {
+                // If so, we'll limit the movement to the contact point. We use this max() so two adjacent walls, considering one has
+                // |x_distance| > 0, doesn't cause us to move further when another wall with x_distance == 0 is encountered.
+                resolved_movement_y = bn::max(resolved_movement_y, center_contact_y - collider_position.y());
+            }
+        }
+    }
+
+    return resolved_movement_y;
 }
 
 void walls::_add_or_upgrade_wall(const bn::fixed_point& position, int graphics_index)
