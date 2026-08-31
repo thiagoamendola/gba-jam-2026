@@ -1,15 +1,26 @@
 #include "walls.h"
 
+#include "scenario.h"
 #include "utils.h"
 
 #include "bn_math.h"
 #include "bn_sprite_items_walls.h"
 
+walls::walls(scenario* associated_scenario) :
+    _associated_scenario(associated_scenario)
+{
+}
+
 void walls::create_horizontal_wall(const bn::fixed_point& start_position, bn::fixed end_x)
 {
+    const bn::fixed_point scenario_relative_start_position = start_position - _associated_scenario->initial_position();
+    end_x -= _associated_scenario->initial_position().x();
+
     // Snap start position and end to nearest wall cell.
-    const bn::fixed start_x = start_position.x() - (start_position.x() % WALL_CELL_SIZE);
-    const bn::fixed start_y = start_position.y() - (start_position.y() % WALL_CELL_SIZE);
+    const bn::fixed start_x = scenario_relative_start_position.x() -
+            (scenario_relative_start_position.x() % WALL_CELL_SIZE);
+    const bn::fixed start_y = scenario_relative_start_position.y() -
+            (scenario_relative_start_position.y() % WALL_CELL_SIZE);
     end_x -= end_x % WALL_CELL_SIZE;
     const bn::fixed_point snapped_start_position(start_x, start_y);
 
@@ -32,9 +43,14 @@ void walls::create_horizontal_wall(const bn::fixed_point& start_position, bn::fi
 
 void walls::create_vertical_wall(const bn::fixed_point& start_position, bn::fixed end_y)
 {
+    const bn::fixed_point scenario_relative_start_position = start_position - _associated_scenario->initial_position();
+    end_y -= _associated_scenario->initial_position().y();
+
     // Snap start position and end to nearest wall cell.
-    const bn::fixed start_x = start_position.x() - (start_position.x() % WALL_CELL_SIZE);
-    const bn::fixed start_y = start_position.y() - (start_position.y() % WALL_CELL_SIZE);
+    const bn::fixed start_x = scenario_relative_start_position.x() -
+        (scenario_relative_start_position.x() % WALL_CELL_SIZE);
+    const bn::fixed start_y = scenario_relative_start_position.y() -
+        (scenario_relative_start_position.y() % WALL_CELL_SIZE);
     end_y -= end_y % WALL_CELL_SIZE;
     const bn::fixed_point snapped_start_position(start_x, start_y);
 

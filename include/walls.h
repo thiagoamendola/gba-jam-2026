@@ -6,10 +6,12 @@
 #include "bn_sprite_ptr.h"
 #include "bn_vector.h"
 
+class scenario;
+
 class walls
 {
 public:
-    walls() = default;
+    walls(scenario* associated_scenario);
 
     void create_horizontal_wall(const bn::fixed_point& start_position, bn::fixed end_x);
     void create_vertical_wall(const bn::fixed_point& start_position, bn::fixed end_y);
@@ -41,6 +43,8 @@ private:
     static constexpr int WALL_SPRITE_HALF_SIZE = 4;
     static constexpr int MAX_WALL_CELLS = 128;
 
+    scenario* _associated_scenario = nullptr;
+    
     bn::vector<wall_cell, MAX_WALL_CELLS> _cells;
 
     [[nodiscard]] bn::fixed _resolve_horizontal_movement(

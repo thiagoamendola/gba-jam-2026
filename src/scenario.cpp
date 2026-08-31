@@ -10,13 +10,11 @@
 
 #include "scene_type.h"
 
-#include "bn_regular_bg_items_land.h"
-
-scenario::scenario()
-    : _bg(bn::regular_bg_items::land.create_bg(0, 0))
+scenario::scenario(const bn::regular_bg_item& bg_item, const bn::fixed_point& initial_position)
+    : _bg(bg_item.create_bg(initial_position)),
+      _initial_position(initial_position),
+      _current_position(initial_position)
 {
-    _current_position = bn::fixed_point(0, 0);
-
     bn::rect_window internal_window = bn::rect_window::internal();
     internal_window.set_show_bg(_bg, true);
     bn::window::outside().set_show_bg(_bg, false);
