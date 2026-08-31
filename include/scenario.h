@@ -8,7 +8,8 @@
 class scenario
 {
 public:
-    scenario(const bn::regular_bg_item& bg_item, const bn::fixed_point& initial_position);
+    scenario(const bn::regular_bg_item& bg_item, const bn::regular_bg_item& walls_item,
+        const bn::fixed_point& initial_position);
     ~scenario();
 
     void update(bn::fixed_point movement);
@@ -17,6 +18,7 @@ public:
 
 private:
     bn::regular_bg_ptr _bg;
+    bn::regular_bg_ptr _walls_bg;
 
     bn::fixed_point _initial_position;
     bn::fixed_point _current_position;

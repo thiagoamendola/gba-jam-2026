@@ -10,8 +10,9 @@
 
 #include "scene_type.h"
 
-scenario::scenario(const bn::regular_bg_item& bg_item, const bn::fixed_point& initial_position)
-    : _bg(bg_item.create_bg(initial_position)),
+scenario::scenario(const bn::regular_bg_item& bg_item, const bn::regular_bg_item& walls_item, 
+    const bn::fixed_point& initial_position)
+    : _bg(bg_item.create_bg(initial_position)), _walls_bg(walls_item.create_bg(initial_position)),
       _initial_position(initial_position),
       _current_position(initial_position)
 {
@@ -30,6 +31,7 @@ void scenario::update(bn::fixed_point movement)
     // Update scenario position
     _current_position -= movement;
     _bg.set_position(_current_position);
+    _walls_bg.set_position(_current_position);
     _update_bg_window();
 }
 

@@ -11,9 +11,12 @@
 
 // #include "bn_regular_bg_items_land.h"
 #include "bn_regular_bg_items_stage_1.h"
+#include "bn_regular_bg_items_stage_1_walls.h"
 
 test_scene::test_scene()
-    : _controller(), _scenario(bn::regular_bg_items::stage_1, bn::fixed_point(370, -370)), 
+    : _controller(), 
+      _scenario(bn::regular_bg_items::stage_1, bn::regular_bg_items::stage_1_walls, 
+        bn::fixed_point(370, -370)), 
       _player(), _dog(&_player, bn::fixed_point(400, 400)),
       _walls(&_scenario)
 {
