@@ -36,6 +36,11 @@ const bn::fixed_point& player::position() const
     return _rotation_center_position;
 }
 
+const bn::fixed_point& player::world_position() const
+{
+    return _world_position;
+}
+
 bn::fixed_point player::_attack_hitbox_position() const
 {
     const auto [sin, cos] = bn::degrees_sin_and_cos(_sprite.rotation_angle());

@@ -5,6 +5,7 @@
 #include "bn_sprite_ptr.h"
 
 class player;
+class walls;
 
 class dog_enemy
 {
@@ -14,7 +15,7 @@ public:
     dog_enemy(const player* player, const bn::fixed_point& position);
     ~dog_enemy();
 
-    void update(bn::fixed_point movement);
+    void update(bn::fixed_point movement, const walls& walls);
     void destroy();
 
     [[nodiscard]] const bn::fixed_point& position() const;
@@ -53,6 +54,7 @@ private:
 
     const player* _player;
     bn::fixed_point _position;
+    bn::fixed_point _world_position;
     bn::sprite_ptr _sprite;
     enemy_state _state;
 

@@ -76,6 +76,26 @@ bn::fixed_point walls::resolve_movement(
     return bn::fixed_point(movement_x, movement_y);
 }
 
+bool walls::has_wall_between(
+    const bn::fixed_point& start_position, const bn::fixed_point& end_position) const
+{
+    // <-- OPTIMIZE
+    // Iterate through all wall cells to check for intersection.
+    for(const wall_cell& cell : _cells)
+    {
+        const bn::fixed_point lower_right(
+            cell.position.x() + WALL_CELL_SIZE,
+            cell.position.y() + WALL_CELL_SIZE);
+
+        if(utils::segment_intersects_rectangle(start_position, end_position, cell.position, lower_right))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bn::fixed walls::_resolve_horizontal_movement(
     const bn::fixed_point& collider_position, bn::fixed collider_radius, bn::fixed movement_x) const
 {
@@ -89,7 +109,7 @@ bn::fixed walls::_resolve_horizontal_movement(
     const bn::fixed radius_squared = collider_radius * collider_radius;
     bn::fixed resolved_movement_x = movement_x;
 
-    // <-- OPTIMIZE THIS CHECKS???
+    // <-- OPTIMIZE THIS ON PER-RECTABLE BASIS
     // Iterate through all wall cells to check for collisions.
     for(const wall_cell& cell : _cells)
     {
@@ -158,7 +178,7 @@ bn::fixed walls::_resolve_vertical_movement(
     const bn::fixed radius_squared = collider_radius * collider_radius;
     bn::fixed resolved_movement_y = movement_y;
 
-    // <-- OPTIMIZE THIS CHECKS???
+    // <-- OPTIMIZE THIS ON PER-RECTABLE BASIS
     // Iterate through all wall cells to check for collisions.
     for(const wall_cell& cell : _cells)
     {

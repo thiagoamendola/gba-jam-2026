@@ -36,7 +36,7 @@ bn::optional<scene_type> test_scene::update()
 
     movement = _player.update(movement, _walls);
     _scenario.update(movement);
-    _dog.update(movement);
+    _dog.update(movement, _walls);
     _walls.update(movement);
 
     return bn::nullopt;

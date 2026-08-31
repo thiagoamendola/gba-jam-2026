@@ -17,6 +17,7 @@ public:
     [[nodiscard]] bn::fixed_point update(bn::fixed_point movement, const walls& walls);
 
     [[nodiscard]] const bn::fixed_point& position() const;
+    [[nodiscard]] const bn::fixed_point& world_position() const;
     [[nodiscard]] bool check_attack_collision(const dog_enemy& dog) const;
 
 private:

@@ -18,6 +18,9 @@ public:
             const bn::fixed_point& collider_position, bn::fixed collider_radius,
             const bn::fixed_point& movement) const;
 
+    [[nodiscard]] bool has_wall_between(
+            const bn::fixed_point& start_position, const bn::fixed_point& end_position) const;
+
     void update(const bn::fixed_point& player_movement);
 
 private:

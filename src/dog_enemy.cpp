@@ -4,13 +4,15 @@
 #include "bn_sprite_ptr.h"
 
 #include "player.h"
+#include "walls.h"
 
 #include "bn_sprite_items_dog.h"
 
 dog_enemy::dog_enemy(const player* player, const bn::fixed_point& position)
     : _player(player),
       _position(position),
-    _sprite(bn::sprite_items::dog.create_sprite(_position)),
+            _world_position(position),
+            _sprite(bn::sprite_items::dog.create_sprite(_position)),
       _state(enemy_state::PURSUE),
       _walk_anim_index(0),
       _walk_anim_frame_end(0)
@@ -31,10 +33,10 @@ void dog_enemy::destroy()
     _state = enemy_state::DEAD;
     _sprite.set_tiles(bn::sprite_items::dog.tiles_item(), dog_frame_index::DEAD);
     _sprite.put_below();
-    _sprite.set_rotation_angle_safe(90);
+    _sprite.set_rotation_angle_safe(_sprite.rotation_angle() + 90);
 }
 
-void dog_enemy::update(bn::fixed_point player_movement)
+void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
 {
     // Subtract player's movement.
     _position -= player_movement;
@@ -58,11 +60,14 @@ void dog_enemy::update(bn::fixed_point player_movement)
             movement = (direction / distance) * DOG_SPEED;
         }
 
+        movement = walls.resolve_movement(_world_position, COLLIDER_RADIUS, movement);
+        _world_position += movement;
         _position += movement;
     }
 
-    // Check for collision with player's attack hitbox.
-    if (_player->check_attack_collision(*this)) // <-- MAKE HITBOX USAGE MORE ROBUST
+    // A wall blocks attacks between the player and the dog.
+    if (_player->check_attack_collision(*this) &&
+        !walls.has_wall_between(_player->world_position(), _world_position))
     {
         destroy();
         return;
