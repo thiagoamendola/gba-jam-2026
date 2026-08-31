@@ -15,6 +15,8 @@ public:
     void update(bn::fixed_point movement);
 
     const bn::fixed_point& initial_position() const { return _initial_position; }
+    [[nodiscard]] bn::fixed_point walls_image_to_world_position(
+            const bn::fixed_point& image_position) const;
 
 private:
     bn::regular_bg_ptr _bg;

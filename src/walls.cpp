@@ -11,72 +11,89 @@ walls::walls(scenario* associated_scenario) :
 {
 }
 
+void walls::create_walls(
+        const wall_data* horizontal_walls, int horizontal_walls_count,
+        const wall_data* vertical_walls, int vertical_walls_count)
+{
+    for(int index = 0; index < horizontal_walls_count; ++index)
+    {
+        const wall_data& wall = horizontal_walls[index];
+        create_horizontal_wall(wall.start_position, wall.end_position.x());
+    }
+
+    for(int index = 0; index < vertical_walls_count; ++index)
+    {
+        const wall_data& wall = vertical_walls[index];
+        create_vertical_wall(wall.start_position, wall.end_position.y());
+    }
+}
+
 void walls::create_horizontal_wall(const bn::fixed_point& start_position, bn::fixed end_x)
 {
-    const bn::fixed_point scenario_relative_start_position = start_position - _associated_scenario->initial_position();
-    end_x -= _associated_scenario->initial_position().x();
-
-    // Snap start position and end to nearest wall cell.
-    const bn::fixed start_x = scenario_relative_start_position.x() -
-            (scenario_relative_start_position.x() % WALL_CELL_SIZE);
-    const bn::fixed start_y = scenario_relative_start_position.y() -
-            (scenario_relative_start_position.y() % WALL_CELL_SIZE);
+    // Snap image-local positions before converting them to the scenario's centered world space.
+    const bn::fixed start_x = start_position.x() - (start_position.x() % WALL_CELL_SIZE);
+    const bn::fixed start_y = start_position.y() - (start_position.y() % WALL_CELL_SIZE);
     end_x -= end_x % WALL_CELL_SIZE;
-    const bn::fixed_point snapped_start_position(start_x, start_y);
+    const bn::fixed_point world_start_position = _associated_scenario->walls_image_to_world_position(
+        bn::fixed_point(start_x, start_y));
+    const bn::fixed_point world_end_position = _associated_scenario->walls_image_to_world_position(
+        bn::fixed_point(end_x, start_y));
 
-    const bn::fixed wall_left = bn::min(start_x, end_x);
-    const bn::fixed wall_right = bn::max(start_x, end_x) + WALL_CELL_SIZE;
-    _add_wall_rectangle(bn::fixed_point(wall_left, start_y), bn::fixed_point(wall_right, start_y + WALL_CELL_SIZE));
+    const bn::fixed wall_left = bn::min(world_start_position.x(), world_end_position.x());
+    const bn::fixed wall_right = bn::max(world_start_position.x(), world_end_position.x()) + WALL_CELL_SIZE;
+    _add_wall_rectangle(
+        bn::fixed_point(wall_left, world_start_position.y()),
+        bn::fixed_point(wall_right, world_start_position.y() + WALL_CELL_SIZE));
 
     const int direction = end_x >= start_x ? WALL_CELL_SIZE : -WALL_CELL_SIZE;
 
     // Create first wall cell as a connection.
-    _add_or_upgrade_wall(snapped_start_position, CONNECTION_WALL_INDEX);
+    // _add_or_upgrade_wall(snapped_start_position, CONNECTION_WALL_INDEX);
 
-    // Create intermediate horizontal wall cells.
-    for(bn::fixed x = start_x + direction;
-        direction > 0 ? x < end_x : x > end_x;
-        x += direction)
-    {
-        _add_or_upgrade_wall(bn::fixed_point(x, start_y), HORIZONTAL_WALL_INDEX);
-    }
+    // // Create intermediate horizontal wall cells.
+    // for(bn::fixed x = start_x + direction;
+    //     direction > 0 ? x < end_x : x > end_x;
+    //     x += direction)
+    // {
+    //     _add_or_upgrade_wall(bn::fixed_point(x, start_y), HORIZONTAL_WALL_INDEX);
+    // }
 
-    // Create last wall cell as a connection.
-    _add_or_upgrade_wall(bn::fixed_point(end_x, start_y), CONNECTION_WALL_INDEX);
+    // // Create last wall cell as a connection.
+    // _add_or_upgrade_wall(bn::fixed_point(end_x, start_y), CONNECTION_WALL_INDEX);
 }
 
 void walls::create_vertical_wall(const bn::fixed_point& start_position, bn::fixed end_y)
 {
-    const bn::fixed_point scenario_relative_start_position = start_position - _associated_scenario->initial_position();
-    end_y -= _associated_scenario->initial_position().y();
-
-    // Snap start position and end to nearest wall cell.
-    const bn::fixed start_x = scenario_relative_start_position.x() -
-        (scenario_relative_start_position.x() % WALL_CELL_SIZE);
-    const bn::fixed start_y = scenario_relative_start_position.y() -
-        (scenario_relative_start_position.y() % WALL_CELL_SIZE);
+    // Snap image-local positions before converting them to the scenario's centered world space.
+    const bn::fixed start_x = start_position.x() - (start_position.x() % WALL_CELL_SIZE);
+    const bn::fixed start_y = start_position.y() - (start_position.y() % WALL_CELL_SIZE);
     end_y -= end_y % WALL_CELL_SIZE;
-    const bn::fixed_point snapped_start_position(start_x, start_y);
+        const bn::fixed_point world_start_position = _associated_scenario->walls_image_to_world_position(
+            bn::fixed_point(start_x, start_y));
+        const bn::fixed_point world_end_position = _associated_scenario->walls_image_to_world_position(
+            bn::fixed_point(start_x, end_y));
 
-    const bn::fixed wall_top = bn::min(start_y, end_y);
-    const bn::fixed wall_bottom = bn::max(start_y, end_y) + WALL_CELL_SIZE;
-    _add_wall_rectangle(bn::fixed_point(start_x, wall_top), bn::fixed_point(start_x + WALL_CELL_SIZE, wall_bottom));
+    const bn::fixed wall_top = bn::min(world_start_position.y(), world_end_position.y());
+    const bn::fixed wall_bottom = bn::max(world_start_position.y(), world_end_position.y()) + WALL_CELL_SIZE;
+    _add_wall_rectangle(
+            bn::fixed_point(world_start_position.x(), wall_top),
+            bn::fixed_point(world_start_position.x() + WALL_CELL_SIZE, wall_bottom));
 
     const int direction = end_y >= start_y ? WALL_CELL_SIZE : -WALL_CELL_SIZE;
 
-    // Create first wall cell as a connection.
-    _add_or_upgrade_wall(snapped_start_position, CONNECTION_WALL_INDEX);
+    // // Create first wall cell as a connection.
+    // _add_or_upgrade_wall(snapped_start_position, CONNECTION_WALL_INDEX);
 
-    // Create intermediate vertical wall cells.
-    for(bn::fixed y = start_y + direction;
-        direction > 0 ? y < end_y : y > end_y;
-        y += direction)
-    {
-        _add_or_upgrade_wall(bn::fixed_point(start_x, y), VERTICAL_WALL_INDEX);
-    }
+    // // Create intermediate vertical wall cells.
+    // for(bn::fixed y = start_y + direction;
+    //     direction > 0 ? y < end_y : y > end_y;
+    //     y += direction)
+    // {
+    //     _add_or_upgrade_wall(bn::fixed_point(start_x, y), VERTICAL_WALL_INDEX);
+    // }
 
-    // Create last wall cell as a connection.
-    _add_or_upgrade_wall(bn::fixed_point(start_x, end_y), CONNECTION_WALL_INDEX);
+    // // Create last wall cell as a connection.
+    // _add_or_upgrade_wall(bn::fixed_point(start_x, end_y), CONNECTION_WALL_INDEX);
 }
 
 void walls::update(const bn::fixed_point& player_movement)

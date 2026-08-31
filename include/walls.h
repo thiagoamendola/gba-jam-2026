@@ -6,6 +6,13 @@
 #include "bn_sprite_ptr.h"
 #include "bn_vector.h"
 
+// Positions use the full-size walls image's top-left origin; X increases right and Y increases down.
+struct wall_data
+{
+    bn::fixed_point start_position;
+    bn::fixed_point end_position;
+};
+
 class scenario;
 
 class walls
@@ -15,6 +22,10 @@ public:
 
     void create_horizontal_wall(const bn::fixed_point& start_position, bn::fixed end_x);
     void create_vertical_wall(const bn::fixed_point& start_position, bn::fixed end_y);
+
+    void create_walls(
+            const wall_data* horizontal_walls, int horizontal_walls_count,
+            const wall_data* vertical_walls, int vertical_walls_count);
 
     [[nodiscard]] bn::fixed_point resolve_movement(
             const bn::fixed_point& collider_position, bn::fixed collider_radius,

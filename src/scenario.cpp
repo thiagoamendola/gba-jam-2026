@@ -26,6 +26,16 @@ scenario::~scenario()
 {
 }
 
+bn::fixed_point scenario::walls_image_to_world_position(
+    const bn::fixed_point& image_position) const
+{
+    const bn::size walls_dimensions = _walls_bg.dimensions();
+    const bn::fixed_point walls_half_dimensions(
+        walls_dimensions.width() / 2,
+        walls_dimensions.height() / 2);
+    return _initial_position + image_position - walls_half_dimensions;
+}
+
 void scenario::update(bn::fixed_point movement)
 {
     // Update scenario position

@@ -12,6 +12,7 @@
 // #include "bn_regular_bg_items_land.h"
 #include "bn_regular_bg_items_stage_1.h"
 #include "bn_regular_bg_items_stage_1_walls.h"
+#include "stage_1_defs.h"
 
 test_scene::test_scene()
     : _controller(), 
@@ -22,21 +23,10 @@ test_scene::test_scene()
 {
     bn::backdrop::set_color(bn::color(16, 0, 0));
 
-    // _walls.create_horizontal_wall(bn::fixed_point(150, -150), 222);
-    // _walls.create_horizontal_wall(bn::fixed_point(150, -86), 222);
-    // _walls.create_vertical_wall(bn::fixed_point(150, -150), -86);
-    // _walls.create_vertical_wall(bn::fixed_point(222, -150), -86);
-
-    // _walls.create_vertical_wall(bn::fixed_point(222, -50), 86);
-    // _walls.create_horizontal_wall(bn::fixed_point(170, 0), 270);
-    
-    // Stage walls
-    _walls.create_horizontal_wall(bn::fixed_point(308, -330), 436);
-    _walls.create_vertical_wall(bn::fixed_point(308, -330), -720);
-    _walls.create_vertical_wall(bn::fixed_point(436, -330), -720);
-    
-
-
+    // <-- REPLACE std::array WITH bn::span or bn::vector
+    _walls.create_walls(
+        stage_1_defs::horizontal_walls.data(), stage_1_defs::horizontal_walls.size(),
+        stage_1_defs::vertical_walls.data(), stage_1_defs::vertical_walls.size());
 
 }
 
