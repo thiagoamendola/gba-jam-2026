@@ -24,6 +24,10 @@ void walls::create_horizontal_wall(const bn::fixed_point& start_position, bn::fi
     end_x -= end_x % WALL_CELL_SIZE;
     const bn::fixed_point snapped_start_position(start_x, start_y);
 
+    const bn::fixed wall_left = bn::min(start_x, end_x);
+    const bn::fixed wall_right = bn::max(start_x, end_x) + WALL_CELL_SIZE;
+    _add_wall_rectangle(bn::fixed_point(wall_left, start_y), bn::fixed_point(wall_right, start_y + WALL_CELL_SIZE));
+
     const int direction = end_x >= start_x ? WALL_CELL_SIZE : -WALL_CELL_SIZE;
 
     // Create first wall cell as a connection.
@@ -53,6 +57,10 @@ void walls::create_vertical_wall(const bn::fixed_point& start_position, bn::fixe
         (scenario_relative_start_position.y() % WALL_CELL_SIZE);
     end_y -= end_y % WALL_CELL_SIZE;
     const bn::fixed_point snapped_start_position(start_x, start_y);
+
+    const bn::fixed wall_top = bn::min(start_y, end_y);
+    const bn::fixed wall_bottom = bn::max(start_y, end_y) + WALL_CELL_SIZE;
+    _add_wall_rectangle(bn::fixed_point(start_x, wall_top), bn::fixed_point(start_x + WALL_CELL_SIZE, wall_bottom));
 
     const int direction = end_y >= start_y ? WALL_CELL_SIZE : -WALL_CELL_SIZE;
 
@@ -95,15 +103,10 @@ bn::fixed_point walls::resolve_movement(
 bool walls::has_wall_between(
     const bn::fixed_point& start_position, const bn::fixed_point& end_position) const
 {
-    // <-- OPTIMIZE
-    // Iterate through all wall cells to check for intersection.
-    for(const wall_cell& cell : _cells)
+    for(const wall_rectangle& rectangle : _rectangles)
     {
-        const bn::fixed_point lower_right(
-            cell.position.x() + WALL_CELL_SIZE,
-            cell.position.y() + WALL_CELL_SIZE);
-
-        if(utils::segment_intersects_rectangle(start_position, end_position, cell.position, lower_right))
+        if(utils::segment_intersects_rectangle(
+                   start_position, end_position, rectangle.upper_left, rectangle.lower_right))
         {
             return true;
         }
@@ -125,14 +128,12 @@ bn::fixed walls::_resolve_horizontal_movement(
     const bn::fixed radius_squared = collider_radius * collider_radius;
     bn::fixed resolved_movement_x = movement_x;
 
-    // <-- OPTIMIZE THIS ON PER-RECTABLE BASIS
-    // Iterate through all wall cells to check for collisions.
-    for(const wall_cell& cell : _cells)
+    for(const wall_rectangle& rectangle : _rectangles)
     {
-        const bn::fixed wall_left = cell.position.x();
-        const bn::fixed wall_top = cell.position.y();
-        const bn::fixed wall_right = wall_left + WALL_CELL_SIZE;
-        const bn::fixed wall_bottom = wall_top + WALL_CELL_SIZE;
+        const bn::fixed wall_left = rectangle.upper_left.x();
+        const bn::fixed wall_top = rectangle.upper_left.y();
+        const bn::fixed wall_right = rectangle.lower_right.x();
+        const bn::fixed wall_bottom = rectangle.lower_right.y();
 
         // Skip this wall if y_distance is greater than collider radius.
         const bn::fixed closest_y = utils::clamp(collider_position.y(), wall_top, wall_bottom);
@@ -194,14 +195,12 @@ bn::fixed walls::_resolve_vertical_movement(
     const bn::fixed radius_squared = collider_radius * collider_radius;
     bn::fixed resolved_movement_y = movement_y;
 
-    // <-- OPTIMIZE THIS ON PER-RECTABLE BASIS
-    // Iterate through all wall cells to check for collisions.
-    for(const wall_cell& cell : _cells)
+    for(const wall_rectangle& rectangle : _rectangles)
     {
-        const bn::fixed wall_left = cell.position.x();
-        const bn::fixed wall_top = cell.position.y();
-        const bn::fixed wall_right = wall_left + WALL_CELL_SIZE;
-        const bn::fixed wall_bottom = wall_top + WALL_CELL_SIZE;
+        const bn::fixed wall_left = rectangle.upper_left.x();
+        const bn::fixed wall_top = rectangle.upper_left.y();
+        const bn::fixed wall_right = rectangle.lower_right.x();
+        const bn::fixed wall_bottom = rectangle.lower_right.y();
 
         // Skip this wall if x_distance is greater than collider radius.
         const bn::fixed closest_x = utils::clamp(collider_position.x(), wall_left, wall_right);
@@ -265,4 +264,9 @@ void walls::_add_or_upgrade_wall(const bn::fixed_point& position, int graphics_i
     bn::sprite_ptr sprite = bn::sprite_items::walls.create_sprite(
             position.x() + WALL_SPRITE_HALF_SIZE, position.y() + WALL_SPRITE_HALF_SIZE, graphics_index);
     _cells.push_back(wall_cell{ position, bn::move(sprite) });
+}
+
+void walls::_add_wall_rectangle(const bn::fixed_point& upper_left, const bn::fixed_point& lower_right)
+{
+    _rectangles.push_back(wall_rectangle{ upper_left, lower_right });
 }
