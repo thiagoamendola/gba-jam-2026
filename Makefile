@@ -54,6 +54,7 @@ USERLIBS    	:=
 DEFAULTLIBS 	:=  
 STACKTRACE		:=	
 USERBUILD   	:=  
+EXTTOOL     	:=  @$(PYTHON) -B ./tools/cleanup_files.py
 
 # <-- HOW ABOUT TESTING AUDIOBACKEND	:=  maxmod ???
 
