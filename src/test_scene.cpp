@@ -32,12 +32,13 @@ namespace
 test_scene::test_scene()
     : _controller(), 
       _scenario(bn::regular_bg_items::stage_1, bn::regular_bg_items::stage_1_walls, 
-        bn::fixed_point(370, -370)), 
-          _player(), _dog(
-              &_player, bn::fixed_point(0, -400),
+        bn::fixed_point(370, -370)),
+      _player(), _walls(&_scenario),
+      _dog1(&_player, bn::fixed_point(290, -315),
               { bn::fixed_point(290, -315), bn::fixed_point(470, -315) }),
-          _walls(&_scenario),
-          _location_hud_text_generator(common::variable_8x8_sprite_font)
+      _dog2(&_player, bn::fixed_point(290, -315),
+              { bn::fixed_point(290, -530), bn::fixed_point(470, -530) }),
+      _location_hud_text_generator(common::variable_8x8_sprite_font)
 {
     bn::backdrop::set_color(bn::color(16, 0, 0));
 
@@ -65,7 +66,8 @@ bn::optional<scene_type> test_scene::update()
 
     movement = _player.update(movement, _walls);
     _scenario.update(movement);
-    _dog.update(movement, _walls);
+    _dog1.update(movement, _walls);
+    _dog2.update(movement, _walls);
     _walls.update(movement);
 
     if constexpr(SHOW_LOCATION_HUD)

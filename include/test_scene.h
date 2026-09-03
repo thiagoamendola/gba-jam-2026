@@ -30,8 +30,10 @@ private:
     controller _controller;
     scenario _scenario;
     player _player;
-    dog_enemy _dog;
     walls _walls;
+
+    dog_enemy _dog1;
+    dog_enemy _dog2;
 
     bn::sprite_text_generator _location_hud_text_generator;
     bn::vector<bn::sprite_ptr, LOCATION_HUD_MAX_SPRITES> _location_hud_sprites;

@@ -1,8 +1,11 @@
 #ifndef DOG_ENEMY_H
 #define DOG_ENEMY_H
 
+#include <initializer_list>
+
 #include "bn_fixed_point.h"
 #include "bn_sprite_ptr.h"
+#include "bn_vector.h"
 
 class player;
 class walls;
@@ -12,7 +15,10 @@ class dog_enemy
 public:
     static constexpr bn::fixed COLLIDER_RADIUS = 3;
 
-    dog_enemy(const player* player, const bn::fixed_point& position);
+    // Idle locations use world coordinates and are copied into this dog.
+    dog_enemy(
+            const player* player, const bn::fixed_point& position,
+            std::initializer_list<bn::fixed_point> idle_locations);
     ~dog_enemy();
 
     void update(bn::fixed_point movement, const walls& walls);
@@ -44,6 +50,8 @@ private:
     };
 
     static constexpr bn::fixed DOG_SPEED = 1;
+    static constexpr int MAX_IDLE_LOCATIONS = 8;
+
     static constexpr animation_frame WALK_ANIM_FRAMES[] = {
         { dog_frame_index::IDLE, 10 },
         { dog_frame_index::WALK_1, 12 },
@@ -57,6 +65,8 @@ private:
     bn::fixed_point _world_position;
     bn::sprite_ptr _sprite;
     enemy_state _state;
+    bn::vector<bn::fixed_point, MAX_IDLE_LOCATIONS> _idle_locations;
+    int _idle_location_index;
 
     int _walk_anim_index;
     int _walk_anim_frame_end;
