@@ -13,10 +13,10 @@ dog_enemy::dog_enemy(
                 std::initializer_list<bn::fixed_point> idle_locations)
     : _player(player),
       _position(position),
-            _world_position(position),
-            _sprite(bn::sprite_items::dog.create_sprite(_position)),
-            _state(enemy_state::IDLE),
-            _idle_location_index(0),
+      _world_position(position),
+      _sprite(bn::sprite_items::dog.create_sprite(_position)),
+      _state(enemy_state::IDLE),
+      _idle_location_index(0),
       _walk_anim_index(0),
       _walk_anim_frame_end(0)
 {
@@ -28,6 +28,11 @@ dog_enemy::dog_enemy(
 
 dog_enemy::~dog_enemy()
 {
+}
+
+bool dog_enemy::is_dead() const
+{
+    return _state == enemy_state::DEAD;
 }
 
 const bn::fixed_point& dog_enemy::position() const
