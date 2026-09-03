@@ -50,6 +50,9 @@ private:
     };
 
     static constexpr bn::fixed DOG_SPEED = 1;
+    static constexpr bn::fixed SPOT_DISTANCE = 200;
+    static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
+    static constexpr bn::fixed SPOT_HALF_ANGLE = 45;
     static constexpr int MAX_IDLE_LOCATIONS = 8;
 
     static constexpr animation_frame WALK_ANIM_FRAMES[] = {

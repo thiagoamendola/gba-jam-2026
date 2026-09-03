@@ -56,6 +56,34 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
 
     bn::fixed_point movement;
 
+    if(_state == enemy_state::IDLE)
+    {
+        const bn::fixed_point player_direction = _player->world_position() - _world_position;
+        const bn::fixed player_distance_squared =
+                player_direction.x() * player_direction.x() + player_direction.y() * player_direction.y();
+
+        // Check if player is in range of detection.
+        if(player_distance_squared < SPOT_DISTANCE_SQUARED)
+        {
+            // Now check if the player is within the dog's field of view.
+            const bn::fixed player_angle = bn::degrees_atan2(
+                    -player_direction.y().round_integer(), player_direction.x().round_integer());
+            bn::fixed angle_difference = bn::safe_degrees_angle(player_angle - _sprite.rotation_angle());
+
+            if(angle_difference > 180)
+            {
+                angle_difference -= 360;
+            }
+
+            // If so, final check is to verify if any walls between the dog and the player block the line of sight.
+            if(bn::abs(angle_difference) < SPOT_HALF_ANGLE &&
+               !walls.has_wall_between(_world_position, _player->world_position()))
+            {
+                _state = enemy_state::PURSUE;
+            }
+        }
+    }
+
     if (_state == enemy_state::IDLE && !_idle_locations.empty())
     {
         const bn::fixed_point& target_location = _idle_locations[_idle_location_index];
