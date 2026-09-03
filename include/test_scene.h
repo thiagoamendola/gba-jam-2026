@@ -1,7 +1,12 @@
 #ifndef TEST_SCENE_H
 #define TEST_SCENE_H
 
+#include "bn_optional.h"
 #include "bn_regular_bg_ptr.h"
+#include "bn_sprite_ptr.h"
+#include "bn_sprite_text_generator.h"
+#include "bn_string.h"
+#include "bn_vector.h"
 
 #include "base_scene.h"
 #include "scenario.h"
@@ -19,11 +24,20 @@ public:
     bn::optional<scene_type> update() override;
 
 private:
+    static constexpr int LOCATION_HUD_MAX_SPRITES = 8;
+    static constexpr int LOCATION_HUD_TEXT_MAX_SIZE = 32;
+
     controller _controller;
     scenario _scenario;
     player _player;
     dog_enemy _dog;
     walls _walls;
+
+    bn::sprite_text_generator _location_hud_text_generator;
+    bn::vector<bn::sprite_ptr, LOCATION_HUD_MAX_SPRITES> _location_hud_sprites;
+    bn::string<LOCATION_HUD_TEXT_MAX_SIZE> _location_hud_text;
+
+    void _update_location_hud();
 };
 
 #endif // TEST_SCENE_H

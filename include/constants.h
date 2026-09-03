@@ -5,4 +5,8 @@
 #define SHOW_HITBOX_ATTACK false
 #endif
 
+#ifndef SHOW_LOCATION_HUD
+#define SHOW_LOCATION_HUD true
+#endif
+
 #endif
