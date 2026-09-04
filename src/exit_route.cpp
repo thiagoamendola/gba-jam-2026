@@ -9,10 +9,11 @@
 
 exit_route::exit_route(
         const player* player, const bn::fixed_point& position,
-        std::initializer_list<const dog_enemy*> dogs)
+        std::initializer_list<const dog_enemy*> dogs, scene_type next_scene)
     : _player(player),
       _position(position),
       _sprite(bn::sprite_items::exit.create_sprite(_position)),
+      _next_scene(next_scene),
       _stage_cleared(false)
 {
     for(const dog_enemy* dog : dogs)
@@ -27,7 +28,7 @@ exit_route::~exit_route()
 {
 }
 
-void exit_route::update(const bn::fixed_point& player_movement)
+bn::optional<scene_type> exit_route::update(const bn::fixed_point& player_movement)
 {
     _position -= player_movement;
     _sprite.set_position(_position);
@@ -37,18 +38,22 @@ void exit_route::update(const bn::fixed_point& player_movement)
 
     if(!visible || _stage_cleared)
     {
-        return;
+        return bn::nullopt;
     }
 
     const bn::fixed_point player_distance = _player->position() - _position;
     const bn::fixed player_distance_squared =
             player_distance.x() * player_distance.x() + player_distance.y() * player_distance.y();
 
+    // Check if player touched the exit route.
     if(player_distance_squared < CLEAR_DISTANCE_SQUARED)
     {
         BN_LOG("STAGE CLEARED");
         _stage_cleared = true;
+        return _next_scene;
     }
+
+    return bn::nullopt;
 }
 
 bool exit_route::_all_dogs_dead() const
