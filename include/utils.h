@@ -32,9 +32,10 @@ namespace utils
             return start >= minimum && start <= maximum;
         }
 
-        // Get at which fraction of the segment we start and end the possible intersection.
-        bn::fixed first_time = (minimum - start) / delta;
-        bn::fixed last_time = (maximum - start) / delta;
+        // Preserve the full fixed-point divisor: normal bn::fixed division reduces its
+        // precision first, which turns a nonzero delta smaller than 1/64 pixel into zero.
+        bn::fixed first_time = (minimum - start).safe_division(delta);
+        bn::fixed last_time = (maximum - start).safe_division(delta);
 
         // If the first time is greater than the last time, swap them.
         if(first_time > last_time)
