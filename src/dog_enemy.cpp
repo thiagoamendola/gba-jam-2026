@@ -40,6 +40,22 @@ const bn::fixed_point& dog_enemy::position() const
     return _position;
 }
 
+void dog_enemy::start_exit_transition()
+{
+    _transition_sprite_position = _sprite.position();
+    _transition_sprite_horizontal_scale = _sprite.horizontal_scale();
+    _transition_sprite_vertical_scale = _sprite.vertical_scale();
+    _sprite.set_bg_priority(0);
+}
+
+void dog_enemy::update_exit_transition(bn::fixed scale)
+{
+    _sprite.set_position(_transition_sprite_position.safe_multiplication(scale));
+    _sprite.set_scale(
+            _transition_sprite_horizontal_scale.safe_multiplication(scale),
+            _transition_sprite_vertical_scale.safe_multiplication(scale));
+}
+
 void dog_enemy::destroy()
 {
     _state = enemy_state::DEAD;

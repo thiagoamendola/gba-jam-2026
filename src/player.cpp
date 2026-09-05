@@ -41,6 +41,27 @@ const bn::fixed_point& player::world_position() const
     return _world_position;
 }
 
+void player::start_exit_transition()
+{
+    _transition_sprite_position = _sprite.position();
+    _transition_sprite_horizontal_scale = _sprite.horizontal_scale();
+    _transition_sprite_vertical_scale = _sprite.vertical_scale();
+    _sprite.set_bg_priority(0);
+
+    if(_attack_hitbox_sprite)
+    {
+        _attack_hitbox_sprite->set_visible(false);
+    }
+}
+
+void player::update_exit_transition(bn::fixed scale)
+{
+    _sprite.set_position(_transition_sprite_position.safe_multiplication(scale));
+    _sprite.set_scale(
+            _transition_sprite_horizontal_scale.safe_multiplication(scale),
+            _transition_sprite_vertical_scale.safe_multiplication(scale));
+}
+
 bn::fixed_point player::_attack_hitbox_position() const
 {
     const auto [sin, cos] = bn::degrees_sin_and_cos(_sprite.rotation_angle());

@@ -15,6 +15,8 @@ public:
     ~player();
 
     [[nodiscard]] bn::fixed_point update(bn::fixed_point movement, const walls& walls);
+    void start_exit_transition();
+    void update_exit_transition(bn::fixed scale);
 
     [[nodiscard]] const bn::fixed_point& position() const;
     [[nodiscard]] const bn::fixed_point& world_position() const;
@@ -61,6 +63,9 @@ private:
     bool _is_attacking;
     int _attack_anim_index;
     int _attack_anim_frame_end;
+    bn::fixed_point _transition_sprite_position;
+    bn::fixed _transition_sprite_horizontal_scale;
+    bn::fixed _transition_sprite_vertical_scale;
 
     [[nodiscard]] bn::fixed_point _attack_hitbox_position() const;
 };

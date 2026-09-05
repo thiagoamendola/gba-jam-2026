@@ -23,6 +23,8 @@ public:
 
     void update(bn::fixed_point movement, const walls& walls);
     void destroy();
+    void start_exit_transition();
+    void update_exit_transition(bn::fixed scale);
 
     [[nodiscard]] bool is_dead() const;
     [[nodiscard]] const bn::fixed_point& position() const;
@@ -51,7 +53,7 @@ private:
     };
 
     static constexpr bn::fixed DOG_SPEED = 1;
-    static constexpr bn::fixed SPOT_DISTANCE = 150;
+    static constexpr bn::fixed SPOT_DISTANCE = 120;
     static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
     static constexpr bn::fixed SPOT_HALF_ANGLE = 45;
     static constexpr int MAX_IDLE_LOCATIONS = 8;
@@ -74,6 +76,10 @@ private:
 
     int _walk_anim_index;
     int _walk_anim_frame_end;
+
+    bn::fixed_point _transition_sprite_position;
+    bn::fixed _transition_sprite_horizontal_scale;
+    bn::fixed _transition_sprite_vertical_scale;
 };
 
 #endif
