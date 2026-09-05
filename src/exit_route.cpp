@@ -113,6 +113,11 @@ bool exit_route::_all_enemies_dead() const
     return true;
 }
 
+int exit_route::_end_animation_duration()
+{
+    return ZOOM_OUT_PHASE.duration_frames + MOVE_SNAPSHOT_DOWN_PHASE.duration_frames;
+}
+
 exit_route::transition_transform exit_route::_end_animation_transform() const
 {
     const transition_transform initial_transform = {
@@ -142,7 +147,8 @@ exit_route::transition_transform exit_route::_interpolate_end_animation_phase(
         return { phase.end_position, phase.end_scale };
     }
 
-    const bn::fixed progress = bn::fixed(frame).safe_division(phase.duration_frames - 1);
+    const bn::fixed linear_progress = bn::fixed(frame).safe_division(phase.duration_frames - 1);
+    const bn::fixed progress = apply_easing(linear_progress, phase.easing_method);
     return {
         start_transform.position +
                 (phase.end_position - start_transform.position).safe_multiplication(progress),

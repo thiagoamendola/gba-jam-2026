@@ -9,6 +9,7 @@
 #include "bn_sprite_ptr.h"
 #include "bn_vector.h"
 
+#include "easing.h"
 #include "scene_type.h"
 
 class dog_enemy;
@@ -26,28 +27,18 @@ public:
     bn::optional<scene_type> update(const bn::fixed_point& player_movement);
     [[nodiscard]] bool is_end_animation_playing() const;
 
-    // A phase interpolates from the previous phase target to this position and scale.
-    // Adjust the target and duration to tune movement speed and zoom speed together.
+    // A chunk of key animation for controlling position/scale transition over predefined duration.
     struct end_animation_phase
     {
         int duration_frames;
         bn::fixed_point end_position;
         bn::fixed end_scale;
+        easing easing_method = easing::LINEAR;
     };
 
-    // The snapshot begins at screen position { 0, 0 } with scale 1.
-    static constexpr end_animation_phase ZOOM_OUT_PHASE = {
-        180,
-        bn::fixed_point(0, 30),
-        bn::fixed(0.5)
-    };
-
-    // This phase begins at ZOOM_OUT_PHASE's target. Change end_scale to zoom while moving.
-    static constexpr end_animation_phase MOVE_SNAPSHOT_DOWN_PHASE = {
-        60,
-        bn::fixed_point(0, 300),
-        bn::fixed(0.4)
-    };
+    // Definitions follow the class so omitted easing values keep the LINEAR default.
+    static const end_animation_phase ZOOM_OUT_PHASE;
+    static const end_animation_phase MOVE_SNAPSHOT_DOWN_PHASE;
 
 private:
     struct transition_transform
@@ -86,15 +77,28 @@ private:
     int _end_animation_frame;
 
     [[nodiscard]] bool _all_enemies_dead() const;
-    [[nodiscard]] static constexpr int _end_animation_duration()
-    {
-        return ZOOM_OUT_PHASE.duration_frames + MOVE_SNAPSHOT_DOWN_PHASE.duration_frames;
-    }
+    [[nodiscard]] static int _end_animation_duration();
     [[nodiscard]] transition_transform _end_animation_transform() const;
     [[nodiscard]] static transition_transform _interpolate_end_animation_phase(
             const transition_transform& start_transform, const end_animation_phase& phase, int frame);
     void _start_end_animation();
     void _update_end_animation_sprites(const transition_transform& transform);
+};
+
+// The snapshot begins at screen position { 0, 0 } with scale 1.
+inline constexpr exit_route::end_animation_phase exit_route::ZOOM_OUT_PHASE = {
+    90,
+    bn::fixed_point(0, 30),
+    bn::fixed(0.5),
+    easing::EASE_IN_OUT
+};
+
+// This phase begins at ZOOM_OUT_PHASE's target. It defaults to LINEAR easing.
+inline constexpr exit_route::end_animation_phase exit_route::MOVE_SNAPSHOT_DOWN_PHASE = {
+    60,
+    bn::fixed_point(0, 300),
+    bn::fixed(0.4),
+    easing::EASE_IN
 };
 
 #endif // EXIT_ROUTE_H
