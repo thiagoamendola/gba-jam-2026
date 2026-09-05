@@ -69,6 +69,7 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
     // Subtract player's movement.
     _position -= player_movement;
 
+    // If dead, just update position and return.
     if (_state == enemy_state::DEAD)
     {
         _sprite.set_position(_position);
@@ -77,27 +78,27 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
 
     bn::fixed_point movement;
 
-    if(_state == enemy_state::IDLE)
+    if (_state == enemy_state::IDLE)
     {
         const bn::fixed_point player_direction = _player->world_position() - _world_position;
         const bn::fixed player_distance_squared =
                 player_direction.x() * player_direction.x() + player_direction.y() * player_direction.y();
 
         // Check if player is in range of detection.
-        if(player_distance_squared < SPOT_DISTANCE_SQUARED)
+        if (player_distance_squared < SPOT_DISTANCE_SQUARED)
         {
             // Now check if the player is within the dog's field of view.
             const bn::fixed player_angle = bn::degrees_atan2(
                     -player_direction.y().round_integer(), player_direction.x().round_integer());
             bn::fixed angle_difference = bn::safe_degrees_angle(player_angle - _sprite.rotation_angle());
 
-            if(angle_difference > 180)
+            if (angle_difference > 180)
             {
                 angle_difference -= 360;
             }
 
             // If so, final check is to verify if any walls between the dog and the player block the line of sight.
-            if(bn::abs(angle_difference) < SPOT_HALF_ANGLE &&
+            if (bn::abs(angle_difference) < SPOT_HALF_ANGLE &&
                !walls.has_wall_between(_world_position, _player->world_position()))
             {
                 _state = enemy_state::PURSUE;
@@ -107,20 +108,23 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
 
     if (_state == enemy_state::IDLE && !_idle_locations.empty())
     {
+        // Move towards the next idle location.
         const bn::fixed_point& target_location = _idle_locations[_idle_location_index];
         const bn::fixed_point direction = target_location - _world_position;
         const bn::fixed distance = bn::sqrt(direction.x() * direction.x() + direction.y() * direction.y());
 
-        if(distance > 0)
+        if (distance > 0)
         {
-            // Move exactly to a nearby target so a wall cannot be skipped by waypoint cycling.
+            // Move either the full distance for the frame or the remaining distance to the target.
             movement = distance <= DOG_SPEED ? direction : (direction / distance) * DOG_SPEED;
+            // Ensure walls are handled before updating position.
             movement = walls.resolve_movement(_world_position, COLLIDER_RADIUS, movement);
             _world_position += movement;
             _position += movement;
         }
 
-        if(_world_position == target_location)
+        // If current idle location reached, move to the next one. 
+        if (_world_position == target_location)
         {
             _idle_location_index = (_idle_location_index + 1) % _idle_locations.size();
         }
