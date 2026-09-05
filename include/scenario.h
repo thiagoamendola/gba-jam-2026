@@ -20,7 +20,7 @@ public:
     void update(bn::fixed_point movement);
     
     void start_exit_transition();
-    [[nodiscard]] bool update_exit_transition(bn::fixed scale);
+    [[nodiscard]] bool update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale);
 
     const bn::fixed_point& initial_position() const { return _initial_position; }
     [[nodiscard]] bn::fixed_point walls_image_to_world_position(

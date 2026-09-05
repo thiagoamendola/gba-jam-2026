@@ -405,7 +405,7 @@ void end_transition_manager::start(const bn::fixed_point& captured_position, bn:
     _started = true;
 }
 
-bool end_transition_manager::update(bn::fixed scale)
+bool end_transition_manager::update(const bn::fixed_point& snapshot_position, bn::fixed scale)
 {
     if(! _started)
     {
@@ -420,9 +420,11 @@ bool end_transition_manager::update(bn::fixed scale)
         }
     }
 
+    _bg->set_position(snapshot_position);
     _bg->set_scale(scale);
+    _walls_bg->set_position(snapshot_position);
     _walls_bg->set_scale(scale);
-    _update_window(scale);
+    _update_window(snapshot_position, scale);
     return true;
 }
 
@@ -496,9 +498,31 @@ void end_transition_manager::_configure_window()
     bn::window::outside().set_show_sprites(false);
 }
 
-void end_transition_manager::_update_window(bn::fixed scale)
+void end_transition_manager::_update_window(const bn::fixed_point& snapshot_position, bn::fixed scale)
 {
     const bn::fixed half_width = (bn::display::width() / 2) * scale;
     const bn::fixed half_height = (bn::display::height() / 2) * scale;
-    bn::rect_window::internal().set_boundaries(-half_height, -half_width, half_height, half_width);
+    const bn::fixed snapshot_left = snapshot_position.x() - half_width;
+    const bn::fixed snapshot_top = snapshot_position.y() - half_height;
+    const bn::fixed snapshot_right = snapshot_position.x() + half_width;
+    const bn::fixed snapshot_bottom = snapshot_position.y() + half_height;
+    const bn::fixed screen_left = -bn::display::width() / 2;
+    const bn::fixed screen_top = -bn::display::height() / 2;
+    const bn::fixed screen_right = bn::display::width() / 2;
+    const bn::fixed screen_bottom = bn::display::height() / 2;
+    const bn::fixed visible_left = snapshot_left > screen_left ? snapshot_left : screen_left;
+    const bn::fixed visible_top = snapshot_top > screen_top ? snapshot_top : screen_top;
+    const bn::fixed visible_right = snapshot_right < screen_right ? snapshot_right : screen_right;
+    const bn::fixed visible_bottom = snapshot_bottom < screen_bottom ? snapshot_bottom : screen_bottom;
+    bn::rect_window internal_window = bn::rect_window::internal();
+
+    if(visible_left < visible_right && visible_top < visible_bottom)
+    {
+        internal_window.set_boundaries(visible_top, visible_left, visible_bottom, visible_right);
+        internal_window.set_visible(true);
+    }
+    else
+    {
+        internal_window.set_visible(false);
+    }
 }

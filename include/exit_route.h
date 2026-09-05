@@ -26,7 +26,36 @@ public:
     bn::optional<scene_type> update(const bn::fixed_point& player_movement);
     [[nodiscard]] bool is_end_animation_playing() const;
 
+    // A phase interpolates from the previous phase target to this position and scale.
+    // Adjust the target and duration to tune movement speed and zoom speed together.
+    struct end_animation_phase
+    {
+        int duration_frames;
+        bn::fixed_point end_position;
+        bn::fixed end_scale;
+    };
+
+    // The snapshot begins at screen position { 0, 0 } with scale 1.
+    static constexpr end_animation_phase ZOOM_OUT_PHASE = {
+        180,
+        bn::fixed_point(0, 30),
+        bn::fixed(0.5)
+    };
+
+    // This phase begins at ZOOM_OUT_PHASE's target. Change end_scale to zoom while moving.
+    static constexpr end_animation_phase MOVE_SNAPSHOT_DOWN_PHASE = {
+        60,
+        bn::fixed_point(0, 300),
+        bn::fixed(0.4)
+    };
+
 private:
+    struct transition_transform
+    {
+        bn::fixed_point position;
+        bn::fixed scale;
+    };
+
     struct transition_sprite_data
     {
         bn::fixed_point position;
@@ -44,7 +73,6 @@ private:
 
     static constexpr int MAX_DOGS = 8;
     static constexpr bn::fixed CLEAR_DISTANCE_SQUARED = 10 * 10;
-    static constexpr int END_ANIMATION_FRAMES = 300;
 
     player* _player;
     scenario* _associated_scenario;
@@ -58,9 +86,15 @@ private:
     int _end_animation_frame;
 
     [[nodiscard]] bool _all_enemies_dead() const;
-    [[nodiscard]] bn::fixed _end_animation_scale() const;
+    [[nodiscard]] static constexpr int _end_animation_duration()
+    {
+        return ZOOM_OUT_PHASE.duration_frames + MOVE_SNAPSHOT_DOWN_PHASE.duration_frames;
+    }
+    [[nodiscard]] transition_transform _end_animation_transform() const;
+    [[nodiscard]] static transition_transform _interpolate_end_animation_phase(
+            const transition_transform& start_transform, const end_animation_phase& phase, int frame);
     void _start_end_animation();
-    void _update_end_animation_sprites(bn::fixed scale);
+    void _update_end_animation_sprites(const transition_transform& transform);
 };
 
 #endif // EXIT_ROUTE_H

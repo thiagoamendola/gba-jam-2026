@@ -48,9 +48,9 @@ void dog_enemy::start_exit_transition()
     _sprite.set_bg_priority(0);
 }
 
-void dog_enemy::update_exit_transition(bn::fixed scale)
+void dog_enemy::update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale)
 {
-    _sprite.set_position(_transition_sprite_position.safe_multiplication(scale));
+    _sprite.set_position(_transition_sprite_position.safe_multiplication(scale) + snapshot_position);
     _sprite.set_scale(
             _transition_sprite_horizontal_scale.safe_multiplication(scale),
             _transition_sprite_vertical_scale.safe_multiplication(scale));

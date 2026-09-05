@@ -55,9 +55,9 @@ void scenario::start_exit_transition()
     _walls_bg.reset();
 }
 
-bool scenario::update_exit_transition(bn::fixed scale)
+bool scenario::update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale)
 {
-    return _end_transition_manager.update(scale);
+    return _end_transition_manager.update(snapshot_position, scale);
 }
 
 void scenario::_configure_regular_bg_window()

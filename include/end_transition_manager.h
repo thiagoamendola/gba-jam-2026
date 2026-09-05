@@ -21,7 +21,7 @@ public:
 
     void start(const bn::fixed_point& captured_position, bn::color backdrop_color);
 
-    [[nodiscard]] bool update(bn::fixed scale);
+        [[nodiscard]] bool update(const bn::fixed_point& snapshot_position, bn::fixed scale);
     [[nodiscard]] bool started() const;
 
 private:
@@ -102,8 +102,8 @@ private:
     // Shows the snapshot layers and gameplay sprites only inside the internal rectangular window.
     void _configure_window();
 
-    // Shrinks the centered internal window to match the current transition scale.
-    void _update_window(bn::fixed scale);
+    // Positions and shrinks the internal window to match the current snapshot transform.
+    void _update_window(const bn::fixed_point& snapshot_position, bn::fixed scale);
 };
 
 #endif // END_TRANSITION_MANAGER_H

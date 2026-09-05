@@ -24,7 +24,7 @@ public:
     void update(bn::fixed_point movement, const walls& walls);
     void destroy();
     void start_exit_transition();
-    void update_exit_transition(bn::fixed scale);
+    void update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale);
 
     [[nodiscard]] bool is_dead() const;
     [[nodiscard]] const bn::fixed_point& position() const;
