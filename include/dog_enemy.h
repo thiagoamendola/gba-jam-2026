@@ -17,7 +17,7 @@ public:
 
     // Idle locations use world coordinates and are copied into this dog.
     dog_enemy(
-            const player* player, const bn::fixed_point& position,
+            player* player, const bn::fixed_point& position,
             std::initializer_list<bn::fixed_point> idle_locations);
     ~dog_enemy();
 
@@ -66,7 +66,7 @@ private:
     };
     static constexpr int WALK_ANIM_COUNT = sizeof(WALK_ANIM_FRAMES) / sizeof(WALK_ANIM_FRAMES[0]);
 
-    const player* _player;
+    player* _player;
     bn::fixed_point _position;
     bn::fixed_point _world_position;
     bn::sprite_ptr _sprite;

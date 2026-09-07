@@ -20,15 +20,6 @@
 
 #include "common_variable_8x8_sprite_font.h"
 
-namespace
-{
-    constexpr int LOCATION_HUD_MARGIN = 4;
-    constexpr int LOCATION_HUD_CHARACTER_HEIGHT = 8;
-    constexpr bn::fixed LOCATION_HUD_X = (bn::display::width() / 2) - LOCATION_HUD_MARGIN;
-    constexpr bn::fixed LOCATION_HUD_Y =
-            (-bn::display::height() / 2) + LOCATION_HUD_MARGIN + (LOCATION_HUD_CHARACTER_HEIGHT / 2);
-}
-
 test_scene::test_scene()
     : _controller(), 
       _scenario(bn::regular_bg_items::stage_1, bn::regular_bg_items::stage_1_walls, 
@@ -67,6 +58,12 @@ bn::optional<scene_type> test_scene::update()
     if(_exit_route.is_end_animation_playing())
     {
         return _exit_route.update(bn::fixed_point());
+    }
+
+    if (_player.is_dead())
+    {
+        // Handle transition to game over scene.
+        return scene_type::TEST;
     }
 
     bn::fixed_point movement = _controller.get_smooth_directional() * 3.0f; // <-- MAGIC NUMBER

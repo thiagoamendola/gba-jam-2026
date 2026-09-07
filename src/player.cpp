@@ -21,6 +21,7 @@ player::player()
       _rotation_center_position(0, 0),
       _world_position(0, 0),
       _is_attacking(false),
+      _is_dead(false),
       _attack_anim_index(0),
       _attack_anim_frame_end(0)
 {
@@ -164,3 +165,14 @@ bn::fixed_point player::update(bn::fixed_point movement, const walls& walls)
     return movement;
 }
 
+void player::die()
+{
+    _is_dead = true;
+    _is_attacking = false;
+    _sprite.set_tiles(bn::sprite_items::player.tiles_item(), player_frame_index::IDLE);
+}
+
+bool player::is_dead() const
+{
+    return _is_dead;
+}

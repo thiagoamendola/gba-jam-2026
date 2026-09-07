@@ -1,6 +1,7 @@
 #ifndef TEST_SCENE_H
 #define TEST_SCENE_H
 
+#include "bn_display.h"
 #include "bn_optional.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_sprite_ptr.h"
@@ -27,6 +28,11 @@ public:
 private:
     static constexpr int LOCATION_HUD_MAX_SPRITES = 8;
     static constexpr int LOCATION_HUD_TEXT_MAX_SIZE = 32;
+    static constexpr int LOCATION_HUD_MARGIN = 4;
+    static constexpr int LOCATION_HUD_CHARACTER_HEIGHT = 8;
+    static constexpr bn::fixed LOCATION_HUD_X = (bn::display::width() / 2) - LOCATION_HUD_MARGIN;
+    static constexpr bn::fixed LOCATION_HUD_Y =
+            (-bn::display::height() / 2) + LOCATION_HUD_MARGIN + (LOCATION_HUD_CHARACTER_HEIGHT / 2);
 
     controller _controller;
     scenario _scenario;

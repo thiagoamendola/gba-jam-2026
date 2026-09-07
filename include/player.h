@@ -15,12 +15,16 @@ public:
     ~player();
 
     [[nodiscard]] bn::fixed_point update(bn::fixed_point movement, const walls& walls);
+
     void start_exit_transition();
     void update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale);
 
     [[nodiscard]] const bn::fixed_point& position() const;
     [[nodiscard]] const bn::fixed_point& world_position() const;
     [[nodiscard]] bool check_attack_collision(const dog_enemy& dog) const;
+
+    void die();
+    [[nodiscard]] bool is_dead() const;
 
 private:
     enum hold_state
@@ -61,6 +65,7 @@ private:
     bn::fixed_point _rotation_center_position;
     bn::fixed_point _world_position;
     bool _is_attacking;
+    bool _is_dead;
     int _attack_anim_index;
     int _attack_anim_frame_end;
     bn::fixed_point _transition_sprite_position;

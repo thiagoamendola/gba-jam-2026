@@ -9,8 +9,8 @@
 #include "bn_sprite_items_dog.h"
 
 dog_enemy::dog_enemy(
-                const player* player, const bn::fixed_point& position,
-                std::initializer_list<bn::fixed_point> idle_locations)
+    player* player, const bn::fixed_point& position,
+    std::initializer_list<bn::fixed_point> idle_locations)
     : _player(player),
       _position(position),
       _world_position(position),
@@ -135,14 +135,23 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
         const bn::fixed_point direction = _player->position() - _position;
         const bn::fixed distance = bn::sqrt(direction.x() * direction.x() + direction.y() * direction.y());
 
-        if (distance > 0)
+        if (distance < 5)
         {
-            movement = (direction / distance) * DOG_SPEED;
+            // dog touched player
+            _player->die();
+        }
+        else {
+            // Not touching player yet, so move towards them.
+            if (distance > 0)
+            {
+                movement = (direction / distance) * DOG_SPEED;
+            }
+    
+            movement = walls.resolve_movement(_world_position, COLLIDER_RADIUS, movement);
+            _world_position += movement;
+            _position += movement;
         }
 
-        movement = walls.resolve_movement(_world_position, COLLIDER_RADIUS, movement);
-        _world_position += movement;
-        _position += movement;
     }
 
     // A wall blocks attacks between the player and the dog.
