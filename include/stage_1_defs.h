@@ -14,16 +14,16 @@ namespace stage_1_defs
         wall_data{ bn::fixed_point(584, 16), bn::fixed_point(664, 16) },
         wall_data{ bn::fixed_point(376, 288), bn::fixed_point(584, 288) },
         wall_data{ bn::fixed_point(480, 392), bn::fixed_point(568, 392) },
-        wall_data{ bn::fixed_point(80, 424), bn::fixed_point(376, 424) },
+        wall_data{ bn::fixed_point(88, 424), bn::fixed_point(376, 424) },
         wall_data{ bn::fixed_point(480, 520), bn::fixed_point(568, 520) },
-        wall_data{ bn::fixed_point(208, 536), bn::fixed_point(368, 536) },
+        wall_data{ bn::fixed_point(200, 536), bn::fixed_point(368, 536) },
         wall_data{ bn::fixed_point(368, 616), bn::fixed_point(664, 616) },
-        wall_data{ bn::fixed_point(80, 920), bn::fixed_point(208, 920) },
+        wall_data{ bn::fixed_point(88, 920), bn::fixed_point(200, 920) },
     };
 
     constexpr inline std::array<wall_data, 8> vertical_walls = {
-        wall_data{ bn::fixed_point(80, 424), bn::fixed_point(80, 920) },
-        wall_data{ bn::fixed_point(208, 536), bn::fixed_point(208, 920) },
+        wall_data{ bn::fixed_point(88, 424), bn::fixed_point(88, 920) },
+        wall_data{ bn::fixed_point(200, 536), bn::fixed_point(200, 920) },
         wall_data{ bn::fixed_point(368, 536), bn::fixed_point(368, 616) },
         wall_data{ bn::fixed_point(376, 288), bn::fixed_point(376, 424) },
         wall_data{ bn::fixed_point(480, 392), bn::fixed_point(480, 520) },
