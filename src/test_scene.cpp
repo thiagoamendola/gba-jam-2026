@@ -31,6 +31,7 @@ test_scene::test_scene()
               { bn::fixed_point(290, -530), bn::fixed_point(470, -530) }),
           _exit_route(&_player, &_scenario, bn::fixed_point(485, -800),
         { &_dog1, &_dog2 }, scene_type::TEST),
+    _game_over_manager(&_controller, scene_type::TEST),
       _location_hud_text_generator(common::variable_8x8_sprite_font)
 {
     bn::backdrop::set_color(bn::color(16, 0, 0));
@@ -62,8 +63,9 @@ bn::optional<scene_type> test_scene::update()
 
     if (_player.is_dead())
     {
-        // Handle transition to game over scene.
-        return scene_type::TEST;
+        _location_hud_sprites.clear();
+        _location_hud_text.clear();
+        return _game_over_manager.update();
     }
 
     bn::fixed_point movement = _controller.get_smooth_directional() * 3.0f; // <-- MAGIC NUMBER

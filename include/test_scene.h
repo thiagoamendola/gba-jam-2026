@@ -16,6 +16,7 @@
 #include "dog_enemy.h"
 #include "exit_route.h"
 #include "walls.h"
+#include "game_over_manager.h"
 
 class test_scene : public base_scene
 {
@@ -42,6 +43,7 @@ private:
     dog_enemy _dog1;
     dog_enemy _dog2;
     exit_route _exit_route;
+    game_over_manager _game_over_manager;
 
     bn::sprite_text_generator _location_hud_text_generator;
     bn::vector<bn::sprite_ptr, LOCATION_HUD_MAX_SPRITES> _location_hud_sprites;

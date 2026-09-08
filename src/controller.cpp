@@ -77,3 +77,8 @@ bn::fixed_point controller::unit_vector(bn::fixed_point original_vector)
     magnitude = magnitude == 0 ? 1 : magnitude;
     return original_vector / magnitude;
 }
+
+bool controller::is_any_button_pressed() const
+{
+    return bn::keypad::any_pressed();
+}
