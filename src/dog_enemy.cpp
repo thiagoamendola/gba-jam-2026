@@ -116,7 +116,7 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
         if (distance > 0)
         {
             // Move either the full distance for the frame or the remaining distance to the target.
-            movement = distance <= DOG_SPEED ? direction : (direction / distance) * DOG_SPEED;
+            movement = distance <= DOG_WALK_SPEED ? direction : (direction / distance) * DOG_WALK_SPEED;
             // Ensure walls are handled before updating position.
             movement = walls.resolve_movement(_world_position, COLLIDER_RADIUS, movement);
             _world_position += movement;
@@ -144,7 +144,7 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
             // Not touching player yet, so move towards them.
             if (distance > 0)
             {
-                movement = (direction / distance) * DOG_SPEED;
+                movement = (direction / distance) * DOG_RUN_SPEED;
             }
     
             movement = walls.resolve_movement(_world_position, COLLIDER_RADIUS, movement);

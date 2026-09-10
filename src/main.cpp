@@ -12,7 +12,7 @@ int main()
     bn::core::init();
 
     bn::unique_ptr<base_scene> scene;
-    bn::optional<scene_type> next_scene = scene_type::STORY_1;
+    bn::optional<scene_type> next_scene = scene_type::TEST;
 
     while(true)
     {

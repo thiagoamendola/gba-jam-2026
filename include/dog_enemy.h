@@ -52,7 +52,8 @@ private:
         int duration;
     };
 
-    static constexpr bn::fixed DOG_SPEED = 1;
+    static constexpr bn::fixed DOG_WALK_SPEED = 1;
+    static constexpr bn::fixed DOG_RUN_SPEED = 2;
     static constexpr bn::fixed SPOT_DISTANCE = 120;
     static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
     static constexpr bn::fixed SPOT_HALF_ANGLE = 45;
