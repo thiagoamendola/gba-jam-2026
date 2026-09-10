@@ -5,6 +5,7 @@
 
 #include "player.h"
 #include "walls.h"
+#include "constants.h"
 
 #include "bn_sprite_items_dog.h"
 
@@ -101,7 +102,9 @@ void dog_enemy::update(bn::fixed_point player_movement, const walls& walls)
             if (bn::abs(angle_difference) < SPOT_HALF_ANGLE &&
                !walls.has_wall_between(_world_position, _player->world_position()))
             {
-                _state = enemy_state::PURSUE;
+                #if !INVISIBLE
+                    _state = enemy_state::PURSUE;
+                #endif
             }
         }
     }

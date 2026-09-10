@@ -16,10 +16,10 @@ test_scene::test_scene() :
         scene_type::STORY_1, scene_type::TEST,
         stage_1_defs::horizontal_walls.data(), stage_1_defs::horizontal_walls.size(),
         stage_1_defs::vertical_walls.data(), stage_1_defs::vertical_walls.size()),
-        _dog1(&_player, bn::fixed_point(290, -315),
-            {bn::fixed_point(290, -315), bn::fixed_point(470, -315)}),
-        _dog2(&_player, bn::fixed_point(290, -315),
-            {bn::fixed_point(290, -530), bn::fixed_point(470, -530)})
+        _dog1(&_player, bn::fixed_point(290, -545),
+            {bn::fixed_point(290, -545), bn::fixed_point(470, -545)}),
+        _dog2(&_player, bn::fixed_point(480, -315),
+            {bn::fixed_point(480, -530), bn::fixed_point(480, -315)})
 {
 }
 

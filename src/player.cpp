@@ -1,7 +1,5 @@
 #include "player.h"
 
-#include "constants.h"
-
 #include "bn_math.h"
 #include "bn_log.h"
 #include "bn_fixed_point.h"
@@ -10,6 +8,7 @@
 
 #include "dog_enemy.h"
 #include "walls.h"
+#include "constants.h"
 
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_player.h"
@@ -167,9 +166,11 @@ bn::fixed_point player::update(bn::fixed_point movement, const walls& walls)
 
 void player::die()
 {
+#if !INVINCIBLE
     _is_dead = true;
     _is_attacking = false;
     _sprite.set_tiles(bn::sprite_items::player.tiles_item(), player_frame_index::IDLE);
+#endif
 }
 
 bool player::is_dead() const
