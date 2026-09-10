@@ -1,5 +1,6 @@
 /[Bb]uild
 /[Tt]emp
+/audio/raw
 
 *.gba
 *.elf

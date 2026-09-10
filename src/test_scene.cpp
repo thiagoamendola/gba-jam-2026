@@ -29,8 +29,8 @@ test_scene::test_scene()
               { bn::fixed_point(290, -315), bn::fixed_point(470, -315) }),
       _dog2(&_player, bn::fixed_point(290, -315),
               { bn::fixed_point(290, -530), bn::fixed_point(470, -530) }),
-          _exit_route(&_player, &_scenario, bn::fixed_point(485, -800),
-        { &_dog1, &_dog2 }, scene_type::TEST),
+      _exit_route(&_player, &_scenario, bn::fixed_point(485, -800),
+        { &_dog1, &_dog2 }, scene_type::STORY_1),
     _game_over_manager(&_controller, scene_type::TEST),
       _location_hud_text_generator(common::variable_8x8_sprite_font)
 {

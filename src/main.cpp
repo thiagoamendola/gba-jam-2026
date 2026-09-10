@@ -3,6 +3,7 @@
 #include "bn_unique_ptr.h"
 
 #include "scene_type.h"
+#include "story_1_scene.h"
 #include "test_scene.h"
 #include "base_scene.h"
 
@@ -11,7 +12,7 @@ int main()
     bn::core::init();
 
     bn::unique_ptr<base_scene> scene;
-    bn::optional<scene_type> next_scene = scene_type::TEST;
+    bn::optional<scene_type> next_scene = scene_type::STORY_1;
 
     while(true)
     {
@@ -34,6 +35,9 @@ int main()
                 // Only create a new scene one frame after previous scene clearing.
                 switch (*next_scene)
                 {
+                    case scene_type::STORY_1:
+                        scene = bn::make_unique<story_1_scene>();
+                        break;
                     case scene_type::TEST:
                         scene = bn::make_unique<test_scene>();
                         break;
