@@ -36,17 +36,18 @@ bn::fixed_point melee_enemy::_update_pursue(const walls& walls)
     const bn::fixed_point direction = _player->position() - _position;
     const bn::fixed distance = bn::sqrt(direction.x() * direction.x() + direction.y() * direction.y());
 
-    if (distance < 10 && !_is_attacking)
+    if (distance < 15 && !_is_attacking)
     {
         _is_attacking = true;
         _attack_anim_index = 0;
         _attack_anim_frame_end = 0;
         _sprite.set_tiles(_sprite_item.tiles_item(), ATTACK_ANIM_FRAMES[0].sprite_index);
-        return bn::fixed_point();
     }
 
-    if (_is_attacking)
+    if (_attack_anim_index >= ATTACK_ANIM_COUNT && distance < 10)
     {
+        _is_attacking = false;
+        _player->die();
         return bn::fixed_point();
     }
 
