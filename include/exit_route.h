@@ -12,7 +12,7 @@
 #include "easing.h"
 #include "scene_type.h"
 
-class dog_enemy;
+class base_enemy;
 class player;
 class scenario;
 
@@ -21,7 +21,7 @@ class exit_route
 public:
     exit_route(
         player* player, scenario* associated_scenario, const bn::fixed_point& position,
-        std::initializer_list<dog_enemy*> dogs, scene_type next_scene);
+        std::initializer_list<base_enemy*> enemies, scene_type next_scene);
     ~exit_route();
 
     bn::optional<scene_type> update(const bn::fixed_point& player_movement);
@@ -62,12 +62,12 @@ private:
         DONE,
     };
 
-    static constexpr int MAX_DOGS = 8;
+    static constexpr int MAX_ENEMIES = 8;
     static constexpr bn::fixed CLEAR_DISTANCE_SQUARED = 10 * 10;
 
     player* _player;
     scenario* _associated_scenario;
-    bn::vector<dog_enemy*, MAX_DOGS> _dogs;
+    bn::vector<base_enemy*, MAX_ENEMIES> _enemies;
 
     bn::fixed_point _position;
     bn::sprite_ptr _sprite;

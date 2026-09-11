@@ -12,7 +12,7 @@
 
 #include "base_scene.h"
 #include "scenario.h"
-#include "dog_enemy.h"
+#include "base_enemy.h"
 #include "controller.h"
 #include "player.h"
 #include "exit_route.h"
@@ -26,7 +26,7 @@ public:
     base_gameplay_scene(
             const bn::regular_bg_item& background_item, const bn::regular_bg_item& walls_item,
             const bn::fixed_point& initial_position, const bn::fixed_point& exit_position,
-            std::initializer_list<dog_enemy*> dogs, scene_type exit_next_scene, scene_type game_over_next_scene,
+            std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type game_over_next_scene,
             const wall_data* horizontal_walls, int horizontal_walls_count,
             const wall_data* vertical_walls, int vertical_walls_count);
     virtual ~base_gameplay_scene();

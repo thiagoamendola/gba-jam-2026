@@ -1,41 +1,21 @@
 #ifndef DOG_ENEMY_H
 #define DOG_ENEMY_H
 
-#include <initializer_list>
-
-#include "bn_fixed_point.h"
-#include "bn_sprite_ptr.h"
-#include "bn_vector.h"
+#include "base_enemy.h"
 
 class player;
 class walls;
 
-class dog_enemy
+class dog_enemy : public base_enemy
 {
 public:
     static constexpr bn::fixed COLLIDER_RADIUS = 3;
-
-    // Idle locations use world coordinates and are copied into this dog.
-    dog_enemy(
-            player* player, const bn::fixed_point& position,
-            std::initializer_list<bn::fixed_point> idle_locations);
-    ~dog_enemy();
-
-    void update(bn::fixed_point movement, const walls& walls);
-    void destroy();
-    void start_exit_transition();
-    void update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale);
-
-    [[nodiscard]] bool is_dead() const;
-    [[nodiscard]] const bn::fixed_point& position() const;
-
-private:
-    enum class enemy_state
-    {
-        IDLE,
-        PURSUE,
-        DEAD,
-    };
+    static constexpr bn::fixed DOG_WALK_SPEED = 1;
+    static constexpr bn::fixed DOG_RUN_SPEED = 2;
+    static constexpr bn::fixed SPOT_DISTANCE = 120;
+    static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
+    static constexpr bn::fixed SPOT_HALF_ANGLE = 45;
+    static constexpr int MAX_IDLE_LOCATIONS = 8;
 
     enum dog_frame_index
     {
@@ -45,21 +25,7 @@ private:
         DEAD = 3,
     };
 
-    // <-- HOW CAN I GENERALIZE THIS?
-    struct animation_frame
-    {
-        dog_frame_index sprite_index;
-        int duration;
-    };
-
-    static constexpr bn::fixed DOG_WALK_SPEED = 1;
-    static constexpr bn::fixed DOG_RUN_SPEED = 2;
-    static constexpr bn::fixed SPOT_DISTANCE = 120;
-    static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
-    static constexpr bn::fixed SPOT_HALF_ANGLE = 45;
-    static constexpr int MAX_IDLE_LOCATIONS = 8;
-
-    static constexpr animation_frame WALK_ANIM_FRAMES[] = {
+    static constexpr base_enemy::animation_frame WALK_ANIM_FRAMES[] = {
         { dog_frame_index::IDLE, 10 },
         { dog_frame_index::WALK_1, 12 },
         { dog_frame_index::IDLE, 10 },
@@ -67,20 +33,14 @@ private:
     };
     static constexpr int WALK_ANIM_COUNT = sizeof(WALK_ANIM_FRAMES) / sizeof(WALK_ANIM_FRAMES[0]);
 
-    player* _player;
-    bn::fixed_point _position;
-    bn::fixed_point _world_position;
-    bn::sprite_ptr _sprite;
-    enemy_state _state;
-    bn::vector<bn::fixed_point, MAX_IDLE_LOCATIONS> _idle_locations;
-    int _idle_location_index;
+    dog_enemy(
+            player* player, const bn::fixed_point& position,
+            std::initializer_list<bn::fixed_point> idle_locations);
+    ~dog_enemy() override;
 
-    int _walk_anim_index;
-    int _walk_anim_frame_end;
-
-    bn::fixed_point _transition_sprite_position;
-    bn::fixed _transition_sprite_horizontal_scale;
-    bn::fixed _transition_sprite_vertical_scale;
+protected:
+    void destroy() override;
+    bn::fixed_point _update_pursue(const walls& walls) override;
 };
 
 #endif

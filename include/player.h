@@ -5,7 +5,7 @@
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
 
-class dog_enemy; // <-- REMOVE AND REPLACE FOR MORE GENERALIZED COLLIDER
+class base_enemy;
 class walls;
 
 class player
@@ -21,7 +21,7 @@ public:
 
     [[nodiscard]] const bn::fixed_point& position() const;
     [[nodiscard]] const bn::fixed_point& world_position() const;
-    [[nodiscard]] bool check_attack_collision(const dog_enemy& dog) const;
+    [[nodiscard]] bool check_attack_collision(const base_enemy& enemy) const;
 
     void die();
     [[nodiscard]] bool is_dead() const;

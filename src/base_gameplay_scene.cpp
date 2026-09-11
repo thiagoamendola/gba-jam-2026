@@ -12,14 +12,14 @@
 base_gameplay_scene::base_gameplay_scene(
         const bn::regular_bg_item& background_item, const bn::regular_bg_item& walls_item,
         const bn::fixed_point& initial_position, const bn::fixed_point& exit_position,
-        std::initializer_list<dog_enemy*> dogs, scene_type exit_next_scene, scene_type game_over_next_scene,
+        std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type game_over_next_scene,
         const wall_data* horizontal_walls, int horizontal_walls_count,
         const wall_data* vertical_walls, int vertical_walls_count) :
     _controller(),
     _scenario(background_item, walls_item, initial_position),
     _player(),
     _walls(&_scenario),
-    _exit_route(&_player, &_scenario, exit_position, dogs, exit_next_scene),
+    _exit_route(&_player, &_scenario, exit_position, enemies, exit_next_scene),
     _game_over_manager(&_controller, game_over_next_scene),
     _location_hud_text_generator(common::variable_8x8_sprite_font)
 {

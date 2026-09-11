@@ -6,7 +6,7 @@
 #include "bn_keypad.h"
 #include "bn_sprite_ptr.h"
 
-#include "dog_enemy.h"
+#include "base_enemy.h"
 #include "walls.h"
 #include "constants.h"
 
@@ -75,15 +75,15 @@ bn::fixed_point player::_attack_hitbox_position() const
 }
 
 // <-- mAKE THIS MORE GENERIC
-bool player::check_attack_collision(const dog_enemy& dog) const
+bool player::check_attack_collision(const base_enemy& enemy) const
 {
     if (! _is_attacking)
     {
         return false;
     }
 
-    const bn::fixed_point distance = dog.position() - _attack_hitbox_position();
-    const bn::fixed collision_radius = ATTACK_COLLIDER_RADIUS + dog_enemy::COLLIDER_RADIUS;
+    const bn::fixed_point distance = enemy.position() - _attack_hitbox_position();
+    const bn::fixed collision_radius = ATTACK_COLLIDER_RADIUS + enemy.collider_radius();
 
     if (distance.x() * distance.x() + distance.y() * distance.y() <= collision_radius * collision_radius)
     {
