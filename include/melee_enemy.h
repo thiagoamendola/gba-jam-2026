@@ -12,9 +12,9 @@ public:
     static constexpr bn::fixed COLLIDER_RADIUS = 3;
     static constexpr bn::fixed MELEE_WALK_SPEED = 1;
     static constexpr bn::fixed MELEE_RUN_SPEED = 2;
-    static constexpr bn::fixed SPOT_DISTANCE = 120;
+    static constexpr bn::fixed SPOT_DISTANCE = 100;
     static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
-    static constexpr bn::fixed SPOT_HALF_ANGLE = 45;
+    static constexpr bn::fixed SPOT_HALF_ANGLE = 40;
     static constexpr int MAX_IDLE_LOCATIONS = 8;
 
     enum melee_frame_index
@@ -44,6 +44,11 @@ public:
 protected:
     void destroy() override;
     bn::fixed_point _update_pursue(const walls& walls) override;
+    void _update_animation() override;
+
+    bool _is_attacking = false;
+    int _attack_anim_index = 0;
+    int _attack_anim_frame_end = 0;
 };
 
 #endif

@@ -6,11 +6,11 @@
 #endif
 
 #ifndef INVINCIBLE
-#define INVINCIBLE true
+#define INVINCIBLE false
 #endif
 
 #ifndef INVISIBLE
-#define INVISIBLE true
+#define INVISIBLE false
 #endif
 
 #ifndef SHOW_LOCATION_HUD

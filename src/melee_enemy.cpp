@@ -35,10 +35,17 @@ bn::fixed_point melee_enemy::_update_pursue(const walls& walls)
     const bn::fixed_point direction = _player->position() - _position;
     const bn::fixed distance = bn::sqrt(direction.x() * direction.x() + direction.y() * direction.y());
 
-    if (distance < 10)
+    if (distance < 10 && !_is_attacking)
     {
-        // Melee enemy touched player.
-        _player->die();
+        _is_attacking = true;
+        _attack_anim_index = 0;
+        _attack_anim_frame_end = 0;
+        _sprite.set_tiles(_sprite_item.tiles_item(), ATTACK_ANIM_FRAMES[0].sprite_index);
+        return bn::fixed_point();
+    }
+
+    if (_is_attacking)
+    {
         return bn::fixed_point();
     }
 
@@ -53,4 +60,31 @@ bn::fixed_point melee_enemy::_update_pursue(const walls& walls)
     _world_position += movement;
     _position += movement;
     return movement;
+}
+
+void melee_enemy::_update_animation()
+{
+    if (!_is_attacking)
+    {
+        base_enemy::_update_animation();
+        return;
+    }
+
+    ++_attack_anim_frame_end;
+
+    if (_attack_anim_frame_end >= ATTACK_ANIM_FRAMES[_attack_anim_index].duration)
+    {
+        _attack_anim_frame_end = 0;
+        ++_attack_anim_index;
+
+        if (_attack_anim_index >= ATTACK_ANIM_COUNT)
+        {
+            _is_attacking = false;
+            _player->die();
+        }
+        else
+        {
+            _sprite.set_tiles(_sprite_item.tiles_item(), ATTACK_ANIM_FRAMES[_attack_anim_index].sprite_index);
+        }
+    }
 }

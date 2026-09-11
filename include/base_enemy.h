@@ -41,6 +41,7 @@ public:
 
 protected:
     virtual bn::fixed_point _update_pursue(const walls &walls) = 0;
+    virtual void _update_animation();
 
     enum class enemy_state
     {

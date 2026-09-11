@@ -143,6 +143,11 @@ void base_enemy::update(bn::fixed_point player_movement, const walls &walls)
 
     _sprite.set_position(_position);
 
+    _update_animation();
+}
+
+void base_enemy::_update_animation()
+{
     // Update sprite animation.
     ++_walk_anim_frame_end;
 
