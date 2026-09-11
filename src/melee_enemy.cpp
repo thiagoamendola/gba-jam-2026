@@ -1,0 +1,56 @@
+#include "melee_enemy.h"
+
+#include "bn_math.h"
+
+#include "player.h"
+#include "walls.h"
+
+#include "bn_sprite_items_robot.h"
+
+melee_enemy::melee_enemy(
+        player* player, const bn::fixed_point& position,
+        std::initializer_list<bn::fixed_point> idle_locations) :
+    base_enemy(
+            player, position, idle_locations, bn::sprite_items::robot,
+            COLLIDER_RADIUS, MELEE_WALK_SPEED, MELEE_RUN_SPEED, SPOT_DISTANCE, SPOT_HALF_ANGLE,
+            bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT))
+{
+}
+
+melee_enemy::~melee_enemy()
+{
+}
+
+void melee_enemy::destroy()
+{
+    _state = enemy_state::DEAD;
+    _sprite.set_tiles(_sprite_item.tiles_item(), melee_frame_index::DEAD);
+    _sprite.put_below();
+    _sprite.set_rotation_angle_safe(_sprite.rotation_angle() + 90);
+}
+
+bn::fixed_point melee_enemy::_update_pursue(const walls& walls)
+{
+    // Move towards player.
+    const bn::fixed_point direction = _player->position() - _position;
+    const bn::fixed distance = bn::sqrt(direction.x() * direction.x() + direction.y() * direction.y());
+
+    if (distance < 10)
+    {
+        // Melee enemy touched player.
+        _player->die();
+        return bn::fixed_point();
+    }
+
+    // Not touching player yet, so move towards them.
+    bn::fixed_point movement;
+    if (distance > 0)
+    {
+        movement = (direction / distance) * _run_speed;
+    }
+
+    movement = walls.resolve_movement(_world_position, _collider_radius, movement);
+    _world_position += movement;
+    _position += movement;
+    return movement;
+}
