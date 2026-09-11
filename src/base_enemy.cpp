@@ -6,6 +6,8 @@
 #include "player.h"
 #include "walls.h"
 
+#include "bn_sprite_items_splatter.h"
+
 base_enemy::base_enemy (
     player *player, const bn::fixed_point &position,
     std::initializer_list<bn::fixed_point> idle_locations,
@@ -26,7 +28,10 @@ base_enemy::base_enemy (
         _state(enemy_state::IDLE),
         _idle_location_index(0),
         _walk_anim_index(0),
-        _walk_anim_frame_end(0)
+        _walk_anim_frame_end(0),
+        _splatter_anim_index(0),
+        _splatter_anim_frame_end(0),
+        _splatter_position_offset(0, 0)
 {
 
     for (const bn::fixed_point &idle_location : idle_locations)
@@ -59,10 +64,30 @@ void base_enemy::update(bn::fixed_point player_movement, const walls &walls)
     // Subtract player's movement.
     _position -= player_movement;
 
-    // If dead, just update position and return.
+    // If dead, update position and splatter animation.
     if (_state == enemy_state::DEAD)
     {
         _sprite.set_position(_position);
+        _splatter_sprite->set_position(_position + _splatter_position_offset);
+
+        // Animate splatter.
+        if (_splatter_anim_index < SPLATTER_ANIM_COUNT)
+        {
+            ++_splatter_anim_frame_end;
+
+            if (_splatter_anim_frame_end >= SPLATTER_ANIM_FRAMES[_splatter_anim_index].duration)
+            {
+                _splatter_anim_frame_end = 0;
+                ++_splatter_anim_index;
+
+                if (_splatter_anim_index < SPLATTER_ANIM_COUNT)
+                {
+                    _splatter_sprite->set_tiles(
+                        bn::sprite_items::splatter.tiles_item(),
+                        SPLATTER_ANIM_FRAMES[_splatter_anim_index].sprite_index);
+                }
+            }
+        }
         return;
     }
 
@@ -175,4 +200,29 @@ void base_enemy::update_exit_transition(const bn::fixed_point &snapshot_position
     _sprite.set_scale(
         _transition_sprite_horizontal_scale.safe_multiplication(scale),
         _transition_sprite_vertical_scale.safe_multiplication(scale));
+}
+
+void base_enemy::_start_splatter_animation()
+{
+    const bn::fixed_point direction = _player->world_position() - _world_position;
+    const bn::fixed direction_angle =
+        bn::degrees_atan2(-direction.y().round_integer(), direction.x().round_integer()); // Y goes down.
+
+    // Get the opposite distance direction.
+    const bn::fixed offset_angle = direction_angle + 180; 
+    // Rotaton offset for splatter sprite.
+    const bn::fixed sprite_angle = direction_angle + 225; 
+
+    // Calculate splatter offset position.
+    const auto [sin, cos] = bn::degrees_sin_and_cos(offset_angle);
+    _splatter_position_offset = bn::fixed_point(cos * SPLATTER_OFFSET, -sin * SPLATTER_OFFSET);
+
+    // Create sprite at right position and rotation.
+    _splatter_sprite.emplace(bn::sprite_items::splatter.create_sprite(
+        _position + _splatter_position_offset, SPLATTER_ANIM_FRAMES[0].sprite_index));
+    _splatter_sprite->set_rotation_angle_safe(sprite_angle);
+    
+    // Reset animation variables.
+    _splatter_anim_index = 0;
+    _splatter_anim_frame_end = 0;
 }

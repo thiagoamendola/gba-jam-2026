@@ -27,6 +27,7 @@ void dog_enemy::destroy()
     _sprite.set_tiles(_sprite_item.tiles_item(), dog_frame_index::DEAD);
     _sprite.put_below();
     _sprite.set_rotation_angle_safe(_sprite.rotation_angle() + 90);
+    _start_splatter_animation();
 }
 
 bn::fixed_point dog_enemy::_update_pursue(const walls& walls)

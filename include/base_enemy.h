@@ -4,6 +4,7 @@
 #include <initializer_list>
 
 #include "bn_fixed_point.h"
+#include "bn_optional.h"
 #include "bn_span.h"
 #include "bn_sprite_item.h"
 #include "bn_sprite_ptr.h"
@@ -42,6 +43,7 @@ public:
 protected:
     virtual bn::fixed_point _update_pursue(const walls &walls) = 0;
     virtual void _update_animation();
+    void _start_splatter_animation();
 
     enum class enemy_state
     {
@@ -49,6 +51,24 @@ protected:
         PURSUE,
         DEAD,
     };
+
+    enum splatter_frame_index
+    {
+        SPLAT_0 = 0,
+        SPLAT_1 = 1,
+        SPLAT_2 = 2,
+        SPLAT_3 = 3,
+    };
+
+    static constexpr base_enemy::animation_frame SPLATTER_ANIM_FRAMES[] = {
+        { splatter_frame_index::SPLAT_0, 2 },
+        { splatter_frame_index::SPLAT_1, 2 },
+        { splatter_frame_index::SPLAT_2, 3 },
+        { splatter_frame_index::SPLAT_3, 3 },
+    };
+    static constexpr int SPLATTER_ANIM_COUNT =
+        sizeof(SPLATTER_ANIM_FRAMES) / sizeof(SPLATTER_ANIM_FRAMES[0]);
+    static constexpr bn::fixed SPLATTER_OFFSET = 22;
 
     static constexpr int MAX_IDLE_LOCATIONS = 8;
 
@@ -59,6 +79,7 @@ protected:
     bn::fixed _run_speed;
     const bn::sprite_item &_sprite_item;
     bn::sprite_ptr _sprite;
+    bn::optional<bn::sprite_ptr> _splatter_sprite;
     bn::fixed _walk_speed;
     bn::fixed _spot_distance_squared;
     bn::fixed _spot_half_angle;
@@ -68,6 +89,9 @@ protected:
     int _idle_location_index;
     int _walk_anim_index;
     int _walk_anim_frame_end;
+    int _splatter_anim_index;
+    int _splatter_anim_frame_end;
+    bn::fixed_point _splatter_position_offset;
 
     bn::fixed_point _transition_sprite_position;
     bn::fixed _transition_sprite_horizontal_scale;
