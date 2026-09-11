@@ -9,7 +9,7 @@ class story_1_scene : public audio_base_scene
 {
 public:
     story_1_scene() :
-        audio_base_scene(570, scene_type::TEST)
+        audio_base_scene(570, scene_type::STAGE_2)
     {
         play_audio(bn::sound_items::brushing_teeth, 30);
         play_audio(bn::sound_items::filling_sink, 90);

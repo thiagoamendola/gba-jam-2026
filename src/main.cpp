@@ -3,6 +3,7 @@
 #include "bn_unique_ptr.h"
 
 #include "scene_type.h"
+#include "stage_2_scene.h"
 #include "story_1_scene.h"
 #include "test_scene.h"
 #include "base_scene.h"
@@ -40,6 +41,9 @@ int main()
                         break;
                     case scene_type::TEST:
                         scene = bn::make_unique<test_scene>();
+                        break;
+                    case scene_type::STAGE_2:
+                        scene = bn::make_unique<stage_2_scene>();
                         break;
                 }
             }

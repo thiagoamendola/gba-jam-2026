@@ -5,6 +5,7 @@ enum class scene_type
 {
     STORY_1,
     TEST,
+    STAGE_2,
 };
 
 #endif
