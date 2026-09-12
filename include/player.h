@@ -6,6 +6,7 @@
 #include "bn_sprite_ptr.h"
 
 class base_enemy;
+class exit_route;
 class walls;
 
 class player
@@ -14,8 +15,9 @@ public:
     player();
     ~player();
 
-    [[nodiscard]] bn::fixed_point update(bn::fixed_point movement, const walls& walls);
-
+    [[nodiscard]] bn::fixed_point update(
+        bn::fixed_point movement, const walls& walls, const exit_route& exit_route);
+        
     void start_exit_transition();
     void update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale);
 
@@ -61,6 +63,7 @@ private:
 
     hold_state _hold_state;
     bn::sprite_ptr _sprite;
+    bn::sprite_ptr _exit_pointer_sprite;
     bn::optional<bn::sprite_ptr> _attack_hitbox_sprite;
     bn::fixed_point _rotation_center_position;
     bn::fixed_point _world_position;
@@ -72,7 +75,8 @@ private:
     bn::fixed _transition_sprite_horizontal_scale;
     bn::fixed _transition_sprite_vertical_scale;
 
-    [[nodiscard]] bn::fixed_point _attack_hitbox_position() const;
+    [[nodiscard]] bn::fixed_point get_attack_hitbox_position() const;
+    void _update_exit_pointer(const exit_route& exit_route);
 };
 
 

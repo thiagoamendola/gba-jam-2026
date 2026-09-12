@@ -2,6 +2,7 @@
 
 #include "bn_log.h"
 #include "bn_music.h"
+#include "bn_music_items.h"
 
 #include "base_enemy.h"
 #include "player.h"
@@ -44,6 +45,7 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
         {
             _state = exit_state::READY;
             _sprite.set_visible(true);
+            bn::music_items::beyond_insidetherobot.play();
         }
         break;
 
@@ -63,6 +65,7 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
             _start_end_animation();
             _state = exit_state::ANIMATING;
             _end_animation_frame = 0;
+            bn::music::stop();
         }
         break;
     }
@@ -81,7 +84,6 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
         else
         {
             _state = exit_state::DONE;
-            bn::music::stop();
             BN_LOG("STAGE CLEARED");
             return _next_scene;
         }
@@ -100,6 +102,16 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
 bool exit_route::is_end_animation_playing() const
 {
     return _state == exit_state::ANIMATING;
+}
+
+bool exit_route::is_available() const
+{
+    return _state == exit_state::READY;
+}
+
+const bn::fixed_point& exit_route::position() const
+{
+    return _position;
 }
 
 bool exit_route::_all_enemies_dead() const

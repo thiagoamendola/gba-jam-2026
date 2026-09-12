@@ -26,6 +26,8 @@ public:
 
     bn::optional<scene_type> update(const bn::fixed_point& player_movement);
     [[nodiscard]] bool is_end_animation_playing() const;
+    [[nodiscard]] bool is_available() const;
+    [[nodiscard]] const bn::fixed_point& position() const;
 
     // A chunk of key animation for controlling position/scale transition over predefined duration.
     struct end_animation_phase

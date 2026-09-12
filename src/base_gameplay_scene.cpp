@@ -58,7 +58,7 @@ bn::optional<scene_type> base_gameplay_scene::update()
 
     bn::fixed_point movement = _controller.get_smooth_directional() * 3.0f; // <-- MAGIC NUMBER
 
-    movement = _player.update(movement, _walls);
+    movement = _player.update(movement, _walls, _exit_route);
     _scenario.update(movement);
 
     // Update all existing bullets and remove any inactive ones.
