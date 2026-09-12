@@ -5,6 +5,7 @@
 #include "bn_fixed_point.h"
 #include "bn_keypad.h"
 #include "bn_sprite_ptr.h"
+#include "bn_sound_items.h"
 
 #include "base_enemy.h"
 #include "exit_route.h"
@@ -119,14 +120,15 @@ bn::fixed_point player::update(
     if (bn::keypad::a_pressed() && !_is_attacking)
     {
         _is_attacking = true;
+        bn::sound_items::bat_swing.play();
         _attack_anim_index = 0;
         _attack_anim_frame_end = 0;
         _sprite.set_tiles(bn::sprite_items::player.tiles_item(), MELEE_ANIM_FRAMES[_attack_anim_index].sprite_index); // <-- IF MELEE ONLY
-    if constexpr(SHOW_HITBOX_ATTACK)
-    {
-        _attack_hitbox_sprite.emplace(bn::sprite_items::hitbox.create_sprite(get_attack_hitbox_position()));
-        _attack_hitbox_sprite->set_scale(ATTACK_COLLIDER_RADIUS / HITBOX_SPRITE_RADIUS);
-    }
+        if constexpr(SHOW_HITBOX_ATTACK)
+        {
+            _attack_hitbox_sprite.emplace(bn::sprite_items::hitbox.create_sprite(get_attack_hitbox_position()));
+            _attack_hitbox_sprite->set_scale(ATTACK_COLLIDER_RADIUS / HITBOX_SPRITE_RADIUS);
+        }
     }
 
     if (_is_attacking)

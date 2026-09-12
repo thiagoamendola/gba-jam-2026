@@ -1,6 +1,7 @@
 #include "melee_enemy.h"
 
 #include "bn_math.h"
+#include "bn_sound_items.h"
 
 #include "player.h"
 #include "walls.h"
@@ -39,6 +40,7 @@ bn::fixed_point melee_enemy::_update_pursue(const walls& walls)
     if (distance < 15 && !_is_attacking)
     {
         _is_attacking = true;
+        bn::sound_items::bat_swing.play();
         _attack_anim_index = 0;
         _attack_anim_frame_end = 0;
         _sprite.set_tiles(_sprite_item.tiles_item(), ATTACK_ANIM_FRAMES[0].sprite_index);
