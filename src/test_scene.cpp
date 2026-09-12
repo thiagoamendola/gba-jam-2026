@@ -21,10 +21,12 @@ test_scene::test_scene() :
             {bn::fixed_point(290, -545), bn::fixed_point(470, -545)}),
         _melee_enemy2(&_player, bn::fixed_point(480, -315),
             {bn::fixed_point(480, -530), bn::fixed_point(480, -315)}),
+        _melee_enemy3(&_player, bn::fixed_point(195, -400), // <-- REMOVE
+            {bn::fixed_point(200, -400)})
 {
     // bn::music_items::supernovaexplosion.play();
     // bn::music_items::supernovaexplosion_1.play();
-    bn::music_items::supernovaexplosion_2.play();
+    bn::music_items::supernovaexplosion_2.play(0.7);
     // bn::music_items::beyond_throughthefire.play();
     // bn::music_items::gameplay_p1.play();
     // bn::music_items::beyond_insidetherobot.play(); // WORKS
@@ -41,4 +43,5 @@ void test_scene::_update_enemies(const bn::fixed_point &movement)
 {
     _melee_enemy1.update(movement, _walls);
     _melee_enemy2.update(movement, _walls);
+    _melee_enemy3.update(movement, _walls);
 }
