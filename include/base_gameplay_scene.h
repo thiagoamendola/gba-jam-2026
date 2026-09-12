@@ -13,6 +13,7 @@
 #include "base_scene.h"
 #include "scenario.h"
 #include "base_enemy.h"
+#include "bullet.h"
 #include "controller.h"
 #include "player.h"
 #include "exit_route.h"
@@ -33,6 +34,10 @@ public:
 
     bn::optional<scene_type> update() override;
 
+        void create_bullet(
+            const bn::fixed_point& position, const bn::fixed_point& world_position,
+            bn::fixed rotation);
+
 protected:
     virtual void _update_enemies(const bn::fixed_point& movement) = 0;
 
@@ -40,6 +45,8 @@ protected:
     scenario _scenario;
     player _player;
     walls _walls;
+    static constexpr int MAX_BULLETS = 12;
+    bn::vector<bullet, MAX_BULLETS> _bullets;
     exit_route _exit_route;
     game_over_manager _game_over_manager;
 

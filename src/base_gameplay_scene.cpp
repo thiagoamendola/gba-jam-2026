@@ -19,6 +19,7 @@ base_gameplay_scene::base_gameplay_scene(
     _scenario(background_item, walls_item, initial_position),
     _player(),
     _walls(&_scenario),
+    _bullets(),
     _exit_route(&_player, &_scenario, exit_position, enemies, exit_next_scene),
     _game_over_manager(&_controller, game_over_next_scene),
     _location_hud_text_generator(common::variable_8x8_sprite_font)
@@ -55,11 +56,20 @@ bn::optional<scene_type> base_gameplay_scene::update()
 
     // Not ending gameplay through exit or death so continue updates.
 
-    bn::fixed_point movement = _controller.get_smooth_directional() * 3.0f;
+    bn::fixed_point movement = _controller.get_smooth_directional() * 3.0f; // <-- MAGIC NUMBER
 
     movement = _player.update(movement, _walls);
-    
     _scenario.update(movement);
+
+    // Update all existing bullets and remove any inactive ones.
+    for (int index = _bullets.size() - 1; index >= 0; --index)
+    {
+        if (!_bullets[index].update(movement, _walls))
+        {
+            _bullets.erase(_bullets.begin() + index);
+        }
+    }
+
     _update_enemies(movement);
     _exit_route.update(movement);
 
@@ -95,4 +105,15 @@ void base_gameplay_scene::_update_location_hud()
 
     static_cast<void>(_location_hud_text_generator.generate_optional(
             LOCATION_HUD_X, LOCATION_HUD_Y, _location_hud_text, _location_hud_sprites));
+}
+
+void base_gameplay_scene::create_bullet(
+        const bn::fixed_point& position, const bn::fixed_point& world_position,
+        bn::fixed rotation)
+{
+    // Create bullet if enough space available.
+    if (_bullets.size() < MAX_BULLETS)
+    {
+        _bullets.emplace_back(position, world_position, rotation, &_player);
+    }
 }

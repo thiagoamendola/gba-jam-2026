@@ -12,7 +12,7 @@ public:
     static constexpr bn::fixed COLLIDER_RADIUS = 3;
     static constexpr bn::fixed MELEE_WALK_SPEED = 1;
     static constexpr bn::fixed MELEE_RUN_SPEED = 2;
-    static constexpr bn::fixed SPOT_DISTANCE = 100;
+    static constexpr bn::fixed SPOT_DISTANCE = 95;
     static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
     static constexpr bn::fixed SPOT_HALF_ANGLE = 40;
     static constexpr int MAX_IDLE_LOCATIONS = 8;
