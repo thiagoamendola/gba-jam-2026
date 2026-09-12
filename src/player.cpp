@@ -7,16 +7,19 @@
 #include "bn_sprite_ptr.h"
 
 #include "base_enemy.h"
+#include "exit_route.h"
 #include "walls.h"
 #include "constants.h"
 
 #include "bn_sprite_items_hitbox.h"
+#include "bn_sprite_items_pointer.h"
 #include "bn_sprite_items_player.h"
 
 
 player::player()
     : _hold_state(hold_state::MELEE),
-            _sprite(bn::sprite_items::player.create_sprite(0, 0, MELEE_ANIM_FRAMES[0].sprite_index)),
+      _sprite(bn::sprite_items::player.create_sprite(0, 0, MELEE_ANIM_FRAMES[0].sprite_index)),
+      _exit_pointer_sprite(bn::sprite_items::pointer.create_sprite(0, 0)),
       _rotation_center_position(0, 0),
       _world_position(0, 0),
       _is_attacking(false),
@@ -29,6 +32,19 @@ player::player()
 
 player::~player()
 {
+}
+
+void player::_update_exit_pointer(const exit_route& exit_route)
+{
+    const bn::fixed_point direction = exit_route.position() - _rotation_center_position;
+    _exit_pointer_sprite.set_position(_rotation_center_position);
+    _exit_pointer_sprite.set_visible(exit_route.is_available());
+
+    if (direction.x() != 0 || direction.y() != 0)
+    {
+        _exit_pointer_sprite.set_rotation_angle_safe(
+            bn::degrees_atan2(-direction.y().round_integer(), direction.x().round_integer()));
+    }
 }
 
 const bn::fixed_point& player::position() const
@@ -47,6 +63,7 @@ void player::start_exit_transition()
     _transition_sprite_horizontal_scale = _sprite.horizontal_scale();
     _transition_sprite_vertical_scale = _sprite.vertical_scale();
     _sprite.set_bg_priority(0);
+    _exit_pointer_sprite.set_visible(false);
 
     if(_attack_hitbox_sprite)
     {
@@ -62,7 +79,7 @@ void player::update_exit_transition(const bn::fixed_point& snapshot_position, bn
             _transition_sprite_vertical_scale.safe_multiplication(scale));
 }
 
-bn::fixed_point player::_attack_hitbox_position() const
+bn::fixed_point player::get_attack_hitbox_position() const
 {
     const auto [sin, cos] = bn::degrees_sin_and_cos(_sprite.rotation_angle());
     const bn::fixed_point rotated_player_offset(
@@ -82,7 +99,7 @@ bool player::check_attack_collision(const base_enemy& enemy) const
         return false;
     }
 
-    const bn::fixed_point distance = enemy.position() - _attack_hitbox_position();
+    const bn::fixed_point distance = enemy.position() - get_attack_hitbox_position();
     const bn::fixed collision_radius = ATTACK_COLLIDER_RADIUS + enemy.collider_radius();
 
     if (distance.x() * distance.x() + distance.y() * distance.y() <= collision_radius * collision_radius)
@@ -93,7 +110,8 @@ bool player::check_attack_collision(const base_enemy& enemy) const
     return false;
 }
 
-bn::fixed_point player::update(bn::fixed_point movement, const walls& walls)
+bn::fixed_point player::update(
+    bn::fixed_point movement, const walls& walls, const exit_route& exit_route)
 {
     // <-- TODO: Slightly pan camera towards the looking direction?
 
@@ -106,7 +124,7 @@ bn::fixed_point player::update(bn::fixed_point movement, const walls& walls)
         _sprite.set_tiles(bn::sprite_items::player.tiles_item(), MELEE_ANIM_FRAMES[_attack_anim_index].sprite_index); // <-- IF MELEE ONLY
     if constexpr(SHOW_HITBOX_ATTACK)
     {
-        _attack_hitbox_sprite.emplace(bn::sprite_items::hitbox.create_sprite(_attack_hitbox_position()));
+        _attack_hitbox_sprite.emplace(bn::sprite_items::hitbox.create_sprite(get_attack_hitbox_position()));
         _attack_hitbox_sprite->set_scale(ATTACK_COLLIDER_RADIUS / HITBOX_SPRITE_RADIUS);
     }
     }
@@ -158,8 +176,10 @@ bn::fixed_point player::update(bn::fixed_point movement, const walls& walls)
 
     if (_attack_hitbox_sprite)
     {
-        _attack_hitbox_sprite->set_position(_attack_hitbox_position());
+        _attack_hitbox_sprite->set_position(get_attack_hitbox_position());
     }
+
+    _update_exit_pointer(exit_route);
 
     return movement;
 }
