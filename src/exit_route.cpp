@@ -1,6 +1,7 @@
 #include "exit_route.h"
 
 #include "bn_log.h"
+#include "bn_music.h"
 
 #include "base_enemy.h"
 #include "player.h"
@@ -80,6 +81,7 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
         else
         {
             _state = exit_state::DONE;
+            bn::music::stop();
             BN_LOG("STAGE CLEARED");
             return _next_scene;
         }
