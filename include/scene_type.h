@@ -3,6 +3,7 @@
 
 enum class scene_type
 {
+    TITLE,
     STORY_1,
     TEST,
     STAGE_2,
