@@ -30,7 +30,7 @@ public:
             game_state* game_state,
             const bn::regular_bg_item& background_item, const bn::regular_bg_item& walls_item,
             const bn::fixed_point& initial_position, const bn::fixed_point& exit_position,
-            std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type game_over_next_scene,
+            std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type restart_scene,
             const wall_data* horizontal_walls, int horizontal_walls_count,
             const wall_data* vertical_walls, int vertical_walls_count);
     virtual ~base_gameplay_scene();
@@ -57,6 +57,7 @@ protected:
     game_state* _game_state;
     int _music_start_delay_frames;
     bool _music_start_handled;
+    scene_type _restart_scene;
     eyelid _eyelid;
 
 private:

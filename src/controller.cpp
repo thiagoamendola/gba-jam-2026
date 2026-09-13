@@ -82,3 +82,8 @@ bool controller::is_any_button_pressed() const
 {
     return bn::keypad::any_pressed();
 }
+
+bool controller::is_start_pressed() const
+{
+    return bn::keypad::start_pressed();
+}

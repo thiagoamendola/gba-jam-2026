@@ -12,6 +12,7 @@ public:
     bn::fixed_point get_smooth_directional();
 
     bool is_any_button_pressed() const;
+    bool is_start_pressed() const;
 
 private:
     const bn::fixed INTERP_STEP = 0.1;

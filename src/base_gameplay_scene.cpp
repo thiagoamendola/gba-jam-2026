@@ -16,7 +16,7 @@ base_gameplay_scene::base_gameplay_scene(
         game_state* game_state,
         const bn::regular_bg_item& background_item, const bn::regular_bg_item& walls_item,
         const bn::fixed_point& initial_position, const bn::fixed_point& exit_position,
-        std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type game_over_next_scene,
+        std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type restart_scene,
         const wall_data* horizontal_walls, int horizontal_walls_count,
         const wall_data* vertical_walls, int vertical_walls_count) :
     _controller(),
@@ -25,10 +25,11 @@ base_gameplay_scene::base_gameplay_scene(
     _walls(&_scenario),
     _bullets(),
     _exit_route(&_player, game_state, &_scenario, exit_position, enemies, exit_next_scene),
-    _game_over_manager(&_controller, game_over_next_scene, game_state),
+    _game_over_manager(&_controller, restart_scene, game_state),
     _game_state(game_state),
     _music_start_delay_frames(0),
     _music_start_handled(false),
+    _restart_scene(restart_scene),
     _eyelid(bn::sprite_items::black_tile, MUSIC_START_DELAY_FRAMES),
     _location_hud_text_generator(common::variable_8x8_sprite_font)
 {
@@ -52,6 +53,11 @@ base_gameplay_scene::~base_gameplay_scene()
 
 bn::optional<scene_type> base_gameplay_scene::update()
 {
+    if (_controller.is_start_pressed())
+    {
+        return _restart_scene;
+    }
+
     handle_music();
     _eyelid.update();
 
