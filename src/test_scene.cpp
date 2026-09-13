@@ -1,7 +1,5 @@
 #include "test_scene.h"
 
-#include "bn_music_items.h"
-
 #include "constants.h"
 #include "stage_1_defs.h"
 
@@ -27,11 +25,7 @@ test_scene::test_scene(game_state* game_state) :
 {
     // bn::music_items::supernovaexplosion.play();
     // bn::music_items::supernovaexplosion_1.play();
-    if (!game_state->skip_music_start)
-    {
-        bn::music_items::supernovaexplosion_2.play(0.7);
-    }
-    game_state->skip_music_start = true;
+
     // bn::music_items::beyond_throughthefire.play();
     // bn::music_items::gameplay_p1.play();
     // bn::music_items::beyond_insidetherobot.play(); // WORKS

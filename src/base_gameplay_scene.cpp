@@ -1,11 +1,13 @@
 #include "base_gameplay_scene.h"
 
-#include "constants.h"
-
 #include "bn_backdrop.h"
 #include "bn_color.h"
 #include "bn_fixed_point.h"
 #include "bn_sstream.h"
+#include "bn_sound_items.h"
+#include "bn_music_items.h"
+
+#include "constants.h"
 
 #include "common_variable_8x8_sprite_font.h"
 
@@ -34,7 +36,15 @@ base_gameplay_scene::base_gameplay_scene(
         _location_hud_text_generator.set_bg_priority(0);
     }
 
-    bn::backdrop::set_color(bn::color(16, 0, 0));
+    bn::backdrop::set_color(bn::color(16, 0, 0)); // <-- MOVE TO EACH LEVEL
+    bn::sound_items::jumpscared.play();
+
+    // Handle music
+    if (!game_state->skip_music_start)
+    {
+        bn::music_items::supernovaexplosion_2.play(0.7);
+        game_state->skip_music_start = true;
+    }
 }
 
 base_gameplay_scene::~base_gameplay_scene()
