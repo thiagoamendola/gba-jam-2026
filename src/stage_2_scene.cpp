@@ -16,7 +16,7 @@ stage_2_scene::stage_2_scene(game_state* game_state) :
         std::initializer_list<base_enemy*>({
             &_melee_enemy1, &_melee_enemy2, &_melee_enemy3, &_melee_enemy4, &_melee_enemy5, &_melee_enemy6,
         }),
-        scene_type::STORY_1, scene_type::STAGE_2,
+        scene_type::STORY_2, scene_type::STAGE_2,
         stage_2_defs::horizontal_walls.data(), stage_2_defs::horizontal_walls.size(),
         stage_2_defs::vertical_walls.data(), stage_2_defs::vertical_walls.size()),
         _melee_enemy1(&_player, bn::fixed_point(97, 230),

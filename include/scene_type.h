@@ -11,6 +11,7 @@ enum class scene_type
     STORY_END,
     TEST,
     STAGE_2,
+    STAGE_3,
 };
 
 #endif
