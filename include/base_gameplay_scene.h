@@ -49,9 +49,13 @@ protected:
     walls _walls;
     
     static constexpr int MAX_BULLETS = 12;
+    static constexpr int MUSIC_START_DELAY_FRAMES = 30;
     bn::vector<bullet, MAX_BULLETS> _bullets;
     exit_route _exit_route;
     game_over_manager _game_over_manager;
+    game_state* _game_state;
+    int _music_start_delay_frames;
+    bool _music_start_handled;
 
 private:
     static constexpr int LOCATION_HUD_MAX_SPRITES = 8;
@@ -66,6 +70,7 @@ private:
     bn::vector<bn::sprite_ptr, LOCATION_HUD_MAX_SPRITES> _location_hud_sprites;
     bn::string<LOCATION_HUD_TEXT_MAX_SIZE> _location_hud_text;
 
+    void handle_music();
     void _update_location_hud();
 };
 

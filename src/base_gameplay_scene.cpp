@@ -25,6 +25,9 @@ base_gameplay_scene::base_gameplay_scene(
     _bullets(),
     _exit_route(&_player, game_state, &_scenario, exit_position, enemies, exit_next_scene),
     _game_over_manager(&_controller, game_over_next_scene, game_state),
+    _game_state(game_state),
+    _music_start_delay_frames(0),
+    _music_start_handled(false),
     _location_hud_text_generator(common::variable_8x8_sprite_font)
 {
     _walls.create_walls(
@@ -39,12 +42,6 @@ base_gameplay_scene::base_gameplay_scene(
     bn::backdrop::set_color(bn::color(16, 0, 0)); // <-- MOVE TO EACH LEVEL
     bn::sound_items::jumpscared.play();
 
-    // Handle music
-    if (!game_state->skip_music_start)
-    {
-        bn::music_items::supernovaexplosion_2.play(0.7);
-        game_state->skip_music_start = true;
-    }
 }
 
 base_gameplay_scene::~base_gameplay_scene()
@@ -53,6 +50,8 @@ base_gameplay_scene::~base_gameplay_scene()
 
 bn::optional<scene_type> base_gameplay_scene::update()
 {
+    handle_music();
+
     if (_exit_route.is_end_animation_playing())
     {
         return _exit_route.update(bn::fixed_point());
@@ -101,6 +100,28 @@ bn::optional<scene_type> base_gameplay_scene::update()
     }
 
     return bn::nullopt;
+}
+
+void base_gameplay_scene::handle_music()
+{
+    if (_music_start_handled)
+    {
+        return;
+    }
+
+    if (_music_start_delay_frames < MUSIC_START_DELAY_FRAMES)
+    {
+        ++_music_start_delay_frames;
+        return;
+    }
+
+    _music_start_handled = true;
+
+    if (!_game_state->skip_music_start)
+    {
+        bn::music_items::supernovaexplosion_2.play(0.7);
+        _game_state->skip_music_start = true;
+    }
 }
 
 void base_gameplay_scene::_update_location_hud()
