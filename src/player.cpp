@@ -28,7 +28,7 @@ player::player()
       _attack_anim_index(0),
       _attack_anim_frame_end(0)
 {
-
+    _exit_pointer_sprite.set_scale(1.5);
 }
 
 player::~player()
