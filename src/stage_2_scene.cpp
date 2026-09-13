@@ -8,8 +8,9 @@
 
 #include "common_variable_8x8_sprite_font.h"
 
-stage_2_scene::stage_2_scene() :
+stage_2_scene::stage_2_scene(game_state* game_state) :
     base_gameplay_scene(
+        game_state,
         bn::regular_bg_items::stage_2, bn::regular_bg_items::stage_2_walls,
         bn::fixed_point(390, 420), bn::fixed_point(369, 166),
         std::initializer_list<base_enemy*>({

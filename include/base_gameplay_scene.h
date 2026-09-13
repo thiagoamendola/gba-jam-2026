@@ -19,12 +19,14 @@
 #include "exit_route.h"
 #include "walls.h"
 #include "game_over_manager.h"
+#include "game_state.h"
 
 
 class base_gameplay_scene : public base_scene
 {
 public:
     base_gameplay_scene(
+            game_state* game_state,
             const bn::regular_bg_item& background_item, const bn::regular_bg_item& walls_item,
             const bn::fixed_point& initial_position, const bn::fixed_point& exit_position,
             std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type game_over_next_scene,

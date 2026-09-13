@@ -5,11 +5,12 @@
 
 #include "melee_enemy.h"
 #include "dog_enemy.h"
+#include "game_state.h"
 
 class stage_2_scene : public base_gameplay_scene
 {
 public:
-    stage_2_scene();
+    explicit stage_2_scene(game_state* game_state);
     virtual ~stage_2_scene();
 
 private:

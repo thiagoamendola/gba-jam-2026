@@ -9,11 +9,12 @@
 #include "bn_regular_bg_items_stage_1.h"
 #include "bn_regular_bg_items_stage_1_walls.h"
 
-test_scene::test_scene() :
+test_scene::test_scene(game_state* game_state) :
     base_gameplay_scene(
+        game_state,
         bn::regular_bg_items::stage_1, bn::regular_bg_items::stage_1_walls,
         bn::fixed_point(370, -370), bn::fixed_point(485, -800),
-        std::initializer_list<base_enemy*>({&_melee_enemy1, &_melee_enemy2, &_ranged_enemy1}), // <-- REMOVE
+        std::initializer_list<base_enemy*>({&_melee_enemy1, &_melee_enemy2}),
         scene_type::STORY_1, scene_type::TEST,
         stage_1_defs::horizontal_walls.data(), stage_1_defs::horizontal_walls.size(),
         stage_1_defs::vertical_walls.data(), stage_1_defs::vertical_walls.size()),
@@ -26,7 +27,11 @@ test_scene::test_scene() :
 {
     // bn::music_items::supernovaexplosion.play();
     // bn::music_items::supernovaexplosion_1.play();
-    bn::music_items::supernovaexplosion_2.play(0.7);
+    if (!game_state->skip_music_start)
+    {
+        bn::music_items::supernovaexplosion_2.play(0.7);
+    }
+    game_state->skip_music_start = true;
     // bn::music_items::beyond_throughthefire.play();
     // bn::music_items::gameplay_p1.play();
     // bn::music_items::beyond_insidetherobot.play(); // WORKS

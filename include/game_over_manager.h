@@ -12,10 +12,12 @@
 #include "controller.h"
 #include "scene_type.h"
 
+struct game_state;
+
 class game_over_manager
 {
 public:
-    game_over_manager(controller *controller, scene_type restart_scene);
+    game_over_manager(controller *controller, scene_type restart_scene, game_state* game_state);
     ~game_over_manager();
 
     bn::optional<scene_type> update();
@@ -28,6 +30,7 @@ private:
 
     controller *_controller;
     scene_type _restart_scene;
+    game_state* _game_state;
 
     bn::regular_bg_ptr _overlay_bg;
     bn::sprite_text_generator _message_text_generator;

@@ -7,10 +7,12 @@
 
 #include "base_scene.h"
 
+struct game_state;
+
 class audio_base_scene : public base_scene
 {
 public:
-    audio_base_scene(int frames_to_end, scene_type next_scene);
+    audio_base_scene(int frames_to_end, scene_type next_scene, game_state* game_state);
     virtual ~audio_base_scene() = 0;
 
     bn::optional<scene_type> update() override;

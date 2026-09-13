@@ -11,6 +11,7 @@
 
 #include "easing.h"
 #include "scene_type.h"
+#include "game_state.h"
 
 class base_enemy;
 class player;
@@ -20,7 +21,7 @@ class exit_route
 {
 public:
     exit_route(
-        player* player, scenario* associated_scenario, const bn::fixed_point& position,
+        player* player, game_state* game_state, scenario* associated_scenario, const bn::fixed_point& position,
         std::initializer_list<base_enemy*> enemies, scene_type next_scene);
     ~exit_route();
 
@@ -68,6 +69,7 @@ private:
     static constexpr bn::fixed CLEAR_DISTANCE_SQUARED = 10 * 10;
 
     player* _player;
+    game_state* _game_state;
     scenario* _associated_scenario;
     bn::vector<base_enemy*, MAX_ENEMIES> _enemies;
 

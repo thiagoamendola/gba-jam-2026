@@ -1,14 +1,18 @@
 #include "game_over_manager.h"
 
+#include "game_state.h"
+
 #include "bn_blending.h"
 #include "bn_fixed.h"
 
 #include "common_variable_8x8_sprite_font.h"
 #include "bn_regular_bg_items_red.h"
 
-game_over_manager::game_over_manager(controller* controller, scene_type restart_scene)
+game_over_manager::game_over_manager(
+                controller* controller, scene_type restart_scene, game_state* game_state)
     : _controller(controller),
     _restart_scene(restart_scene),
+            _game_state(game_state),
       _overlay_bg(bn::regular_bg_items::red.create_bg()),
       _message_text_generator(common::variable_8x8_sprite_font),
       _message("Press any button to try again."),
@@ -54,6 +58,7 @@ bn::optional<scene_type> game_over_manager::update()
     // Restart scene if any button pressed and delay is over.
     if (_elapsed_frames >= RESTART_DELAY && _controller->is_any_button_pressed())
     {
+        _game_state->skip_music_start = true;
         return _restart_scene;
     }
 

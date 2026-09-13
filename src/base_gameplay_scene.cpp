@@ -10,6 +10,7 @@
 #include "common_variable_8x8_sprite_font.h"
 
 base_gameplay_scene::base_gameplay_scene(
+        game_state* game_state,
         const bn::regular_bg_item& background_item, const bn::regular_bg_item& walls_item,
         const bn::fixed_point& initial_position, const bn::fixed_point& exit_position,
         std::initializer_list<base_enemy*> enemies, scene_type exit_next_scene, scene_type game_over_next_scene,
@@ -20,8 +21,8 @@ base_gameplay_scene::base_gameplay_scene(
     _player(),
     _walls(&_scenario),
     _bullets(),
-    _exit_route(&_player, &_scenario, exit_position, enemies, exit_next_scene),
-    _game_over_manager(&_controller, game_over_next_scene),
+    _exit_route(&_player, game_state, &_scenario, exit_position, enemies, exit_next_scene),
+    _game_over_manager(&_controller, game_over_next_scene, game_state),
     _location_hud_text_generator(common::variable_8x8_sprite_font)
 {
     _walls.create_walls(

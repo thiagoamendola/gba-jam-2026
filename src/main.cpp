@@ -7,10 +7,12 @@
 #include "story_1_scene.h"
 #include "test_scene.h"
 #include "base_scene.h"
+#include "game_state.h"
 
 int main()
 {
     bn::core::init();
+    game_state game_state;
 
     bn::unique_ptr<base_scene> scene;
     bn::optional<scene_type> next_scene = scene_type::TEST;
@@ -37,13 +39,13 @@ int main()
                 switch (*next_scene)
                 {
                     case scene_type::STORY_1:
-                        scene = bn::make_unique<story_1_scene>();
+                        scene = bn::make_unique<story_1_scene>(&game_state);
                         break;
                     case scene_type::TEST:
-                        scene = bn::make_unique<test_scene>();
+                        scene = bn::make_unique<test_scene>(&game_state);
                         break;
                     case scene_type::STAGE_2:
-                        scene = bn::make_unique<stage_2_scene>();
+                        scene = bn::make_unique<stage_2_scene>(&game_state);
                         break;
                 }
             }

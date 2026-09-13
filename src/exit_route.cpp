@@ -7,13 +7,14 @@
 #include "base_enemy.h"
 #include "player.h"
 #include "scenario.h"
+#include "game_state.h"
 
 #include "bn_sprite_items_exit.h"
 
 exit_route::exit_route(
-    player *player, scenario *associated_scenario, const bn::fixed_point &position,
+    player *player, game_state *game_state, scenario *associated_scenario, const bn::fixed_point &position,
     std::initializer_list<base_enemy *> enemies, scene_type next_scene)
-    : _player(player),
+    : _player(player), _game_state(game_state),
       _associated_scenario(associated_scenario),
       _position(position),
       _sprite(bn::sprite_items::exit.create_sprite(_position)),
@@ -46,6 +47,7 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
             _state = exit_state::READY;
             _sprite.set_visible(true);
             bn::music_items::beyond_insidetherobot.play();
+            _game_state->skip_music_start = false;
         }
         break;
 

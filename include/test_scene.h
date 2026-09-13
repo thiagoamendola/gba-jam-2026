@@ -3,11 +3,12 @@
 
 #include "base_gameplay_scene.h"
 #include "melee_enemy.h"
+#include "game_state.h"
 
 class test_scene : public base_gameplay_scene
 {
 public:
-    test_scene();
+    explicit test_scene(game_state* game_state);
     virtual ~test_scene();
 
 private:

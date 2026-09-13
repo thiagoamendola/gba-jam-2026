@@ -1,6 +1,6 @@
 #include "audio_base_scene.h"
 
-audio_base_scene::audio_base_scene(int frames_to_end, scene_type next_scene) :
+audio_base_scene::audio_base_scene(int frames_to_end, scene_type next_scene, game_state* game_state) :
     _frames_to_end(frames_to_end),
     _next_scene(next_scene)
 {
