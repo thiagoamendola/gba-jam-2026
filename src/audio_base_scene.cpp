@@ -1,8 +1,11 @@
 #include "audio_base_scene.h"
 
+#include "bn_regular_bg_items_audio_scene_bg.h"
+
 audio_base_scene::audio_base_scene(int frames_to_end, scene_type next_scene, game_state* game_state) :
     _frames_to_end(frames_to_end),
-    _next_scene(next_scene)
+    _next_scene(next_scene),
+    _audio_scene_bg(bn::regular_bg_items::audio_scene_bg.create_bg())
 {
 }
 
@@ -12,6 +15,11 @@ audio_base_scene::~audio_base_scene()
 
 bn::optional<scene_type> audio_base_scene::update()
 {
+    if (_current_frame % AUDIO_SCENE_BG_MOVE_INTERVAL == 0)
+    {
+        _audio_scene_bg.set_x(_audio_scene_bg.x() - 1);
+    }
+
     // Start all events applicable for current frame.
     for (audio_event& event : _audio_events)
     {

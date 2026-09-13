@@ -2,6 +2,7 @@
 #define AUDIO_BASE_SCENE_H
 
 #include "bn_optional.h"
+#include "bn_regular_bg_ptr.h"
 #include "bn_sound_item.h"
 #include "bn_vector.h"
 
@@ -29,10 +30,12 @@ private:
     };
 
     static constexpr int MAX_AUDIO_EVENTS = 16;
+    static constexpr int AUDIO_SCENE_BG_MOVE_INTERVAL = 4;
 
     int _frames_to_end;
     int _current_frame = 0;
     scene_type _next_scene;
+    bn::regular_bg_ptr _audio_scene_bg;
     bn::vector<audio_event, MAX_AUDIO_EVENTS> _audio_events;
 };
 
