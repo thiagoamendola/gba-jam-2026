@@ -16,8 +16,8 @@ public:
     bn::optional<scene_type> update() override;
 
 private:
-    static constexpr int SCALE_FRAMES = 480;
-    static constexpr int BLACK_WAIT_FRAMES = 120;
+    static constexpr int SCALE_FRAMES = 600;
+    static constexpr int BLACK_WAIT_FRAMES = 180;
     static constexpr int MUSIC_START_DELAY_FRAMES = 40;
     static constexpr int EYELID_DURATION_FRAMES = 40;
     static constexpr bn::fixed START_SCALE = bn::fixed(2.0);
