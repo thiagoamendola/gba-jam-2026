@@ -12,10 +12,9 @@ public:
         audio_base_scene(570, scene_type::STAGE_2, game_state)
     {
         play_audio(bn::sound_items::brushing_teeth, 30);
-        play_audio(bn::sound_items::filling_sink, 90);
-        play_audio(bn::sound_items::door_close, 270);
-        play_audio(bn::sound_items::crowd_talking, 330); // <-- Maybe replace?
-        // <-- Add some transport sounds 
+        play_audio(bn::sound_items::filling_sink, 100);
+        play_audio(bn::sound_items::door_close, 280);
+        play_audio(bn::sound_items::crowd_talking, 360);
     };
 };
 
