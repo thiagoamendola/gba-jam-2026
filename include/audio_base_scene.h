@@ -1,6 +1,7 @@
 #ifndef AUDIO_BASE_SCENE_H
 #define AUDIO_BASE_SCENE_H
 
+#include "bn_fixed.h"
 #include "bn_optional.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_sound_item.h"
@@ -31,11 +32,15 @@ private:
 
     static constexpr int MAX_AUDIO_EVENTS = 16;
     static constexpr int AUDIO_SCENE_BG_MOVE_INTERVAL = 4;
+    static constexpr int FADE_DURATION = 60;
 
     int _frames_to_end;
     int _current_frame = 0;
     scene_type _next_scene;
     bn::regular_bg_ptr _audio_scene_bg;
+    bn::regular_bg_ptr _black_cover_bg;
+    bn::fixed _fade_alpha = 1;
+    bool _closing = false;
     bn::vector<audio_event, MAX_AUDIO_EVENTS> _audio_events;
 };
 

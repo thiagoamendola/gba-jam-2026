@@ -1,20 +1,53 @@
 #include "audio_base_scene.h"
 
+#include "bn_blending.h"
 #include "bn_regular_bg_items_audio_scene_bg.h"
+#include "bn_regular_bg_items_black.h"
 
 audio_base_scene::audio_base_scene(int frames_to_end, scene_type next_scene, game_state* game_state) :
     _frames_to_end(frames_to_end),
     _next_scene(next_scene),
-    _audio_scene_bg(bn::regular_bg_items::audio_scene_bg.create_bg())
+    _audio_scene_bg(bn::regular_bg_items::audio_scene_bg.create_bg()),
+    _black_cover_bg(bn::regular_bg_items::black.create_bg())
 {
+    _audio_scene_bg.set_priority(1);
+    _black_cover_bg.set_priority(0);
+    _black_cover_bg.set_blending_enabled(true);
+    bn::blending::set_transparency_alpha(_fade_alpha);
 }
 
 audio_base_scene::~audio_base_scene()
 {
+    bn::blending::set_transparency_alpha(0);
 }
 
 bn::optional<scene_type> audio_base_scene::update()
 {
+    if (_closing)
+    {
+        _fade_alpha += bn::fixed(1) / FADE_DURATION;
+
+        if (_fade_alpha > 1)
+        {
+            _fade_alpha = 1;
+        }
+
+        bn::blending::set_transparency_alpha(_fade_alpha);
+
+        if (++_current_frame >= FADE_DURATION)
+        {
+            return _next_scene;
+        }
+
+        return bn::nullopt;
+    }
+
+    if (_current_frame < FADE_DURATION)
+    {
+        _fade_alpha = 1 - bn::fixed(_current_frame + 1) / FADE_DURATION;
+        bn::blending::set_transparency_alpha(_fade_alpha);
+    }
+
     if (_current_frame % AUDIO_SCENE_BG_MOVE_INTERVAL == 0)
     {
         _audio_scene_bg.set_x(_audio_scene_bg.x() - 1);
@@ -30,13 +63,15 @@ bn::optional<scene_type> audio_base_scene::update()
         }
     }
 
-    // End scene if reached the end frame.
     if (_current_frame >= _frames_to_end)
     {
-        return _next_scene;
+        _closing = true;
+        _current_frame = 0;
     }
-
-    _current_frame++;
+    else
+    {
+        _current_frame++;
+    }
 
     return bn::nullopt;
 }
