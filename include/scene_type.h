@@ -7,6 +7,7 @@ enum class scene_type
     END_SCREEN,
     STORY_1,
     STORY_2,
+    STORY_3,
     TEST,
     STAGE_2,
 };
