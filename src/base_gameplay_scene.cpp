@@ -6,6 +6,7 @@
 #include "bn_sstream.h"
 #include "bn_sound_items.h"
 #include "bn_music_items.h"
+#include "bn_sprite_items_black_tile.h"
 
 #include "constants.h"
 
@@ -28,6 +29,7 @@ base_gameplay_scene::base_gameplay_scene(
     _game_state(game_state),
     _music_start_delay_frames(0),
     _music_start_handled(false),
+    _eyelid(bn::sprite_items::black_tile, MUSIC_START_DELAY_FRAMES),
     _location_hud_text_generator(common::variable_8x8_sprite_font)
 {
     _walls.create_walls(
@@ -51,6 +53,7 @@ base_gameplay_scene::~base_gameplay_scene()
 bn::optional<scene_type> base_gameplay_scene::update()
 {
     handle_music();
+    _eyelid.update();
 
     if (_exit_route.is_end_animation_playing())
     {

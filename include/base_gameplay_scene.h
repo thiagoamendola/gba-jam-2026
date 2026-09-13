@@ -20,6 +20,7 @@
 #include "walls.h"
 #include "game_over_manager.h"
 #include "game_state.h"
+#include "eyelid.h"
 
 
 class base_gameplay_scene : public base_scene
@@ -49,13 +50,14 @@ protected:
     walls _walls;
     
     static constexpr int MAX_BULLETS = 12;
-    static constexpr int MUSIC_START_DELAY_FRAMES = 30;
+    static constexpr int MUSIC_START_DELAY_FRAMES = 40;
     bn::vector<bullet, MAX_BULLETS> _bullets;
     exit_route _exit_route;
     game_over_manager _game_over_manager;
     game_state* _game_state;
     int _music_start_delay_frames;
     bool _music_start_handled;
+    eyelid _eyelid;
 
 private:
     static constexpr int LOCATION_HUD_MAX_SPRITES = 8;
