@@ -14,7 +14,7 @@
 #endif
 
 #ifndef SHOW_LOCATION_HUD
-#define SHOW_LOCATION_HUD true
+#define SHOW_LOCATION_HUD false
 #endif
 
 #endif
