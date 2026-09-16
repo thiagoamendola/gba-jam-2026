@@ -1,6 +1,7 @@
 #include "base_enemy.h"
 
 #include "bn_math.h"
+#include "bn_sound_items.h"
 
 #include "constants.h"
 #include "player.h"
@@ -156,6 +157,7 @@ void base_enemy::update(bn::fixed_point player_movement, const walls &walls)
     if (_player->check_attack_collision(*this) &&
         !walls.has_wall_between(_player->world_position(), _world_position))
     {
+        bn::sound_items::breaksound.play();
         destroy();
         return;
     }
