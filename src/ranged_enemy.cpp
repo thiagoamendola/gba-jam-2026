@@ -1,6 +1,7 @@
 #include "ranged_enemy.h"
 
 #include "bn_math.h"
+#include "bn_sound_items.h"
 
 #include "base_gameplay_scene.h"
 #include "player.h"
@@ -84,6 +85,7 @@ bn::fixed_point ranged_enemy::_update_pursue(const walls& walls)
     // If cooldown is over, shoot a bullet!
     if (_shoot_cooldown <= 0)
     {
+        bn::sound_items::silencer.play();
         _scene->create_bullet(_position, _world_position, rotation);
         _shoot_cooldown = SHOOT_COOLDOWN;
     }
