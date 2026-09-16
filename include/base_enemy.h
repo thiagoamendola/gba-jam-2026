@@ -27,7 +27,8 @@ public:
         std::initializer_list<bn::fixed_point> idle_locations,
         const bn::sprite_item &sprite_item, bn::fixed collider_radius,
         bn::fixed walk_speed, bn::fixed run_speed, bn::fixed spot_distance,
-        bn::fixed spot_half_angle, bn::span<const animation_frame> walk_animation_frames);
+        bn::fixed spot_half_angle, bn::fixed touch_distance,
+        bn::span<const animation_frame> walk_animation_frames);
     virtual ~base_enemy() = 0;
 
     void update(bn::fixed_point movement, const walls &walls);
@@ -82,6 +83,7 @@ protected:
     bn::optional<bn::sprite_ptr> _splatter_sprite;
     bn::fixed _walk_speed;
     bn::fixed _spot_distance_squared;
+    bn::fixed _touch_distance_squared;
     bn::fixed _spot_half_angle;
     bn::span<const animation_frame> _walk_animation_frames;
     enemy_state _state;

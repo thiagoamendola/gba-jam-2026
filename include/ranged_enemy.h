@@ -15,6 +15,7 @@ public:
     static constexpr bn::fixed RANGED_RUN_SPEED = 2;
     static constexpr bn::fixed SPOT_DISTANCE = 95;
     static constexpr bn::fixed SPOT_HALF_ANGLE = 40;
+    static constexpr bn::fixed TOUCH_DISTANCE = 18;
     static constexpr bn::fixed SHOOT_DISTANCE = 70;
     static constexpr int SHOOT_DELAY = 5;
     static constexpr int SHOOT_COOLDOWN = 20;

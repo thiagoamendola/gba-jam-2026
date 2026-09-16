@@ -13,8 +13,8 @@ public:
     static constexpr bn::fixed DOG_WALK_SPEED = 1.5;
     static constexpr bn::fixed DOG_RUN_SPEED = 3;
     static constexpr bn::fixed SPOT_DISTANCE = 120;
-    static constexpr bn::fixed SPOT_DISTANCE_SQUARED = SPOT_DISTANCE * SPOT_DISTANCE;
     static constexpr bn::fixed SPOT_HALF_ANGLE = 45;
+    static constexpr bn::fixed TOUCH_DISTANCE = 15;
     static constexpr int MAX_IDLE_LOCATIONS = 8;
 
     enum dog_frame_index

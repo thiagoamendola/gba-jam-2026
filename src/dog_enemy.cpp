@@ -13,7 +13,7 @@ dog_enemy::dog_enemy(
     base_enemy(
             player, position, idle_locations, bn::sprite_items::dog,
             COLLIDER_RADIUS, DOG_WALK_SPEED, DOG_RUN_SPEED, SPOT_DISTANCE, SPOT_HALF_ANGLE,
-            bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT))
+            TOUCH_DISTANCE, bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT))
 {
 }
 

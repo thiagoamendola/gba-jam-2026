@@ -15,7 +15,7 @@ ranged_enemy::ranged_enemy(
     base_enemy(
             player, position, idle_locations, bn::sprite_items::robot,
             COLLIDER_RADIUS, RANGED_WALK_SPEED, RANGED_RUN_SPEED, SPOT_DISTANCE, SPOT_HALF_ANGLE,
-            bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT)),
+            TOUCH_DISTANCE, bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT)),
     _scene(scene)
 {
 }

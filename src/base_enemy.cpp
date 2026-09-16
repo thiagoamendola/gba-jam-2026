@@ -1,6 +1,7 @@
 #include "base_enemy.h"
 
 #include "bn_math.h"
+#include "bn_log.h"
 #include "bn_random.h"
 #include "bn_sound_items.h"
 
@@ -15,7 +16,8 @@ base_enemy::base_enemy (
     std::initializer_list<bn::fixed_point> idle_locations,
     const bn::sprite_item &sprite_item, bn::fixed collider_radius,
     bn::fixed walk_speed, bn::fixed run_speed, bn::fixed spot_distance,
-    bn::fixed spot_half_angle, bn::span<const animation_frame> walk_animation_frames) : 
+    bn::fixed spot_half_angle, bn::fixed touch_distance,
+    bn::span<const animation_frame> walk_animation_frames) : 
         _player(player),
         _position(position),
         _world_position(position),
@@ -25,6 +27,7 @@ base_enemy::base_enemy (
         _sprite(sprite_item.create_sprite(_position)),
         _walk_speed(walk_speed),
         _spot_distance_squared(spot_distance * spot_distance),
+        _touch_distance_squared(touch_distance * touch_distance),
         _spot_half_angle(spot_half_angle),
         _walk_animation_frames(walk_animation_frames),
         _state(enemy_state::IDLE),
@@ -122,6 +125,15 @@ void base_enemy::update(bn::fixed_point player_movement, const walls &walls)
                 _state = enemy_state::PURSUE;
 #endif
             }
+        }
+
+        // Check if player is too close so it's touching the enemy, which should also trigger it.
+        BN_LOG("Player distance squared: ", player_distance_squared, " Touch distance squared: ", _touch_distance_squared);
+        if (player_distance_squared < _touch_distance_squared)
+        {
+#if !INVISIBLE
+            _state = enemy_state::PURSUE;
+#endif
         }
     }
 

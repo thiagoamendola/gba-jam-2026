@@ -14,7 +14,7 @@ melee_enemy::melee_enemy(
     base_enemy(
             player, position, idle_locations, bn::sprite_items::robot,
             COLLIDER_RADIUS, MELEE_WALK_SPEED, MELEE_RUN_SPEED, SPOT_DISTANCE, SPOT_HALF_ANGLE,
-            bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT))
+            TOUCH_DISTANCE, bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT))
 {
 }
 
