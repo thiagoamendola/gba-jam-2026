@@ -22,14 +22,27 @@ public:
         IDLE = 0,
         WALK_1 = 1,
         WALK_2 = 2,
-        DEAD = 3,
+        WALK_3 = 3,
+        WALK_4 = 4,
+        WALK_5 = 5,
+        WALK_6 = 6,
+        DEAD = 7,
     };
 
     static constexpr base_enemy::animation_frame WALK_ANIM_FRAMES[] = {
         { dog_frame_index::IDLE, 10 },
-        { dog_frame_index::WALK_1, 12 },
+        { dog_frame_index::WALK_1, 3 },
+        { dog_frame_index::WALK_2, 3 },
+        { dog_frame_index::WALK_3, 4 },
+        { dog_frame_index::WALK_2, 3 },
+        { dog_frame_index::WALK_1, 3 },
         { dog_frame_index::IDLE, 10 },
-        { dog_frame_index::WALK_2, 12 },
+        { dog_frame_index::WALK_4, 3 },
+        { dog_frame_index::WALK_5, 3 },
+        { dog_frame_index::WALK_6, 4 },
+        { dog_frame_index::WALK_5, 3 },
+        { dog_frame_index::WALK_4, 3 },
+
     };
     static constexpr int WALK_ANIM_COUNT = sizeof(WALK_ANIM_FRAMES) / sizeof(WALK_ANIM_FRAMES[0]);
 

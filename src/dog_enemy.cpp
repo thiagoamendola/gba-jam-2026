@@ -5,13 +5,13 @@
 #include "player.h"
 #include "walls.h"
 
-#include "bn_sprite_items_dog.h"
+#include "bn_sprite_items_dog_new.h"
 
 dog_enemy::dog_enemy(
         player* player, const bn::fixed_point& position,
         std::initializer_list<bn::fixed_point> idle_locations) :
     base_enemy(
-            player, position, idle_locations, bn::sprite_items::dog,
+            player, position, idle_locations, bn::sprite_items::dog_new,
             COLLIDER_RADIUS, DOG_WALK_SPEED, DOG_RUN_SPEED, SPOT_DISTANCE, SPOT_HALF_ANGLE,
             TOUCH_DISTANCE, bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT))
 {

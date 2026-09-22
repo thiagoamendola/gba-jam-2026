@@ -11,25 +11,25 @@
 namespace stage_1_defs
 {
     constexpr inline std::array<wall_data, 8> horizontal_walls = {
-        wall_data{ bn::fixed_point(584, 16), bn::fixed_point(664, 16) },
-        wall_data{ bn::fixed_point(376, 288), bn::fixed_point(584, 288) },
-        wall_data{ bn::fixed_point(480, 392), bn::fixed_point(568, 392) },
-        wall_data{ bn::fixed_point(88, 424), bn::fixed_point(376, 424) },
-        wall_data{ bn::fixed_point(480, 520), bn::fixed_point(568, 520) },
-        wall_data{ bn::fixed_point(200, 536), bn::fixed_point(368, 536) },
-        wall_data{ bn::fixed_point(368, 616), bn::fixed_point(664, 616) },
+        wall_data{ bn::fixed_point(544, 24), bn::fixed_point(600, 24) },
+        wall_data{ bn::fixed_point(376, 328), bn::fixed_point(544, 328) },
+        wall_data{ bn::fixed_point(448, 400), bn::fixed_point(528, 400) },
+        wall_data{ bn::fixed_point(88, 456), bn::fixed_point(376, 456) },
+        wall_data{ bn::fixed_point(200, 536), bn::fixed_point(376, 536) },
+        wall_data{ bn::fixed_point(448, 544), bn::fixed_point(528, 544) },
+        wall_data{ bn::fixed_point(376, 616), bn::fixed_point(600, 616) },
         wall_data{ bn::fixed_point(88, 920), bn::fixed_point(200, 920) },
     };
 
     constexpr inline std::array<wall_data, 8> vertical_walls = {
-        wall_data{ bn::fixed_point(88, 424), bn::fixed_point(88, 920) },
+        wall_data{ bn::fixed_point(88, 456), bn::fixed_point(88, 920) },
         wall_data{ bn::fixed_point(200, 536), bn::fixed_point(200, 920) },
-        wall_data{ bn::fixed_point(368, 536), bn::fixed_point(368, 616) },
-        wall_data{ bn::fixed_point(376, 288), bn::fixed_point(376, 424) },
-        wall_data{ bn::fixed_point(480, 392), bn::fixed_point(480, 520) },
-        wall_data{ bn::fixed_point(568, 392), bn::fixed_point(568, 520) },
-        wall_data{ bn::fixed_point(584, 16), bn::fixed_point(584, 288) },
-        wall_data{ bn::fixed_point(664, 16), bn::fixed_point(664, 616) },
+        wall_data{ bn::fixed_point(376, 328), bn::fixed_point(376, 456) },
+        wall_data{ bn::fixed_point(376, 536), bn::fixed_point(376, 616) },
+        wall_data{ bn::fixed_point(448, 400), bn::fixed_point(448, 544) },
+        wall_data{ bn::fixed_point(528, 400), bn::fixed_point(528, 544) },
+        wall_data{ bn::fixed_point(544, 24), bn::fixed_point(544, 328) },
+        wall_data{ bn::fixed_point(600, 24), bn::fixed_point(600, 616) },
     };
 
 }
