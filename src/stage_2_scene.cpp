@@ -27,10 +27,10 @@ stage_2_scene::stage_2_scene(game_state* game_state) :
             {bn::fixed_point(160, 225), bn::fixed_point(260, 225)}),
         _melee_enemy4(&_player, bn::fixed_point(200, 260),
             {bn::fixed_point(200, 260), bn::fixed_point(259, 301), bn::fixed_point(163, 274),}),
-        _melee_enemy5(&_player, bn::fixed_point(70, 100),
-            {bn::fixed_point(70, 100), bn::fixed_point(70, 40), bn::fixed_point(250, 40), bn::fixed_point(250, 100)}),
-        _melee_enemy6(&_player, bn::fixed_point(70, 40),
-            {bn::fixed_point(70, 40), bn::fixed_point(250, 40), bn::fixed_point(250, 100), bn::fixed_point(70, 100)})
+        _melee_enemy5(&_player, bn::fixed_point(67, 111),
+            {bn::fixed_point(67, 111), bn::fixed_point(67, 73), bn::fixed_point(267, 73), bn::fixed_point(267, 111)}),
+        _melee_enemy6(&_player, bn::fixed_point(267, 73),
+            {bn::fixed_point(267, 73), bn::fixed_point(267, 111), bn::fixed_point(67, 111), bn::fixed_point(67, 73)})
 {
 }
 

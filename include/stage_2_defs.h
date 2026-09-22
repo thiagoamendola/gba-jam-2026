@@ -12,7 +12,7 @@ namespace stage_2_defs
 {
     constexpr inline std::array<wall_data, 9> horizontal_walls = {
         wall_data{ bn::fixed_point(88, 40), bn::fixed_point(152, 40) },
-        wall_data{ bn::fixed_point(152, 80), bn::fixed_point(416, 80) },
+        wall_data{ bn::fixed_point(152, 128), bn::fixed_point(416, 128) },
         wall_data{ bn::fixed_point(192, 232), bn::fixed_point(376, 232) },
         wall_data{ bn::fixed_point(416, 232), bn::fixed_point(512, 232) },
         wall_data{ bn::fixed_point(88, 280), bn::fixed_point(176, 280) },
@@ -26,7 +26,7 @@ namespace stage_2_defs
         wall_data{ bn::fixed_point(88, 40), bn::fixed_point(88, 432) },
         wall_data{ bn::fixed_point(152, 40), bn::fixed_point(152, 232) },
         wall_data{ bn::fixed_point(248, 280), bn::fixed_point(248, 392) },
-        wall_data{ bn::fixed_point(416, 80), bn::fixed_point(416, 232) },
+        wall_data{ bn::fixed_point(416, 128), bn::fixed_point(416, 232) },
         wall_data{ bn::fixed_point(416, 280), bn::fixed_point(416, 432) },
         wall_data{ bn::fixed_point(512, 232), bn::fixed_point(512, 280) },
     };
