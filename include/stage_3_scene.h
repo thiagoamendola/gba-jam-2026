@@ -19,9 +19,9 @@ private:
     melee_enemy _enemy2;
     ranged_enemy _enemy3;
     ranged_enemy _enemy4;
-    dog_enemy _enemy5;
+    melee_enemy _enemy5;
     ranged_enemy _enemy6;
-    dog_enemy _enemy7;
+    melee_enemy _enemy7;
     ranged_enemy _enemy8;
 
     void _update_enemies(const bn::fixed_point& movement) override;

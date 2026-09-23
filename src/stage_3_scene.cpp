@@ -10,7 +10,7 @@ stage_3_scene::stage_3_scene(game_state* game_state) :
     base_gameplay_scene(
         game_state,
         bn::regular_bg_items::stage_3, bn::regular_bg_items::stage_3_walls,
-        bn::fixed_point(-70, 440), bn::fixed_point(-523, 18),
+        bn::fixed_point(-70, 440), bn::fixed_point(-554, 5),
         std::initializer_list<base_enemy*>({
             &_enemy1, &_enemy2, &_enemy3, &_enemy4, &_enemy5, &_enemy6, &_enemy7, &_enemy8
         }),
@@ -26,13 +26,13 @@ stage_3_scene::stage_3_scene(game_state* game_state) :
         _enemy4(this, &_player, bn::fixed_point(-330, 191),
             {bn::fixed_point(-295, 191), bn::fixed_point(-305, 289), bn::fixed_point(-330, 191)}),
         _enemy5(&_player, bn::fixed_point(-395, 185),
-            {bn::fixed_point(-395, 185), bn::fixed_point(-395, 75)}),
+            {bn::fixed_point(-395, 185), bn::fixed_point(-395, 8)}),
         _enemy6(this, &_player, bn::fixed_point(-440, 70),
-            {bn::fixed_point(-440, 70), bn::fixed_point(-440, 190)}),
+            {bn::fixed_point(-440, 8), bn::fixed_point(-440, 190)}),
         _enemy7(&_player, bn::fixed_point(-477, 194),
-            {bn::fixed_point(-477, 194), bn::fixed_point(-477, 75)}),
+            {bn::fixed_point(-477, 194), bn::fixed_point(-477, 8)}),
         _enemy8(this, &_player, bn::fixed_point(-522, 75),
-            {bn::fixed_point(-522, 75), bn::fixed_point(-522, 190)})
+            {bn::fixed_point(-522, 8), bn::fixed_point(-522, 190)})
 {
 }
 

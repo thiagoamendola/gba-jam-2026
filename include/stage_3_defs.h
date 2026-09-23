@@ -11,11 +11,11 @@
 namespace stage_3_defs
 {
     constexpr inline std::array<wall_data, 10> horizontal_walls = {
+        wall_data{ bn::fixed_point(0, 48), bn::fixed_point(208, 48) },
         wall_data{ bn::fixed_point(304, 48), bn::fixed_point(608, 48) },
-        wall_data{ bn::fixed_point(32, 64), bn::fixed_point(80, 64) },
+        wall_data{ bn::fixed_point(0, 96), bn::fixed_point(32, 96) },
         wall_data{ bn::fixed_point(520, 96), bn::fixed_point(608, 96) },
         wall_data{ bn::fixed_point(352, 104), bn::fixed_point(464, 104) },
-        wall_data{ bn::fixed_point(80, 120), bn::fixed_point(208, 120) },
         wall_data{ bn::fixed_point(352, 184), bn::fixed_point(464, 184) },
         wall_data{ bn::fixed_point(208, 232), bn::fixed_point(304, 232) },
         wall_data{ bn::fixed_point(352, 232), bn::fixed_point(520, 232) },
@@ -24,12 +24,12 @@ namespace stage_3_defs
     };
 
     constexpr inline std::array<wall_data, 14> vertical_walls = {
-        wall_data{ bn::fixed_point(32, 64), bn::fixed_point(32, 280) },
-        wall_data{ bn::fixed_point(80, 64), bn::fixed_point(80, 120) },
-        wall_data{ bn::fixed_point(80, 160), bn::fixed_point(80, 240) },
-        wall_data{ bn::fixed_point(120, 160), bn::fixed_point(120, 240) },
-        wall_data{ bn::fixed_point(160, 160), bn::fixed_point(160, 240) },
-        wall_data{ bn::fixed_point(208, 120), bn::fixed_point(208, 232) },
+        wall_data{ bn::fixed_point(0, 48), bn::fixed_point(0, 96) },
+        wall_data{ bn::fixed_point(32, 96), bn::fixed_point(32, 280) },
+        wall_data{ bn::fixed_point(80, 96), bn::fixed_point(80, 232) },
+        wall_data{ bn::fixed_point(120, 96), bn::fixed_point(120, 232) },
+        wall_data{ bn::fixed_point(160, 96), bn::fixed_point(160, 232) },
+        wall_data{ bn::fixed_point(208, 48), bn::fixed_point(208, 232) },
         wall_data{ bn::fixed_point(232, 280), bn::fixed_point(232, 392) },
         wall_data{ bn::fixed_point(304, 48), bn::fixed_point(304, 232) },
         wall_data{ bn::fixed_point(304, 288), bn::fixed_point(304, 344) },
