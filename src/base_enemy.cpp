@@ -128,7 +128,6 @@ void base_enemy::update(bn::fixed_point player_movement, const walls &walls)
         }
 
         // Check if player is too close so it's touching the enemy, which should also trigger it.
-        BN_LOG("Player distance squared: ", player_distance_squared, " Touch distance squared: ", _touch_distance_squared);
         if (player_distance_squared < _touch_distance_squared)
         {
 #if !INVISIBLE
