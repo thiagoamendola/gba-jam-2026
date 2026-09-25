@@ -9,7 +9,7 @@ class story_3_scene : public audio_base_scene
 {
 public:
     explicit story_3_scene(game_state* game_state) :
-        audio_base_scene(400, scene_type::STAGE_2, game_state)
+        audio_base_scene(400, scene_type::STAGE_4, game_state)
     {
         play_audio(bn::sound_items::crowd_talking, 30);
         play_audio(bn::sound_items::coffee_cup, 180);

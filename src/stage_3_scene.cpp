@@ -14,7 +14,7 @@ stage_3_scene::stage_3_scene(game_state* game_state) :
         std::initializer_list<base_enemy*>({
             &_enemy1, &_enemy2, &_enemy3, &_enemy4, &_enemy5, &_enemy6, &_enemy7, &_enemy8
         }),
-        scene_type::STORY_END, scene_type::STAGE_3,
+        scene_type::STORY_3, scene_type::STAGE_3,
         stage_3_defs::horizontal_walls.data(), stage_3_defs::horizontal_walls.size(),
         stage_3_defs::vertical_walls.data(), stage_3_defs::vertical_walls.size()),
         _enemy1(&_player, bn::fixed_point(-135, 55),
