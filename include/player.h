@@ -52,7 +52,7 @@ private:
     static constexpr bn::fixed_point PLAYER_SPRITE_OFFSET = bn::fixed_point(-8, 0);
     static constexpr bn::fixed PLAYER_COLLIDER_RADIUS = 8;
     static constexpr bn::fixed_point ATTACK_COLLIDER_OFFSET = bn::fixed_point(5, -1);
-    static constexpr bn::fixed ATTACK_COLLIDER_RADIUS = 13;
+    static constexpr bn::fixed ATTACK_COLLIDER_RADIUS = 14;
     static constexpr bn::fixed HITBOX_SPRITE_RADIUS = 5;
     static constexpr animation_frame MELEE_ANIM_FRAMES[] = {
         { player_frame_index::MELEE_1, 3 },
