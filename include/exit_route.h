@@ -65,7 +65,7 @@ private:
         DONE,
     };
 
-    static constexpr int MAX_ENEMIES = 8;
+    static constexpr int MAX_ENEMIES = 32;
     static constexpr bn::fixed CLEAR_DISTANCE_SQUARED = 10 * 10;
 
     player* _player;
