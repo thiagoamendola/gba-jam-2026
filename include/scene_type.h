@@ -12,6 +12,7 @@ enum class scene_type
     TEST,
     STAGE_2,
     STAGE_3,
+    STAGE_4,
 };
 
 #endif
