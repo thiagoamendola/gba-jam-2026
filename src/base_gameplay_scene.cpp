@@ -53,6 +53,8 @@ base_gameplay_scene::~base_gameplay_scene()
 
 bn::optional<scene_type> base_gameplay_scene::update()
 {
+    _backdrop_manager.update();
+
     if (_controller.is_start_pressed())
     {
         return _restart_scene;
@@ -97,6 +99,7 @@ bn::optional<scene_type> base_gameplay_scene::update()
     {
         _location_hud_sprites.clear();
         _location_hud_text.clear();
+        _backdrop_manager.stop_fade();
         bn::backdrop::set_color(bn::color(0, 0, 0));
         return bn::nullopt;
     }

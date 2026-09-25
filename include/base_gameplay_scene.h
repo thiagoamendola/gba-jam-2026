@@ -21,6 +21,7 @@
 #include "game_over_manager.h"
 #include "game_state.h"
 #include "eyelid.h"
+#include "backdrop_manager.h"
 
 
 class base_gameplay_scene : public base_scene
@@ -59,6 +60,7 @@ protected:
     bool _music_start_handled;
     scene_type _restart_scene;
     eyelid _eyelid;
+    backdrop_manager _backdrop_manager;
 
 private:
     static constexpr int LOCATION_HUD_MAX_SPRITES = 8;

@@ -6,8 +6,8 @@ Thiago Amendola
 
 ## Art
 
-André Amorim
 Thiago Amendola
+André Amorim
 
 ## Music
 
@@ -27,3 +27,4 @@ Door closed_2 by Weak_Hero -- https://freesound.org/s/652347/ -- License: Creati
 Sink running.mp3 by EmilyPlitnick -- https://freesound.org/s/444042/ -- License: Creative Commons 0
 AMBTraf Ambience car passby Distant traffic muffled BY SKY SOUND LIBRARY.wav by SFXAFRIK -- https://freesound.org/s/582966/ -- License: Attribution 4.0
 Ice Shatter SFX by ImATaco -- https://freesound.org/s/814954/ -- License: Attribution 4.0
+Gun Silencer 2.mp3 by mrrap4food -- https://freesound.org/s/618995/ -- License: Creative Commons 0
