@@ -18,11 +18,11 @@ test_scene::test_scene(game_state* game_state) :
         scene_type::STORY_1, scene_type::TEST,
         stage_1_defs::horizontal_walls.data(), stage_1_defs::horizontal_walls.size(),
         stage_1_defs::vertical_walls.data(), stage_1_defs::vertical_walls.size()),
-        _melee_enemy1(&_player, bn::fixed_point(272, -513),
+        _melee_enemy1(this, &_player, bn::fixed_point(272, -513),
             {bn::fixed_point(272, -513), bn::fixed_point(423, -513)}),
-        _melee_enemy2(&_player, bn::fixed_point(423, -315),
+        _melee_enemy2(this, &_player, bn::fixed_point(423, -315),
             {bn::fixed_point(423, -510), bn::fixed_point(423, -315)}),
-        _melee_enemy3(&_player, bn::fixed_point(195, -380), // <-- REMOVE
+        _melee_enemy3(this, &_player, bn::fixed_point(195, -380), // <-- REMOVE
             {bn::fixed_point(200, -380)})
 {
     // bn::music_items::supernovaexplosion.play();

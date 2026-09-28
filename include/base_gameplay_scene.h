@@ -16,6 +16,7 @@
 #include "bullet.h"
 #include "controller.h"
 #include "player.h"
+#include "splatter_anim_pool.h"
 #include "exit_route.h"
 #include "walls.h"
 #include "game_over_manager.h"
@@ -38,6 +39,11 @@ public:
 
     bn::optional<scene_type> update() override;
 
+    [[nodiscard]] splatter_anim_pool& splatter_pool()
+    {
+        return _splatter_pool;
+    }
+
     void create_bullet(
         const bn::fixed_point& position, const bn::fixed_point& world_position,
         bn::fixed rotation);
@@ -49,6 +55,7 @@ protected:
     scenario _scenario;
     player _player;
     walls _walls;
+    splatter_anim_pool _splatter_pool;
     
     static constexpr int MAX_BULLETS = 12;
     static constexpr int MUSIC_START_DELAY_FRAMES = 40;

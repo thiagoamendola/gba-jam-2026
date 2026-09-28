@@ -19,17 +19,17 @@ stage_2_scene::stage_2_scene(game_state* game_state) :
         scene_type::STORY_2, scene_type::STAGE_2,
         stage_2_defs::horizontal_walls.data(), stage_2_defs::horizontal_walls.size(),
         stage_2_defs::vertical_walls.data(), stage_2_defs::vertical_walls.size()),
-        _melee_enemy1(&_player, bn::fixed_point(97, 230),
+        _melee_enemy1(this, &_player, bn::fixed_point(97, 230),
             {bn::fixed_point(97, 230), bn::fixed_point(-2, 230)}),
-        _melee_enemy2(&_player, bn::fixed_point(83, 304),
+        _melee_enemy2(this, &_player, bn::fixed_point(83, 304),
             {}),
-        _melee_enemy3(&_player, bn::fixed_point(160, 225),
+        _melee_enemy3(this, &_player, bn::fixed_point(160, 225),
             {bn::fixed_point(160, 225), bn::fixed_point(260, 225)}),
-        _melee_enemy4(&_player, bn::fixed_point(200, 260),
+        _melee_enemy4(this, &_player, bn::fixed_point(200, 260),
             {bn::fixed_point(200, 260), bn::fixed_point(259, 301), bn::fixed_point(163, 274),}),
-        _melee_enemy5(&_player, bn::fixed_point(67, 111),
+        _melee_enemy5(this, &_player, bn::fixed_point(67, 111),
             {bn::fixed_point(67, 111), bn::fixed_point(67, 73), bn::fixed_point(267, 73), bn::fixed_point(267, 111)}),
-        _melee_enemy6(&_player, bn::fixed_point(267, 73),
+        _melee_enemy6(this, &_player, bn::fixed_point(267, 73),
             {bn::fixed_point(267, 73), bn::fixed_point(267, 111), bn::fixed_point(67, 111), bn::fixed_point(67, 73)})
 {
 }
@@ -44,6 +44,6 @@ void stage_2_scene::_update_enemies(const bn::fixed_point &movement)
     _melee_enemy2.update(movement, _walls);
     _melee_enemy3.update(movement, _walls);
     _melee_enemy4.update(movement, _walls);
-    _melee_enemy5.update(movement, _walls); 
+    _melee_enemy5.update(movement, _walls);
     _melee_enemy6.update(movement, _walls);
 }

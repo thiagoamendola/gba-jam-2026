@@ -81,6 +81,7 @@ bn::optional<scene_type> base_gameplay_scene::update()
 
     movement = _player.update(movement, _walls, _exit_route);
     _scenario.update(movement);
+    _splatter_pool.update(movement);
 
     // Update all existing bullets and remove any inactive ones.
     for (int index = _bullets.size() - 1; index >= 0; --index)

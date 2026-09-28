@@ -3,6 +3,7 @@
 
 #include "base_enemy.h"
 
+class base_gameplay_scene;
 class player;
 class walls;
 
@@ -47,7 +48,7 @@ public:
     static constexpr int WALK_ANIM_COUNT = sizeof(WALK_ANIM_FRAMES) / sizeof(WALK_ANIM_FRAMES[0]);
 
     dog_enemy(
-            player* player, const bn::fixed_point& position,
+            base_gameplay_scene* scene, player* player, const bn::fixed_point& position,
             std::initializer_list<bn::fixed_point> idle_locations);
     ~dog_enemy() override;
 

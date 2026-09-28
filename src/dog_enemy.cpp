@@ -8,10 +8,10 @@
 #include "bn_sprite_items_dog_new.h"
 
 dog_enemy::dog_enemy(
-        player* player, const bn::fixed_point& position,
+    base_gameplay_scene* scene, player* player, const bn::fixed_point& position,
         std::initializer_list<bn::fixed_point> idle_locations) :
     base_enemy(
-            player, position, idle_locations, bn::sprite_items::dog_new,
+        scene, player, position, idle_locations, bn::sprite_items::dog_new,
             COLLIDER_RADIUS, DOG_WALK_SPEED, DOG_RUN_SPEED, SPOT_DISTANCE, SPOT_HALF_ANGLE,
             TOUCH_DISTANCE, bn::span<const base_enemy::animation_frame>(WALK_ANIM_FRAMES, WALK_ANIM_COUNT))
 {
@@ -27,7 +27,6 @@ void dog_enemy::destroy()
     _sprite.set_tiles(_sprite_item.tiles_item(), dog_frame_index::DEAD);
     _sprite.put_below();
     _sprite.set_rotation_angle_safe(_sprite.rotation_angle() + 90);
-    _start_splatter_animation();
 }
 
 bn::fixed_point dog_enemy::_update_pursue(const walls& walls)
