@@ -22,20 +22,10 @@ test_scene::test_scene(game_state* game_state) :
             {bn::fixed_point(272, -513), bn::fixed_point(423, -513)}),
         _melee_enemy2(this, &_player, bn::fixed_point(423, -315),
             {bn::fixed_point(423, -510), bn::fixed_point(423, -315)}),
-        _melee_enemy3(this, &_player, bn::fixed_point(195, -380), // <-- REMOVE
+        _melee_enemy3(this, &_player, bn::fixed_point(195, -380),
             {bn::fixed_point(200, -380)})
 {
-    // bn::music_items::supernovaexplosion.play();
-    // bn::music_items::supernovaexplosion_1.play();
-
-    // bn::music_items::beyond_throughthefire.play();
-    // bn::music_items::gameplay_p1.play();
-    // bn::music_items::beyond_insidetherobot.play(); // WORKS
-    // bn::music_items::onekb.play();
-    // bn::music_items::ekorren_fortressrock.play();
-
-    bn::backdrop::set_color(bn::color(0, 19, 19)); // <-- MOVE TO EACH LEVEL
-    
+    _backdrop_manager.set_color_fade(bn::color(16, 1, 12), bn::color(18, 14, 1));
 }
 
 test_scene::~test_scene()
