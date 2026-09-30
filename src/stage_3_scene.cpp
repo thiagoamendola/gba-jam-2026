@@ -34,6 +34,8 @@ stage_3_scene::stage_3_scene(game_state* game_state) :
         _enemy8(this, &_player, bn::fixed_point(-522, 75),
             {bn::fixed_point(-522, 8), bn::fixed_point(-522, 190)})
 {
+    _backdrop_manager.set_color_fade(bn::color(26, 15, 21), bn::color(16, 7, 31));
+
 }
 
 stage_3_scene::~stage_3_scene()
