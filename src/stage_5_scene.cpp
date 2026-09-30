@@ -2,6 +2,7 @@
 
 #include "bn_regular_bg_items_stage_5.h"
 #include "bn_regular_bg_items_stage_5_walls.h"
+#include "bn_sprite_items_gatito.h"
 #include "stage_5_defs.h"
 
 stage_5_scene::stage_5_scene(game_state* game_state) :
@@ -61,8 +62,8 @@ stage_5_scene::stage_5_scene(game_state* game_state) :
             {bn::fixed_point(212, 392)}),
         _enemy17(this, &_player, bn::fixed_point(302, 400),
             {bn::fixed_point(302, 400), bn::fixed_point(320, 457), bn::fixed_point(219, 451)})
-
 {
+    _backdrop_manager.set_color_fade(bn::color(20, 0, 20), bn::color(25, 9, 2));
 }
 
 stage_5_scene::~stage_5_scene()
