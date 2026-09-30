@@ -63,6 +63,11 @@ void splatter_anim_pool::update(const bn::fixed_point& movement)
                     sprite.set_tiles(bn::sprite_items::splatter.tiles_item(),
                         animation_frames[animation_index].sprite_index);
                 }
+                else
+                {
+                    // Push the splatter to a layer below.
+                    sprite.put_below();
+                }
             }
         }
     }
@@ -77,6 +82,7 @@ void splatter_anim_pool::spawn(const bn::fixed_point& position, bn::fixed rotati
     sprite.set_position(position);
     sprite.set_tiles(bn::sprite_items::splatter.tiles_item(), animation_frames[0].sprite_index);
     sprite.set_rotation_angle_safe(rotation_angle);
+    sprite.put_above();
     sprite.set_visible(true);
     _animation_indexes[index] = 0;
     _animation_frame_ends[index] = 0;
