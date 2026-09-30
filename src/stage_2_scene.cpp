@@ -32,6 +32,7 @@ stage_2_scene::stage_2_scene(game_state* game_state) :
         _melee_enemy6(this, &_player, bn::fixed_point(267, 73),
             {bn::fixed_point(267, 73), bn::fixed_point(267, 111), bn::fixed_point(67, 111), bn::fixed_point(67, 73)})
 {
+    _backdrop_manager.set_color_fade(bn::color(18, 12, 25), bn::color(10, 19, 28));
 }
 
 stage_2_scene::~stage_2_scene()
