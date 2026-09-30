@@ -18,6 +18,8 @@ exit_route::exit_route(
       _associated_scenario(associated_scenario),
       _position(position),
       _sprite(bn::sprite_items::exit.create_sprite(_position)),
+      _sprite_animation(bn::create_sprite_animate_action_forever(
+          _sprite, EXIT_ANIMATION_FRAME_DURATION, bn::sprite_items::exit.tiles_item(), 0, 1, 0, 2)),
       _next_scene(next_scene),
       _state(exit_state::DISABLED),
       _end_animation_frame(0)
@@ -36,6 +38,11 @@ exit_route::~exit_route()
 
 bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_movement)
 {
+    if (_state == exit_state::READY || _state == exit_state::ANIMATING)
+    {
+        _sprite_animation.update();
+    }
+
     switch (_state)
     {
     case exit_state::DISABLED:

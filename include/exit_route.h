@@ -6,6 +6,7 @@
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 #include "bn_optional.h"
+#include "bn_sprite_animate_actions.h"
 #include "bn_sprite_ptr.h"
 #include "bn_vector.h"
 
@@ -67,6 +68,8 @@ private:
 
     static constexpr int MAX_ENEMIES = 32;
     static constexpr bn::fixed CLEAR_DISTANCE_SQUARED = 10 * 10;
+    static constexpr int EXIT_ANIMATION_FRAME_COUNT = 4;
+    static constexpr int EXIT_ANIMATION_FRAME_DURATION = 5;
 
     player* _player;
     game_state* _game_state;
@@ -75,6 +78,7 @@ private:
 
     bn::fixed_point _position;
     bn::sprite_ptr _sprite;
+    bn::sprite_animate_action<EXIT_ANIMATION_FRAME_COUNT> _sprite_animation;
     transition_sprite_data _transition_sprite;
     scene_type _next_scene;
     exit_state _state;
