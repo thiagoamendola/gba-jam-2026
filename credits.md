@@ -28,3 +28,10 @@ Sink running.mp3 by EmilyPlitnick -- https://freesound.org/s/444042/ -- License:
 AMBTraf Ambience car passby Distant traffic muffled BY SKY SOUND LIBRARY.wav by SFXAFRIK -- https://freesound.org/s/582966/ -- License: Attribution 4.0
 Ice Shatter SFX by ImATaco -- https://freesound.org/s/814954/ -- License: Attribution 4.0
 Gun Silencer 2.mp3 by mrrap4food -- https://freesound.org/s/618995/ -- License: Creative Commons 0
+bus announcement by soundmast123 -- https://freesound.org/s/587795/ -- License: Creative Commons 0
+Digital Alarm.wav by Tempouser -- https://freesound.org/s/123349/ -- License: Creative Commons 0
+microwave by JFM_SoundDesing -- https://freesound.org/s/736474/ -- License: Creative Commons 0
+
+# Font
+
+Edit Undo by Brian Kent (Free for personal/commercial use)
