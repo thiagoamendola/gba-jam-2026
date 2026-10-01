@@ -9,13 +9,16 @@ class story_end_scene : public audio_base_scene
 {
 public:
     explicit story_end_scene(game_state* game_state) :
-        audio_base_scene(620, scene_type::END_SCREEN, game_state)
+        audio_base_scene(1250, scene_type::END_SCREEN, game_state)
     {
-        play_audio(bn::sound_items::crowd_talking, 30);
-        play_audio(bn::sound_items::door_close, 210);
-        play_audio(bn::sound_items::brushing_teeth, 280);
-        play_audio(bn::sound_items::filling_sink, 290);
-        play_audio(bn::sound_items::exhale, 470);
+        // play_audio(bn::sound_items::crowd_talking, 30);
+        play_audio(bn::sound_items::door_close, 30);
+        play_audio(bn::sound_items::brushing_teeth, 150);
+        play_audio(bn::sound_items::door_close, 350);
+        play_audio(bn::sound_items::exhale, 450);
+        play_audio(bn::sound_items::digital_alarm, 800);
+        play_audio(bn::sound_items::exhale, 950);
+
     };
 };
 
