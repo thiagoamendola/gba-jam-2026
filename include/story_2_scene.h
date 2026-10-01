@@ -9,12 +9,15 @@ class story_2_scene : public audio_base_scene
 {
 public:
     explicit story_2_scene(game_state* game_state) :
-        audio_base_scene(570, scene_type::STAGE_3, game_state)
+        audio_base_scene(770, scene_type::STAGE_3, game_state)
     {
-        play_audio(bn::sound_items::car_traffic, 30);
-        play_audio(bn::sound_items::crowd_talking, 180);
-        play_audio(bn::sound_items::door_close, 210);
+        play_audio(bn::sound_items::bus_announce, 30);
+        play_audio(bn::sound_items::car_traffic, 100);
+        // play_audio(bn::sound_items::crowd_talking, 180);
+        play_audio(bn::sound_items::door_close, 240);
         play_audio(bn::sound_items::keyboard_1, 390);
+        play_audio(bn::sound_items::keyboard_1, 490);
+        play_audio(bn::sound_items::keyboard_1, 590);
     };
 };
 
