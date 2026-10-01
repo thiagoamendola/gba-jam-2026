@@ -12,6 +12,7 @@
 #include "story_1_scene.h"
 #include "story_2_scene.h"
 #include "story_3_scene.h"
+#include "story_4_scene.h"
 #include "story_end_scene.h"
 #include "test_scene.h"
 #include "base_scene.h"
@@ -23,7 +24,7 @@ int main()
     game_state game_state;
 
     bn::unique_ptr<base_scene> scene;
-    bn::optional<scene_type> next_scene = scene_type::STAGE_5;
+    bn::optional<scene_type> next_scene = scene_type::STORY_3;
 
     while(true)
     {
@@ -60,6 +61,9 @@ int main()
                         break;
                     case scene_type::STORY_3:
                         scene = bn::make_unique<story_3_scene>(&game_state);
+                        break;
+                    case scene_type::STORY_4:
+                        scene = bn::make_unique<story_4_scene>(&game_state);
                         break;
                     case scene_type::STORY_END:
                         scene = bn::make_unique<story_end_scene>(&game_state);
