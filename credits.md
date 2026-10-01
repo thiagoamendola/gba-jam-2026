@@ -31,6 +31,7 @@ Gun Silencer 2.mp3 by mrrap4food -- https://freesound.org/s/618995/ -- License: 
 bus announcement by soundmast123 -- https://freesound.org/s/587795/ -- License: Creative Commons 0
 Digital Alarm.wav by Tempouser -- https://freesound.org/s/123349/ -- License: Creative Commons 0
 microwave by JFM_SoundDesing -- https://freesound.org/s/736474/ -- License: Creative Commons 0
+CD_VIE_009FX_Gong_3 by kevp888 -- https://freesound.org/s/710760/ -- License: Attribution 4.0
 
 # Font
 

@@ -3,6 +3,7 @@
 #include "bn_log.h"
 #include "bn_music.h"
 #include "bn_music_items.h"
+#include "bn_sound_items.h"
 
 #include "base_enemy.h"
 #include "player.h"
@@ -54,6 +55,7 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
             _state = exit_state::READY;
             _sprite.set_visible(true);
             bn::music_items::beyond_insidetherobot.play();
+            bn::sound_items::gong.play();
             _game_state->skip_music_start = false;
         }
         break;
