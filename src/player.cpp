@@ -191,7 +191,7 @@ void player::die()
 #if !INVINCIBLE
     _is_dead = true;
     _is_attacking = false;
-    _sprite.set_tiles(bn::sprite_items::player.tiles_item(), player_frame_index::IDLE);
+    _sprite.set_tiles(bn::sprite_items::player.tiles_item(), player_frame_index::MELEE_1);
 #endif
 }
 
