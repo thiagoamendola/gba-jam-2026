@@ -24,7 +24,7 @@ int main()
     game_state game_state;
 
     bn::unique_ptr<base_scene> scene;
-    bn::optional<scene_type> next_scene = scene_type::STORY_3;
+    bn::optional<scene_type> next_scene = scene_type::TITLE;
 
     while(true)
     {

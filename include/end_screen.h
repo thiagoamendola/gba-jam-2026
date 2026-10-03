@@ -3,7 +3,6 @@
 
 #include "bn_affine_bg_ptr.h"
 #include "bn_optional.h"
-#include "bn_regular_bg_ptr.h"
 
 #include "base_scene.h"
 #include "eyelid.h"
@@ -22,9 +21,10 @@ private:
     static constexpr int EYELID_DURATION_FRAMES = 40;
     static constexpr bn::fixed START_SCALE = bn::fixed(2.0);
     static constexpr bn::fixed END_SCALE = bn::fixed(1.1);
+    static constexpr bn::fixed INNER_START_SCALE = bn::fixed(1.1);
 
     bn::affine_bg_ptr _background;
-    bn::regular_bg_ptr _black_background;
+    bn::affine_bg_ptr _inner_background;
     eyelid _eyelid;
     int _elapsed_frames = 0;
     int _black_wait_frames = 0;
