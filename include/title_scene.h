@@ -32,11 +32,22 @@ private:
     static constexpr int FINGER_TRAVEL_FRAMES_2 = 30;
     static constexpr int BACKGROUND_START_Y = 0;
     static constexpr int BACKGROUND_END_Y = -50;
-    static constexpr int FRAMES_TO_NEXT_SCENE = 240;
+
+    static constexpr int APPICON_START_FRAME = FINGER_START_FRAME + FINGER_TRAVEL_FRAMES + FINGER_TRAVEL_FRAMES_2;
+    static constexpr int APPICON_START_Y = 112;
+    static constexpr int APPICON_CENTER_Y = 0;
+    static constexpr int APPICON_TRAVEL_FRAMES = FINGER_TRAVEL_FRAMES_2;
+    static constexpr int APPICON_HOLD_FRAMES = 120;
+    
+    static constexpr int FRAMES_TO_NEXT_SCENE = 
+        APPICON_START_FRAME + 
+        APPICON_TRAVEL_FRAMES + 
+        APPICON_HOLD_FRAMES;
 
     bn::regular_bg_ptr _background;
     bn::regular_bg_ptr _light;
     bn::regular_bg_ptr _finger;
+    bn::sprite_ptr _appicon;
     controller _controller;
     bn::sprite_text_generator _start_message_text_generator;
     bn::vector<bn::sprite_ptr, 32> _start_message_sprites;
@@ -45,6 +56,7 @@ private:
     int _light_elapsed_frames = 0;
     int _finger_elapsed_frames = 0;
     int _finger_elapsed_frames_2 = 0;
+    int _appicon_elapsed_frames = 0;
     bool _started = false;
 
     void _update_background_window();

@@ -8,11 +8,13 @@
 #include "bn_regular_bg_items_titlescreen.h"
 #include "bn_regular_bg_items_titlescreen_finger.h"
 #include "bn_regular_bg_items_titlescreen_light.h"
+#include "bn_sprite_items_appicon.h"
 
 title_scene::title_scene() :
     _background(bn::regular_bg_items::titlescreen.create_bg()),
     _light(bn::regular_bg_items::titlescreen_light.create_bg()),
     _finger(bn::regular_bg_items::titlescreen_finger.create_bg()),
+    _appicon(bn::sprite_items::appicon.create_sprite(0, APPICON_START_Y)),
     _start_message_text_generator(common::variable_8x8_sprite_font),
     _start_message("Press any button to start")
 {
@@ -24,6 +26,8 @@ title_scene::title_scene() :
     _finger.set_y(FINGER_START_Y);
     _finger.set_x(25);
     _finger.set_visible(false);
+    _appicon.set_bg_priority(0);
+    _appicon.set_visible(false);
 
     bn::rect_window internal_window = bn::rect_window::internal();
     internal_window.set_show_bg(_background, true);
@@ -99,6 +103,22 @@ bn::optional<scene_type> title_scene::handle_update()
         const bn::fixed progress = apply_easing(linear_progress, easing::EASE_IN);
         _finger.set_y(FINGER_END_Y + (FINGER_END_Y_2 - FINGER_END_Y) * progress);
         _background.set_y(BACKGROUND_START_Y + (BACKGROUND_END_Y - BACKGROUND_START_Y) * progress);
+    }
+
+    // Animate the app icon after the screen has been dragged away.
+    if (_elapsed_frames == APPICON_START_FRAME)
+    {
+        _appicon.set_visible(true);
+    }
+
+    if (_elapsed_frames >= APPICON_START_FRAME &&
+        _appicon_elapsed_frames < APPICON_TRAVEL_FRAMES)
+    {
+        _appicon_elapsed_frames++;
+        const bn::fixed linear_progress =
+            bn::fixed(_appicon_elapsed_frames) / APPICON_TRAVEL_FRAMES;
+        const bn::fixed progress = apply_easing(linear_progress, easing::EASE_OUT);
+        _appicon.set_y(APPICON_START_Y + (APPICON_CENTER_Y - APPICON_START_Y) * progress);
     }
 
     _update_background_window();
