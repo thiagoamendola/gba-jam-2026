@@ -22,15 +22,19 @@ title_scene::title_scene() :
     _start_message("Press any button to start")
 {
     _background.set_y(BACKGROUND_START_Y);
+    _background.set_blending_enabled(true);
     _light.set_priority(0);
     _light.set_y(LIGHT_START_Y);
+    _light.set_blending_enabled(true);
     _light.set_visible(false);
     _finger.set_priority(0);
     _finger.set_position(FINGER_START_POSITION);
+    _finger.set_blending_enabled(true);
     _finger.set_visible(false);
     _app_bg.set_position(0, 0);
     _app_bg.set_priority(1);
     _app_bg.set_scale(APP_BG_START_SCALE);
+    _app_bg.set_blending_enabled(true);
     _app_bg.set_visible(false);
     _app_bg.set_wrapping_enabled(false);
     _appicon.set_bg_priority(1);
