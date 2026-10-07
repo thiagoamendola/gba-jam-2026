@@ -4,7 +4,6 @@
 #include "bn_affine_bg_items_end_screen_inner.h"
 #include "bn_backdrop.h"
 #include "bn_color.h"
-#include "bn_music.h"
 #include "bn_music_items.h"
 #include "bn_sound_items.h"
 
@@ -69,7 +68,6 @@ bn::optional<scene_type> end_screen::update()
         return bn::nullopt;
     }
 
-    // Leave to title screen.
-    bn::music::stop();
-    return scene_type::TITLE;
+    // Leave to credits screen.
+    return scene_type::CREDITS;
 }

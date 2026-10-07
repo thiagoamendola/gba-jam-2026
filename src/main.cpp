@@ -3,6 +3,7 @@
 #include "bn_unique_ptr.h"
 
 #include "scene_type.h"
+#include "credits_scene.h"
 #include "end_screen.h"
 #include "title_scene.h"
 #include "warnings_scene.h"
@@ -48,6 +49,9 @@ int main()
                 // Only create a new scene one frame after previous scene clearing.
                 switch (*next_scene)
                 {
+                    case scene_type::CREDITS:
+                        scene = bn::make_unique<credits_scene>();
+                        break;
                     case scene_type::WARNINGS:
                         scene = bn::make_unique<warnings_scene>();
                         break;

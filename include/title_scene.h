@@ -69,7 +69,7 @@ private:
     static constexpr bn::fixed APP_BG_START_SCALE = bn::fixed(0.1);
     static constexpr bn::fixed APP_BG_END_SCALE = bn::fixed(1);
     static constexpr int APP_BG_SCALE_FRAMES = 30;
-    static constexpr int APP_BG_WAIT_FRAMES = 60;
+    static constexpr int APP_BG_WAIT_FRAMES = 120;
     static constexpr int APP_BG_FADE_OUT_FRAMES = 30;
     static constexpr int APP_BG_WAIT_START_FRAME =
         APP_BG_START_FRAME +
