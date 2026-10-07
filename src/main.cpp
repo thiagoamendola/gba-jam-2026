@@ -5,6 +5,7 @@
 #include "scene_type.h"
 #include "end_screen.h"
 #include "title_scene.h"
+#include "warnings_scene.h"
 #include "stage_2_scene.h"
 #include "stage_3_scene.h"
 #include "stage_4_scene.h"
@@ -24,7 +25,7 @@ int main()
     game_state game_state;
 
     bn::unique_ptr<base_scene> scene;
-    bn::optional<scene_type> next_scene = scene_type::TITLE;
+    bn::optional<scene_type> next_scene = scene_type::WARNINGS;
 
     while(true)
     {
@@ -47,6 +48,9 @@ int main()
                 // Only create a new scene one frame after previous scene clearing.
                 switch (*next_scene)
                 {
+                    case scene_type::WARNINGS:
+                        scene = bn::make_unique<warnings_scene>();
+                        break;
                     case scene_type::END_SCREEN:
                         scene = bn::make_unique<end_screen>();
                         break;

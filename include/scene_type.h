@@ -3,6 +3,7 @@
 
 enum class scene_type
 {
+    WARNINGS,
     TITLE,
     END_SCREEN,
     STORY_1,
