@@ -1,5 +1,7 @@
 #include "title_scene.h"
 
+#include "bn_affine_bg_items_appbg.h"
+#include "bn_blending.h"
 #include "bn_display.h"
 #include "bn_window.h"
 #include "easing.h"
@@ -14,6 +16,7 @@ title_scene::title_scene() :
     _background(bn::regular_bg_items::titlescreen.create_bg()),
     _light(bn::regular_bg_items::titlescreen_light.create_bg()),
     _finger(bn::regular_bg_items::titlescreen_finger.create_bg()),
+    _app_bg(bn::affine_bg_items::appbg.create_bg()),
     _appicon(bn::sprite_items::appicon.create_sprite(0, APPICON_START_Y)),
     _start_message_text_generator(common::variable_8x8_sprite_font),
     _start_message("Press any button to start")
@@ -25,18 +28,26 @@ title_scene::title_scene() :
     _finger.set_priority(0);
     _finger.set_position(FINGER_START_POSITION);
     _finger.set_visible(false);
+    _app_bg.set_position(0, 0);
+    _app_bg.set_priority(1);
+    _app_bg.set_scale(APP_BG_START_SCALE);
+    _app_bg.set_visible(false);
+    _app_bg.set_wrapping_enabled(false);
     // Sprites cover backgrounds with the same priority, so keep the icon behind the finger BG.
     _appicon.set_bg_priority(1);
     _appicon.set_visible(false);
+    bn::blending::set_fade_alpha(0);
 
     bn::rect_window internal_window = bn::rect_window::internal();
     internal_window.set_show_bg(_background, true);
     internal_window.set_show_bg(_light, true);
     internal_window.set_show_bg(_finger, true);
+    internal_window.set_show_bg(_app_bg, true);
 
     bn::window::outside().set_show_bg(_background, true);
     bn::window::outside().set_show_bg(_light, false);
     bn::window::outside().set_show_bg(_finger, false);
+    bn::window::outside().set_show_bg(_app_bg, true);
     _update_background_window();
 
     _start_message_text_generator.set_center_alignment();
@@ -46,6 +57,7 @@ title_scene::title_scene() :
 
 title_scene::~title_scene()
 {
+    bn::blending::set_fade_alpha(0);
     bn::rect_window::internal().restore();
     bn::window::outside().restore();
 }
@@ -156,6 +168,36 @@ bn::optional<scene_type> title_scene::handle_update()
         _finger.set_position(
             FINGER_TOUCH_POSITION.x() + (FINGER_TOUCH_PRESSED_POSITION.x() - FINGER_TOUCH_POSITION.x()) * progress,
             FINGER_TOUCH_POSITION.y() + (FINGER_TOUCH_PRESSED_POSITION.y() - FINGER_TOUCH_POSITION.y()) * progress);
+    }
+
+    // Launch the app bg from center and expand.
+    if (_elapsed_frames == APP_BG_START_FRAME)
+    {
+        _appicon.set_visible(false);
+        _app_bg.set_visible(true);
+    }
+
+    if (_elapsed_frames > APP_BG_START_FRAME &&
+        _app_bg_elapsed_frames < APP_BG_SCALE_FRAMES)
+    {
+        _app_bg_elapsed_frames++;
+        const bn::fixed progress = apply_easing(
+            bn::fixed(_app_bg_elapsed_frames) / APP_BG_SCALE_FRAMES, easing::EASE_OUT);
+        _app_bg.set_scale(APP_BG_START_SCALE + (APP_BG_END_SCALE - APP_BG_START_SCALE) * progress);
+    }
+
+    // Keep the completed app background visible, then fade the whole scene to black.
+    if (_elapsed_frames == APP_BG_FADE_OUT_START_FRAME)
+    {
+        bn::blending::set_black_fade_color();
+    }
+
+    if (_elapsed_frames >= APP_BG_FADE_OUT_START_FRAME &&
+        _elapsed_frames < APP_BG_FADE_OUT_START_FRAME + APP_BG_FADE_OUT_FRAMES)
+    {
+        const int fade_elapsed_frames =
+            _elapsed_frames - APP_BG_FADE_OUT_START_FRAME + 1;
+        bn::blending::set_fade_alpha(bn::fixed(fade_elapsed_frames) / APP_BG_FADE_OUT_FRAMES);
     }
 
     // Slide the finger off the screen.

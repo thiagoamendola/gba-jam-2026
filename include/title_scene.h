@@ -1,9 +1,10 @@
 #ifndef TITLE_SCENE_H
 #define TITLE_SCENE_H
 
+#include "bn_affine_bg_ptr.h"
+#include "bn_fixed_point.h"
 #include "bn_optional.h"
 #include "bn_rect_window.h"
-#include "bn_fixed_point.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_text_generator.h"
@@ -61,6 +62,23 @@ private:
     static constexpr int FINGER_TOUCH_MOTION_FRAMES = 20;
     static constexpr int FINGER_TOUCH_MOTION_HALF_FRAMES = FINGER_TOUCH_MOTION_FRAMES / 2;
 
+    // Scale in the app background.
+    static constexpr int APP_BG_START_FRAME =
+        FINGER_TOUCH_MOTION_START_FRAME +
+        FINGER_TOUCH_MOTION_HALF_FRAMES - 1;
+    static constexpr bn::fixed APP_BG_START_SCALE = bn::fixed(0.1);
+    static constexpr bn::fixed APP_BG_END_SCALE = bn::fixed(1);
+    static constexpr int APP_BG_SCALE_FRAMES = 30;
+    static constexpr int APP_BG_WAIT_FRAMES = 60;
+    static constexpr int APP_BG_FADE_OUT_FRAMES = 30;
+    static constexpr int APP_BG_WAIT_START_FRAME =
+        APP_BG_START_FRAME +
+        APP_BG_SCALE_FRAMES + 1;
+    static constexpr int APP_BG_FADE_OUT_START_FRAME =
+        APP_BG_WAIT_START_FRAME +
+        APP_BG_WAIT_FRAMES;
+    static constexpr int APP_BG_BLACK_HOLD_FRAMES = 30;
+
     // Make finger leave screen to the side.
     static constexpr int FINGER_EXIT_START_FRAME =
         FINGER_TOUCH_MOTION_START_FRAME +
@@ -70,12 +88,14 @@ private:
     static constexpr int FINGER_EXIT_TRAVEL_FRAMES = 60;
 
     static constexpr int FRAMES_TO_NEXT_SCENE =
-        FINGER_EXIT_START_FRAME +
-        FINGER_EXIT_TRAVEL_FRAMES;
+        APP_BG_FADE_OUT_START_FRAME +
+        APP_BG_FADE_OUT_FRAMES +
+        APP_BG_BLACK_HOLD_FRAMES + 1;
 
     bn::regular_bg_ptr _background;
     bn::regular_bg_ptr _light;
     bn::regular_bg_ptr _finger;
+    bn::affine_bg_ptr _app_bg;
     bn::sprite_ptr _appicon;
     controller _controller;
     bn::sprite_text_generator _start_message_text_generator;
@@ -88,6 +108,7 @@ private:
     int _appicon_elapsed_frames = 0;
     int _touch_finger_elapsed_frames = 0;
     int _touch_motion_elapsed_frames = 0;
+    int _app_bg_elapsed_frames = 0;
     int _finger_exit_elapsed_frames = 0;
     bool _started = false;
 
