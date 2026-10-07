@@ -33,7 +33,6 @@ title_scene::title_scene() :
     _app_bg.set_scale(APP_BG_START_SCALE);
     _app_bg.set_visible(false);
     _app_bg.set_wrapping_enabled(false);
-    // Sprites cover backgrounds with the same priority, so keep the icon behind the finger BG.
     _appicon.set_bg_priority(1);
     _appicon.set_visible(false);
     bn::blending::set_fade_alpha(0);
