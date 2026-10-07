@@ -3,6 +3,7 @@
 
 #include "bn_optional.h"
 #include "bn_rect_window.h"
+#include "bn_fixed_point.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_text_generator.h"
@@ -25,6 +26,7 @@ private:
     static constexpr int LIGHT_END_Y = 200;
     static constexpr int LIGHT_TRAVEL_FRAMES = 35;
     static constexpr int FINGER_START_FRAME = 60;
+    static constexpr int FINGER_START_X = 25;
     static constexpr int FINGER_START_Y = -250;
     static constexpr int FINGER_END_Y = -10;
     static constexpr int FINGER_END_Y_2 = -250;
@@ -38,11 +40,36 @@ private:
     static constexpr int APPICON_CENTER_Y = 0;
     static constexpr int APPICON_TRAVEL_FRAMES = FINGER_TRAVEL_FRAMES_2;
     static constexpr int APPICON_HOLD_FRAMES = 120;
-    
-    static constexpr int FRAMES_TO_NEXT_SCENE = 
-        APPICON_START_FRAME + 
-        APPICON_TRAVEL_FRAMES + 
+
+    // Finger downward motion for touching app icon.
+    static constexpr int FINGER_TOUCH_START_FRAME =
+        APPICON_START_FRAME +
+        APPICON_TRAVEL_FRAMES +
         APPICON_HOLD_FRAMES;
+    static constexpr bn::fixed_point FINGER_TOUCH_POSITION =
+        { -20, -20 };
+    static constexpr int FINGER_TOUCH_TRAVEL_FRAMES = 90;
+
+    // Finger touch pressing motion on the app icon.
+    static constexpr int FINGER_TOUCH_MOTION_START_FRAME =
+        FINGER_TOUCH_START_FRAME +
+        FINGER_TOUCH_TRAVEL_FRAMES;
+    static constexpr bn::fixed_point FINGER_TOUCH_PRESSED_POSITION =
+        { -24, -23 };
+    static constexpr int FINGER_TOUCH_MOTION_FRAMES = 20;
+    static constexpr int FINGER_TOUCH_MOTION_HALF_FRAMES = FINGER_TOUCH_MOTION_FRAMES / 2;
+
+    // Make finger leave screen to the side.
+    static constexpr int FINGER_EXIT_START_FRAME =
+        FINGER_TOUCH_MOTION_START_FRAME +
+        FINGER_TOUCH_MOTION_FRAMES;
+    static constexpr bn::fixed_point FINGER_EXIT_POSITION =
+        { 300, 0 };
+    static constexpr int FINGER_EXIT_TRAVEL_FRAMES = 60;
+
+    static constexpr int FRAMES_TO_NEXT_SCENE =
+        FINGER_EXIT_START_FRAME +
+        FINGER_EXIT_TRAVEL_FRAMES;
 
     bn::regular_bg_ptr _background;
     bn::regular_bg_ptr _light;
@@ -57,6 +84,9 @@ private:
     int _finger_elapsed_frames = 0;
     int _finger_elapsed_frames_2 = 0;
     int _appicon_elapsed_frames = 0;
+    int _touch_finger_elapsed_frames = 0;
+    int _touch_motion_elapsed_frames = 0;
+    int _finger_exit_elapsed_frames = 0;
     bool _started = false;
 
     void _update_background_window();

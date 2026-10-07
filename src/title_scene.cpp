@@ -24,9 +24,10 @@ title_scene::title_scene() :
     _light.set_visible(false);
     _finger.set_priority(0);
     _finger.set_y(FINGER_START_Y);
-    _finger.set_x(25);
+    _finger.set_x(FINGER_START_X);
     _finger.set_visible(false);
-    _appicon.set_bg_priority(0);
+    // Sprites cover backgrounds with the same priority, so keep the icon behind the finger BG.
+    _appicon.set_bg_priority(1);
     _appicon.set_visible(false);
 
     bn::rect_window internal_window = bn::rect_window::internal();
@@ -108,6 +109,7 @@ bn::optional<scene_type> title_scene::handle_update()
     // Animate the app icon after the screen has been dragged away.
     if (_elapsed_frames == APPICON_START_FRAME)
     {
+        _finger.set_visible(false);
         _appicon.set_visible(true);
     }
 
@@ -119,6 +121,51 @@ bn::optional<scene_type> title_scene::handle_update()
             bn::fixed(_appicon_elapsed_frames) / APPICON_TRAVEL_FRAMES;
         const bn::fixed progress = apply_easing(linear_progress, easing::EASE_OUT);
         _appicon.set_y(APPICON_START_Y + (APPICON_CENTER_Y - APPICON_START_Y) * progress);
+    }
+
+    // Bring the finger back slowly from above to touch the app icon.
+    if (_elapsed_frames == FINGER_TOUCH_START_FRAME)
+    {
+        _finger.set_position(FINGER_START_X, FINGER_START_Y);
+        _finger.set_visible(true);
+    }
+
+    if (_elapsed_frames >= FINGER_TOUCH_START_FRAME &&
+        _touch_finger_elapsed_frames < FINGER_TOUCH_TRAVEL_FRAMES)
+    {
+        _touch_finger_elapsed_frames++;
+        const bn::fixed linear_progress =
+            bn::fixed(_touch_finger_elapsed_frames) / FINGER_TOUCH_TRAVEL_FRAMES;
+        const bn::fixed progress = apply_easing(linear_progress, easing::EASE_OUT);
+        _finger.set_position(
+            FINGER_START_X + (FINGER_TOUCH_POSITION.x() - FINGER_START_X) * progress,
+            FINGER_START_Y + (FINGER_TOUCH_POSITION.y() - FINGER_START_Y) * progress);
+    }
+
+    // Briefly press the app icon and return.
+    if (_elapsed_frames >= FINGER_TOUCH_MOTION_START_FRAME &&
+        _touch_motion_elapsed_frames < FINGER_TOUCH_MOTION_FRAMES)
+    {
+        _touch_motion_elapsed_frames++;
+        const int touch_frame = _touch_motion_elapsed_frames <= FINGER_TOUCH_MOTION_HALF_FRAMES ?
+            _touch_motion_elapsed_frames : FINGER_TOUCH_MOTION_FRAMES - _touch_motion_elapsed_frames;
+        const bn::fixed progress = bn::fixed(touch_frame) / FINGER_TOUCH_MOTION_HALF_FRAMES;
+        _finger.set_position(
+            FINGER_TOUCH_POSITION.x() + (FINGER_TOUCH_PRESSED_POSITION.x() - FINGER_TOUCH_POSITION.x()) * progress,
+            FINGER_TOUCH_POSITION.y() + (FINGER_TOUCH_PRESSED_POSITION.y() - FINGER_TOUCH_POSITION.y()) * progress);
+    }
+
+    // Slide the finger off the screen.
+    if (_elapsed_frames >= FINGER_EXIT_START_FRAME &&
+        _finger_exit_elapsed_frames < FINGER_EXIT_TRAVEL_FRAMES)
+    {
+        _finger_exit_elapsed_frames++;
+        const bn::fixed linear_progress =
+            bn::fixed(_finger_exit_elapsed_frames) / FINGER_EXIT_TRAVEL_FRAMES;
+        const bn::fixed progress = apply_easing(linear_progress, easing::EASE_IN);
+        _finger.set_position(
+            FINGER_TOUCH_POSITION.x() + (FINGER_EXIT_POSITION.x() - FINGER_TOUCH_POSITION.x()) * progress,
+            FINGER_TOUCH_POSITION.y() + (FINGER_EXIT_POSITION.y() - FINGER_TOUCH_POSITION.y()) * progress);
     }
 
     _update_background_window();
