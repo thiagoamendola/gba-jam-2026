@@ -26,10 +26,12 @@ private:
     static constexpr int LIGHT_END_Y = 200;
     static constexpr int LIGHT_TRAVEL_FRAMES = 35;
     static constexpr int FINGER_START_FRAME = 60;
-    static constexpr int FINGER_START_X = 25;
-    static constexpr int FINGER_START_Y = -250;
-    static constexpr int FINGER_END_Y = -10;
-    static constexpr int FINGER_END_Y_2 = -250;
+    static constexpr bn::fixed_point FINGER_START_POSITION =
+        { 55, -250 };
+    static constexpr bn::fixed_point FINGER_END_POSITION =
+        { 55, 10 };
+    static constexpr bn::fixed_point FINGER_END_POSITION_2 =
+        { 55, -250 };
     static constexpr int FINGER_TRAVEL_FRAMES = 40;
     static constexpr int FINGER_TRAVEL_FRAMES_2 = 30;
     static constexpr int BACKGROUND_START_Y = 0;
@@ -47,7 +49,7 @@ private:
         APPICON_TRAVEL_FRAMES +
         APPICON_HOLD_FRAMES;
     static constexpr bn::fixed_point FINGER_TOUCH_POSITION =
-        { -20, -20 };
+        { 25, 20 };
     static constexpr int FINGER_TOUCH_TRAVEL_FRAMES = 90;
 
     // Finger touch pressing motion on the app icon.
@@ -55,7 +57,7 @@ private:
         FINGER_TOUCH_START_FRAME +
         FINGER_TOUCH_TRAVEL_FRAMES;
     static constexpr bn::fixed_point FINGER_TOUCH_PRESSED_POSITION =
-        { -24, -23 };
+        { 29, 17 };
     static constexpr int FINGER_TOUCH_MOTION_FRAMES = 20;
     static constexpr int FINGER_TOUCH_MOTION_HALF_FRAMES = FINGER_TOUCH_MOTION_FRAMES / 2;
 
