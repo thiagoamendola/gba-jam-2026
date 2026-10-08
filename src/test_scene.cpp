@@ -14,7 +14,7 @@ test_scene::test_scene(game_state* game_state) :
         game_state,
         bn::regular_bg_items::stage_1, bn::regular_bg_items::stage_1_walls,
         bn::fixed_point(370, -370), bn::fixed_point(432, -822),
-        std::initializer_list<base_enemy*>({&_melee_enemy1, &_melee_enemy2}),
+        std::initializer_list<base_enemy*>({&_melee_enemy1, &_melee_enemy2, &_melee_enemy3}),
         scene_type::STORY_1, scene_type::TEST,
         stage_1_defs::horizontal_walls.data(), stage_1_defs::horizontal_walls.size(),
         stage_1_defs::vertical_walls.data(), stage_1_defs::vertical_walls.size()),
