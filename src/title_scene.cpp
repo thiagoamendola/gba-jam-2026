@@ -21,6 +21,8 @@ title_scene::title_scene() :
     _start_message_text_generator(common::variable_8x8_sprite_font),
     _start_message("Press any button to start")
 {
+    // Story and warning scenes use global blending; begin the title scene from its default state.
+    bn::blending::restore();
     _background.set_y(BACKGROUND_START_Y);
     _background.set_blending_enabled(true);
     _light.set_priority(0);
@@ -39,7 +41,6 @@ title_scene::title_scene() :
     _app_bg.set_wrapping_enabled(false);
     _appicon.set_bg_priority(1);
     _appicon.set_visible(false);
-    bn::blending::set_fade_alpha(0);
 
     bn::rect_window internal_window = bn::rect_window::internal();
     internal_window.set_show_bg(_background, true);
@@ -60,7 +61,7 @@ title_scene::title_scene() :
 
 title_scene::~title_scene()
 {
-    bn::blending::set_fade_alpha(0);
+    bn::blending::restore();
     bn::rect_window::internal().restore();
     bn::window::outside().restore();
 }

@@ -18,7 +18,7 @@ audio_base_scene::audio_base_scene(int frames_to_end, scene_type next_scene, gam
 
 audio_base_scene::~audio_base_scene()
 {
-    bn::blending::set_transparency_alpha(0);
+    bn::blending::restore();
 }
 
 bn::optional<scene_type> audio_base_scene::update()
