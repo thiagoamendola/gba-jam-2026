@@ -60,24 +60,9 @@ const bn::fixed_point& player::world_position() const
 
 void player::start_exit_transition()
 {
-    _transition_sprite_position = _sprite.position();
-    _transition_sprite_horizontal_scale = _sprite.horizontal_scale();
-    _transition_sprite_vertical_scale = _sprite.vertical_scale();
-    _sprite.set_bg_priority(0);
+    _sprite.set_visible(false);
     _exit_pointer_sprite.set_visible(false);
-
-    if(_attack_hitbox_sprite)
-    {
-        _attack_hitbox_sprite->set_visible(false);
-    }
-}
-
-void player::update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale)
-{
-    _sprite.set_position(_transition_sprite_position.safe_multiplication(scale) + snapshot_position);
-    _sprite.set_scale(
-            _transition_sprite_horizontal_scale.safe_multiplication(scale),
-            _transition_sprite_vertical_scale.safe_multiplication(scale));
+    _attack_hitbox_sprite.reset();
 }
 
 bn::fixed_point player::get_attack_hitbox_position() const

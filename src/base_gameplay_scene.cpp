@@ -65,7 +65,21 @@ bn::optional<scene_type> base_gameplay_scene::update()
 
     if (_exit_route.is_end_animation_playing())
     {
-        return _exit_route.update(bn::fixed_point());
+        const bn::optional<scene_type> next_scene = _exit_route.update(bn::fixed_point());
+
+        if (! _transition_visuals_hidden && _scenario.exit_transition_fade_in_complete())
+        {
+            _location_hud_sprites.clear();
+            _location_hud_text.clear();
+            _bullets.clear();
+            _splatter_pool.hide_all();
+            _walls.hide_sprites();
+            _backdrop_manager.stop_fade();
+            bn::backdrop::set_color(bn::color(0, 0, 0));
+            _transition_visuals_hidden = true;
+        }
+
+        return next_scene;
     }
 
     if (_player.is_dead())
@@ -98,10 +112,6 @@ bn::optional<scene_type> base_gameplay_scene::update()
     // If we started end animation in this frame, prepare it first.
     if (_exit_route.is_end_animation_playing())
     {
-        _location_hud_sprites.clear();
-        _location_hud_text.clear();
-        _backdrop_manager.stop_fade();
-        bn::backdrop::set_color(bn::color(0, 0, 0));
         return bn::nullopt;
     }
 

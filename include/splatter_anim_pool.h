@@ -16,6 +16,7 @@ public:
 
     void update(const bn::fixed_point& movement);
     void spawn(const bn::fixed_point& position, bn::fixed rotation_angle);
+    void hide_all();
 
 private:
     bn::array<bn::optional<bn::sprite_ptr>, MAX_SPLATTERS> _sprites;

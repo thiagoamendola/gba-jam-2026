@@ -35,6 +35,7 @@ public:
             const bn::fixed_point& start_position, const bn::fixed_point& end_position) const;
 
     void update(const bn::fixed_point& player_movement);
+    void hide_sprites();
 
 private:
     struct wall_cell

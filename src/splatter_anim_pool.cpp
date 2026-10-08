@@ -94,3 +94,14 @@ void splatter_anim_pool::spawn(const bn::fixed_point& position, bn::fixed rotati
     }
     _next_splatter_index = (_next_splatter_index + 1) % MAX_SPLATTERS;
 }
+
+void splatter_anim_pool::hide_all()
+{
+    for(bn::optional<bn::sprite_ptr>& sprite : _sprites)
+    {
+        sprite->set_visible(false);
+    }
+
+    _active_splatters_count = 0;
+    _next_splatter_index = 0;
+}

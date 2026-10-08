@@ -191,18 +191,7 @@ void base_enemy::_update_animation()
 
 void base_enemy::start_exit_transition()
 {
-    _transition_sprite_position = _sprite.position();
-    _transition_sprite_horizontal_scale = _sprite.horizontal_scale();
-    _transition_sprite_vertical_scale = _sprite.vertical_scale();
-    _sprite.set_bg_priority(0);
-}
-
-void base_enemy::update_exit_transition(const bn::fixed_point &snapshot_position, bn::fixed scale)
-{
-    _sprite.set_position(_transition_sprite_position.safe_multiplication(scale) + snapshot_position);
-    _sprite.set_scale(
-        _transition_sprite_horizontal_scale.safe_multiplication(scale),
-        _transition_sprite_vertical_scale.safe_multiplication(scale));
+    _sprite.set_visible(false);
 }
 
 void base_enemy::_start_splatter_animation()

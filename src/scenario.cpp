@@ -1,7 +1,5 @@
 #include "scenario.h"
 
-#include "bn_backdrop.h"
-#include "bn_color.h"
 #include "bn_display.h"
 #include "bn_rect_window.h"
 #include "bn_size.h"
@@ -11,12 +9,12 @@ scenario::scenario(const bn::regular_bg_item& bg_item, const bn::regular_bg_item
     const bn::fixed_point& initial_position)
     : _bg(bg_item.create_bg(initial_position)),
       _walls_bg(walls_item.create_bg(initial_position)),
-      _end_transition_manager(bg_item, walls_item),
+      _end_transition_manager(),
       _initial_position(initial_position),
       _current_position(initial_position),
       _walls_dimensions(
-        walls_item.map_item().dimensions().width() * 8,
-        walls_item.map_item().dimensions().height() * 8)
+          walls_item.map_item().dimensions().width() * 8,
+          walls_item.map_item().dimensions().height() * 8)
 {
     _configure_regular_bg_window();
 }
@@ -50,14 +48,30 @@ void scenario::update(bn::fixed_point movement)
 
 void scenario::start_exit_transition()
 {
-    _end_transition_manager.start(_current_position, bn::backdrop::color().value_or(bn::color(0, 0, 0)));
-    _bg.reset();
-    _walls_bg.reset();
+    // Crossfade the app background over the live stage before releasing its resources.
+    _bg->set_blending_bottom_enabled(true);
+    _walls_bg->set_blending_bottom_enabled(true);
+    _exit_transition_stage_hidden = false;
+    _end_transition_manager.start();
 }
 
-bool scenario::update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale)
+bool scenario::update_exit_transition()
 {
-    return _end_transition_manager.update(snapshot_position, scale);
+    const bool updated = _end_transition_manager.update();
+
+    if(updated && _end_transition_manager.fade_in_complete() && ! _exit_transition_stage_hidden)
+    {
+        _bg.reset();
+        _walls_bg.reset();
+        _exit_transition_stage_hidden = true;
+    }
+
+    return updated;
+}
+
+bool scenario::exit_transition_fade_in_complete() const
+{
+    return _end_transition_manager.fade_in_complete();
 }
 
 void scenario::_configure_regular_bg_window()

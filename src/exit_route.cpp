@@ -6,6 +6,7 @@
 #include "bn_sound_items.h"
 
 #include "base_enemy.h"
+#include "end_transition_manager.h"
 #include "player.h"
 #include "scenario.h"
 #include "game_state.h"
@@ -84,11 +85,14 @@ bn::optional<scene_type> exit_route::update(const bn::fixed_point &player_moveme
     case exit_state::ANIMATING:
         if (_end_animation_frame < _end_animation_duration())
         {
-            const transition_transform transform = _end_animation_transform();
-
-            if (_associated_scenario->update_exit_transition(transform.position, transform.scale))
+            if (_associated_scenario->update_exit_transition())
             {
-                _update_end_animation_sprites(transform);
+                if (! _transition_elements_hidden && _associated_scenario->exit_transition_fade_in_complete())
+                {
+                    _hide_transition_elements();
+                    _transition_elements_hidden = true;
+                }
+
                 ++_end_animation_frame;
             }
         }
@@ -140,70 +144,21 @@ bool exit_route::_all_enemies_dead() const
 
 int exit_route::_end_animation_duration()
 {
-    return ZOOM_OUT_PHASE.duration_frames + MOVE_SNAPSHOT_DOWN_PHASE.duration_frames;
-}
-
-exit_route::transition_transform exit_route::_end_animation_transform() const
-{
-    const transition_transform initial_transform = {
-        bn::fixed_point(0, 0),
-        bn::fixed(1)};
-
-    if (_end_animation_frame < ZOOM_OUT_PHASE.duration_frames)
-    {
-        return _interpolate_end_animation_phase(initial_transform, ZOOM_OUT_PHASE, _end_animation_frame);
-    }
-
-    const transition_transform zoom_out_transform = {
-        ZOOM_OUT_PHASE.end_position,
-        ZOOM_OUT_PHASE.end_scale};
-    const int move_down_frame = _end_animation_frame - ZOOM_OUT_PHASE.duration_frames;
-    return _interpolate_end_animation_phase(
-        zoom_out_transform, MOVE_SNAPSHOT_DOWN_PHASE, move_down_frame);
-}
-
-exit_route::transition_transform exit_route::_interpolate_end_animation_phase(
-    const transition_transform &start_transform, const end_animation_phase &phase, int frame)
-{
-    if (phase.duration_frames <= 1)
-    {
-        return {phase.end_position, phase.end_scale};
-    }
-
-    const bn::fixed linear_progress = bn::fixed(frame).safe_division(phase.duration_frames - 1);
-    const bn::fixed progress = apply_easing(linear_progress, phase.easing_method);
-    return {
-        start_transform.position +
-            (phase.end_position - start_transform.position).safe_multiplication(progress),
-        start_transform.scale +
-            (phase.end_scale - start_transform.scale).safe_multiplication(progress)};
+    return end_transition_manager::FULL_ANIMATION_FRAMES;
 }
 
 void exit_route::_start_end_animation()
 {
-    _transition_sprite = {
-        _sprite.position(),
-        _sprite.horizontal_scale(),
-        _sprite.vertical_scale()};
-    _sprite.set_bg_priority(0);
+    _transition_elements_hidden = false;
+}
+
+void exit_route::_hide_transition_elements()
+{
+    _sprite.set_visible(false);
     _player->start_exit_transition();
 
     for (base_enemy *enemy : _enemies)
     {
         enemy->start_exit_transition();
-    }
-}
-
-void exit_route::_update_end_animation_sprites(const transition_transform &transform)
-{
-    _sprite.set_position(_transition_sprite.position.safe_multiplication(transform.scale) + transform.position);
-    _sprite.set_scale(
-        _transition_sprite.horizontal_scale.safe_multiplication(transform.scale),
-        _transition_sprite.vertical_scale.safe_multiplication(transform.scale));
-    _player->update_exit_transition(transform.position, transform.scale);
-
-    for (base_enemy *enemy : _enemies)
-    {
-        enemy->update_exit_transition(transform.position, transform.scale);
     }
 }

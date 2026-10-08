@@ -105,6 +105,14 @@ void walls::update(const bn::fixed_point& player_movement)
     }
 }
 
+void walls::hide_sprites()
+{
+    for(wall_cell& cell : _cells)
+    {
+        cell.sprite.set_visible(false);
+    }
+}
+
 bn::fixed_point walls::resolve_movement(
     const bn::fixed_point& collider_position, bn::fixed collider_radius,
     const bn::fixed_point& movement) const

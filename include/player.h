@@ -19,7 +19,6 @@ public:
         bn::fixed_point movement, const walls& walls, const exit_route& exit_route);
         
     void start_exit_transition();
-    void update_exit_transition(const bn::fixed_point& snapshot_position, bn::fixed scale);
 
     [[nodiscard]] const bn::fixed_point& position() const;
     [[nodiscard]] const bn::fixed_point& world_position() const;
@@ -71,9 +70,6 @@ private:
     bool _is_dead;
     int _attack_anim_index;
     int _attack_anim_frame_end;
-    bn::fixed_point _transition_sprite_position;
-    bn::fixed _transition_sprite_horizontal_scale;
-    bn::fixed _transition_sprite_vertical_scale;
 
     [[nodiscard]] bn::fixed_point get_attack_hitbox_position() const;
     void _update_exit_pointer(const exit_route& exit_route);

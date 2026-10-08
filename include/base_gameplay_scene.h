@@ -81,6 +81,7 @@ private:
     bn::sprite_text_generator _location_hud_text_generator;
     bn::vector<bn::sprite_ptr, LOCATION_HUD_MAX_SPRITES> _location_hud_sprites;
     bn::string<LOCATION_HUD_TEXT_MAX_SIZE> _location_hud_text;
+    bool _transition_visuals_hidden = false;
 
     void handle_music();
     void _update_location_hud();

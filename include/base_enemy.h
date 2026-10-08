@@ -36,7 +36,6 @@ public:
     virtual void destroy() = 0;
 
     void start_exit_transition();
-    void update_exit_transition(const bn::fixed_point &snapshot_position, bn::fixed scale);
 
     [[nodiscard]] bool is_dead() const;
     [[nodiscard]] const bn::fixed_point &position() const;
@@ -76,10 +75,6 @@ protected:
     int _idle_location_index;
     int _walk_anim_index;
     int _walk_anim_frame_end;
-
-    bn::fixed_point _transition_sprite_position;
-    bn::fixed _transition_sprite_horizontal_scale;
-    bn::fixed _transition_sprite_vertical_scale;
 };
 
 #endif // BASE_ENEMY_H

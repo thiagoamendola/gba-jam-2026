@@ -10,9 +10,8 @@
 #include "bn_sprite_ptr.h"
 #include "bn_vector.h"
 
-#include "easing.h"
-#include "scene_type.h"
 #include "game_state.h"
+#include "scene_type.h"
 
 class base_enemy;
 class player;
@@ -31,33 +30,7 @@ public:
     [[nodiscard]] bool is_available() const;
     [[nodiscard]] const bn::fixed_point& position() const;
 
-    // A chunk of key animation for controlling position/scale transition over predefined duration.
-    struct end_animation_phase
-    {
-        int duration_frames;
-        bn::fixed_point end_position;
-        bn::fixed end_scale;
-        easing easing_method = easing::LINEAR;
-    };
-
-    // Definitions follow the class so omitted easing values keep the LINEAR default.
-    static const end_animation_phase ZOOM_OUT_PHASE;
-    static const end_animation_phase MOVE_SNAPSHOT_DOWN_PHASE;
-
 private:
-    struct transition_transform
-    {
-        bn::fixed_point position;
-        bn::fixed scale;
-    };
-
-    struct transition_sprite_data
-    {
-        bn::fixed_point position;
-        bn::fixed horizontal_scale;
-        bn::fixed vertical_scale;
-    };
-
     enum class exit_state
     {
         DISABLED,
@@ -79,34 +52,15 @@ private:
     bn::fixed_point _position;
     bn::sprite_ptr _sprite;
     bn::sprite_animate_action<EXIT_ANIMATION_FRAME_COUNT> _sprite_animation;
-    transition_sprite_data _transition_sprite;
     scene_type _next_scene;
     exit_state _state;
     int _end_animation_frame;
+    bool _transition_elements_hidden = false;
 
     [[nodiscard]] bool _all_enemies_dead() const;
     [[nodiscard]] static int _end_animation_duration();
-    [[nodiscard]] transition_transform _end_animation_transform() const;
-    [[nodiscard]] static transition_transform _interpolate_end_animation_phase(
-            const transition_transform& start_transform, const end_animation_phase& phase, int frame);
     void _start_end_animation();
-    void _update_end_animation_sprites(const transition_transform& transform);
-};
-
-// The snapshot begins at screen position { 0, 0 } with scale 1.
-inline constexpr exit_route::end_animation_phase exit_route::ZOOM_OUT_PHASE = {
-    90,
-    bn::fixed_point(0, 30),
-    bn::fixed(0.5),
-    easing::EASE_IN_OUT
-};
-
-// This phase begins at ZOOM_OUT_PHASE's target. It defaults to LINEAR easing.
-inline constexpr exit_route::end_animation_phase exit_route::MOVE_SNAPSHOT_DOWN_PHASE = {
-    60,
-    bn::fixed_point(0, 300),
-    bn::fixed(0.4),
-    easing::EASE_IN
+    void _hide_transition_elements();
 };
 
 #endif // EXIT_ROUTE_H
